@@ -1,0 +1,2546 @@
+---
+title: Tvorba webu, mapy & další
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 8**</p align="center">
+<p align="center">**TVORBA WEBU & DALŠÍ**</p align="center">
+
+V první kapitole našeho putování bylo slíbeno, že se v RStudiu naučíme vytvářet webové stránky, které budou obsahovat výstupy z našich analýz. Nyní nastává ta správná chvíle tento slib naplnit.
+
+Dříve než se však dostaneme k tvorbě webových prezentací, potkáme se opětovně s balíčkem tidyverse, který využijeme pro formátování dat. A aby toho nebylo málo, podíváme se v této kapitole též na testování statistických hypotéz a tvorbu map. Čeká nás poslední úsek naší cesty, Katan už je na dohled!
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 8**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**TVORBA WEBU & DALŠÍ**</p align="center"></font>
+
+<font color="white">
+V první kapitole našeho putování bylo slíbeno, že se v RStudiu naučíme vytvářet webové stránky, které budou obsahovat výstupy z našich analýz. Nyní nastává ta správná chvíle tento slib naplnit.
+
+Dříve než se však dostaneme k tvorbě webových prezentací, potkáme se opětovně s balíčkem tidyverse, který využijeme pro formátování dat. A aby toho nebylo málo, podíváme se v této kapitole též na testování statistických hypotéz a tvorbu map. Čeká nás poslední úsek naší cesty, Katan už je na dohled!
+</font>
+
+### {.mapa}
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 47.0447, lat = 38.2554, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 88.363892, lat = 22.572645, 
+                   '<h6><a href="https://www.rlandio.cz/cesta/8.kapitola.html#tidyr" target="_blank" style="color:#014B7C">Kalkata</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 47.0447, lat = 38.2554, 
+             '<h6><a href="https://www.rlandio.cz/cesta/8.kapitola.html#mapy" target="_blank" style="color:#014B7C">Katan</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Tidyr
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Kalkata: Tidyr {.pozadi}
+
+Ne vždy budeme mít to štěstí, abychom mohli pracovat s daty okamžitě připravenými k samotné analýze. Mnohem častěji totiž budeme nuceni pracovat se soubory asi tak přehlednými a upravenými jako ulice v Kalkatě. Z tohoto důvodu bude následující lekce věnována tématu přípravy dat k vlastní analytické činnosti. K tomuto čištění se nám bude nejlépe hodit balíček **tidyr**, který je součástí nám již dobře známého balíčku tidyverse.
+
+Pro začátek si představte, že máte na výběr mezi následujícími datovými tabulkami. Kterou z nich si pro datovou analýzu vyberete?
+
+```{r, eval=F, echo=T}
+library(tidyverse)
+
+# proměnné
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1, 2, 3, 4, 5, 1, 2, 3, 4)
+Předmět <- c("AJ", "NJ", "ČJ", "AJ", "NJ", 
+             "ČJ", "AJ", "NJ", "ČJ")
+Pohlaví <- c("muž", "muž", "muž", "muž", "muž", 
+             "muž", "žena", "žena", "žena")
+Věk <- c(14, 14, 14, 15, 15, 15, 16, 16, 16)
+
+# datová tabulka č. 1 (formát long)
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+
+# datová tabulka č.2 (formát wide)
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+```
+```{r echo=FALSE}
+library(tidyverse)
+
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+
+print("datová tabulka č. 1 (formát long)")
+Škola <-  data.frame(Jméno,Pohlaví,Věk,Předmět,Známka)
+Škola
+
+print("datová tabulka č.2 (formát wide)")
+Škola2 <- spread(Škola, Předmět, Známka)
+Škola2
+```
+
+Ani jedna z odpovědí není špatná, i když sami podvědomě asi cítíte, že první varianta (long formát) leží k vašemu srdci o poznání blíž. Proč? V R se snažíme řídit při úpravě dat podle následujících tří pravidel (v literatuře je můžete nalézt pod pojmem tidy data):
+
+1.	každé pozorování je popsáno jedním řádkem;
+2.	každá proměnná je obsažena v jednom sloupci;
+3.	každý typ pozorování má vlastní tabulku.
+
+Verze č. 1 naší školní databáze splňuje bezpochyby všechna tři kritéria, zatímco u verze č. 2 (wide formát) je již naplnění druhého kritéria lehce diskutabilní, protože se v proměnných AJ, NJ, ČJ jedná vždy o známky, tj. o jednu proměnnou. V čem je z praktického hlediska takovýto styl zobrazení dat nevýhodný? Vezměme si nyní do úvahy, že chceme Kubovi z naší datové tabulky Škola2 (formát wide) přidat nové známky z němčiny. Jak to provést? Obtížně, protože přidáním nového řádku budeme nuceni vytvořit prázdné hodnoty pro proměnné ČJ a AJ, což nedává smysl. Žádná data nám u těchto proměnných totiž fakticky nechybí.
+
+
+```{r, eval=F, echo=T}
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+Nový_řádek <- list("Jakub", "muž", 14, "NA", "NA", 3)
+
+Škola2 <-  rbind(Škola2, Nový_řádek)
+Škola2
+```
+
+```{r echo=FALSE}
+library(tidyverse)
+
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola,Předmět,Známka)
+Nový_řádek <- list("Jakub", "muž", 14, NA, NA, 3)
+
+Škola2 <-  rbind(Škola2, Nový_řádek)
+Škola2
+```
+
+<div id="demobox">
+  
+<h2>Box: List vs vektor</h2>
+
+Ptáte se, proč jsme při vytváření proměnné Nový_řádek (`Nový_řádek <- list("Jakub", "muž", 14, NA, NA, 3)`) nepoužili příkaz `c()` a místo toho jsme vytvářeli list a nikoliv obyčejný vektor? Odpověď naleznete v následujícím skriptu. V něm se zaměřte na výsledné datové typy proměnné Věk.
+
+
+```{r, eval=F, echo=T}
+# datový typ proměnné Věk před přidáním nového řádku
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1, 2, 3, 4, 5, 1, 2, 3, 4)
+Předmět <- c("AJ", "NJ", "ČJ", "AJ", "NJ", "ČJ", "AJ", "NJ", "ČJ")
+Pohlaví <- c("muž", "muž", "muž", "muž", "muž", 
+             "muž", "žena", "žena", "žena")
+Věk <- c(14, 14, 14, 15, 15, 15, 16, 16, 16)
+
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+
+class(Škola$Věk)
+```
+```{r echo=FALSE}
+library(tidyverse)
+
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+
+class(Škola$Věk)
+```
+
+```{r, eval=F, echo=T}
+# verze s concatenate
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+
+Škola2 <- spread(Škola, Předmět, Známka)
+Nový_řádek <- c("Jakub", "muž", 14, NA, NA, 3)
+
+Škola2 <- rbind(Škola2, Nový_řádek)
+class(Škola2$Věk)
+```
+```{r echo=FALSE}
+library(tidyverse)
+
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+Nový_řádek <- c("Jakub", "muž", 14, NA, NA, 3)
+
+Škola2 <- rbind(Škola2, Nový_řádek)
+class(Škola2$Věk)
+```
+
+```{r, eval=F, echo=T}
+# verze s listem
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+
+Škola2 <- spread(Škola, Předmět, Známka)
+Nový_řádek <- list("Jakub", "muž", 14, NA, NA, 3)
+
+Škola2 <-  rbind(Škola2, Nový_řádek)
+class(Škola2$Věk)
+```
+```{r echo=FALSE}
+library(tidyverse)
+
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+Nový_řádek <- list("Jakub", "muž", 14, NA, NA, 3)
+
+Škola2 <-  rbind(Škola2, Nový_řádek)
+class(Škola2$Věk)
+```
+
+V případě, že pro vytvoření nového řádku použijeme concatenate a nikoliv list (příkaz `Nový_řádek <- data.frame("Jakub", "muž", 14, NA, NA, 3)` nepoužívejte, jelikož data frame musí obsahovat názvy sloupců a zde máme pouze hodnoty), vytvoříme vektor, který bude datového typu character. Přidáním takového textového vektoru k datové tabulce tudíž změníme všechny datové typy sloupců též na character, protože spojíme-li do řetězce čísla a písmena, výsledkem se stane vždy character.
+</div>
+
+Problémů s formátem wide by však nastalo mnohem víc. Představte si kupříkladu, že se nám databáze rozšíří o několik dalších řádků a naším cílem bude spočítat průměrné známky všech studentů za jednotlivé předměty. S pomocí dplyr příkazů aplikovaných na tabulku ve formátu long to bude hračka. Ve formátu wide by se však jednalo o mnohem komplikovanější úkon, zvláště tehdy, pokud byste například chtěli vypočítat studijní průměr mezi všemi třemi předměty. Nemluvě o tom, že by nám ve formátu wide začaly opětovně činit problémy chybějící hodnoty, pokud bychom za všechny tři předměty neměli stejný počet známek (viz příklad s Kubou a jeho jednou známkou z němčiny).
+
+```{r, eval=F, echo=T}
+library(tidyverse)
+
+# výpočet průměrných známek
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", "David", 
+           "Petra", "Petra", "Petra", "David", "David", "David", 
+           "Jakub", "Jakub", "Jakub", "Petra", "Petra", "Petra")
+Známka <- c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 1, 2, 3, 4)
+Předmět <- c("AJ", "NJ", "ČJ", "AJ", "NJ", "ČJ", "AJ", "NJ", "ČJ",
+             "AJ", "NJ", "ČJ", "AJ", "NJ", "ČJ", "AJ", "NJ", "ČJ")
+Pohlaví <- c("muž", "muž", "muž", "muž", "muž", "muž", 
+             "žena", "žena", "žena", "muž", "muž", "muž", 
+             "muž", "muž", "muž", "žena", "žena", "žena")
+Věk <- c(14, 14, 14, 15, 15, 15, 16, 16, 16, 
+         15, 15, 15, 14, 14, 14, 16, 16, 16)
+Předměty_průměry <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka) %>% 
+  group_by(Jméno, Předmět) %>% 
+  summarise_each(funs(mean), Známka)
+Předměty_průměry
+
+# výpočet studijních průměrů
+Celkový_průměr <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka) %>% 
+  group_by(Jméno) %>% 
+  summarise_each(funs(mean), Známka)
+Celkový_průměr
+```
+```{r echo=FALSE}
+library(tidyverse)
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra", "David", "David", 
+           "David", "Jakub", "Jakub", "Jakub", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4,5,1,2,3,4,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ",
+             "AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena",
+             "muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16,15,15,15,14,14,14,16,16,16)
+
+Předměty_průměry <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka) %>% 
+  group_by(Jméno, Předmět) %>% 
+  summarise_each(funs(mean), Známka)
+print("průměrné známky za jednotlivé předměty")
+Předměty_průměry
+
+print("studijní průměry")
+Celkový_průměr <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka) %>% 
+  group_by(Jméno) %>% 
+  summarise_each(funs(mean), Známka)
+Celkový_průměr
+```
+
+Ač tak či onak, ve všech předchozích skriptech (mimo toho posledního) jsme pracovali s jedním příkazem, který jsme si doposud nepředstavili. Jedná se o `spread()`, pomocí něhož jsme long formát datového souboru Škola dokázali upravit na wide formát Škola2. Pojďme si nyní vysvětlit jeho skladbu (syntax).
+
+```{r, eval=F, echo=T}
+library(tidyverse)
+
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1, 2, 3, 4, 5, 1, 2, 3, 4)
+Předmět <- c("AJ", "NJ", "ČJ", "AJ", "NJ", 
+             "ČJ", "AJ", "NJ", "ČJ")
+Pohlaví <- c("muž", "muž", "muž", "muž", "muž", 
+             "muž", "žena", "žena", "žena")
+Věk <- c(14, 14, 14, 15, 15, 15, 16, 16, 16)
+
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+```
+
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\graf1.png)](#tidyr)</p align="center">
+
+V příkazu `spread()` nejdříve začínáme názvem databáze, se kterou plánujeme pracovat (tj. Škola). Následuje proměnná z jejichž hodnot se stanou názvy nových sloupců, za níž následuje další proměnná, která nově vzniklé sloupce doplní hodnotami. V našem případě je cílem přetvořit proměnnou Předmět na tři nové sloupce, jejichž názvy jsou definovány unikátními hodnotami AJ, NJ a ČJ z této proměnné. Samotná proměnná Předmět tudíž v nově vzniklé databázi Škola2 již nefiguruje. V posledním kroku nově vzniklé sloupce doplníme o hodnoty z proměnné Známka, o což se postará třetí parametr příkazu `sperad()`.
+
+```{r, eval=F, echo=T}
+# názvy jednotlivých parametrů též něco napoví o skladbě příkazu spread()
+Škola2 <- spread(data = Škola, key = Předmět, value = Známka)
+```
+
+Co když ale budeme muset řešit zcela opačný problém a naším zdrojovým formátem bude wide a nikoliv long? Reversním příkazem k příkazu `spread()` je příkaz `gather()`. Ukažme si jej v akci opět na stejném příkladu.
+
+```{r, eval=F, echo=T}
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+
+Škola <-  gather(Škola2, Predmět, Známka, 4:6)
+```
+```{r echo=FALSE}
+library(tidyverse)
+Jméno <- c("Jakub", "Jakub", "Jakub", "David", "David", 
+           "David", "Petra", "Petra", "Petra")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+Škola <-  data.frame(Jméno, Pohlaví, Věk, Předmět, Známka)
+Škola2 <- spread(Škola, Předmět, Známka)
+
+Škola <-  gather(Škola2, Predmět, Známka, 4:6)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\graf2.png)](#tidyr)</p align="center">
+
+Srovnáme-li `spread()` a `gather()` dohromady, zjistíme, že jejich skladba je téměř totožná. Jediné v čem se `gather()` liší od `spread()` je to, že v něm musíme definovat ty sloupce, z nichž budeme vytvářet nové dvě proměnné (Předmět a Známka). Toho docílíme jednoduchým výčtem pomocí concatenate nebo dvojtečky.
+
+Navzdory tomu, že s pomocí `spread()` a `gather()` jsme schopni obsáhnout podstatnou část úpravy dat, naučíme se nyní používat i další příkazy, které nám mohou být velice užitečné. Začněme příkazem `separate()`. Ten, jak už jeho samotný název napovídá, pomůže zejména tehdy, je-li naším cílem rozdělit sloupec do několika nových proměnných. Ukažme si jeho použití na následujícím příkladu. V něm budeme chtít rozdělit proměnnou Jméno_příjmení na proměnné Jméno a Příjmení.
+
+```{r, eval=F, echo=T}
+Jméno_příjmení <- c("Jakub_Novák", "Jakub_Novák", "Jakub_Novák", 
+                    "David_Bubák", "David_Bubák", "David_Bubák", 
+                    "Petra_Hloubavá", "Petra_Hloubavá", "Petra_Hloubavá")
+Známka <- c(1, 2, 3, 4, 5, 1, 2, 3, 4)
+Předmět <- c("AJ", "NJ", "ČJ", "AJ", "NJ", 
+             "ČJ", "AJ", "NJ", "ČJ")
+Pohlaví <- c("muž", "muž", "muž", "muž", "muž", 
+             "muž", "žena", "žena", "žena")
+Věk <- c(14, 14, 14, 15, 15, 15, 16, 16, 16)
+
+Škola <-  data.frame(Jméno_příjmení, Pohlaví, Věk, Předmět, Známka) %>%
+separate(Jméno_příjmení, c("Jméno", "Příjmení"), sep = "_")
+```
+```{r echo=FALSE}
+library(tidyverse)
+Jméno_příjmení <- c("Jakub_Novák", "Jakub_Novák", "Jakub_Novák", 
+                    "David_Bubák", "David_Bubák", "David_Bubák", 
+                    "Petra_Hloubavá", "Petra_Hloubavá", "Petra_Hloubavá")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+Škola <-  data.frame(Jméno_příjmení, Pohlaví, Věk, Předmět, Známka) %>%
+separate(Jméno_příjmení,c("Jméno","Příjmení"), sep="_")
+Škola
+```
+
+V příkazu `separate()` opět nejdříve volíme název databáze, se kterou máme v úmyslu pracovat (pokud ovšem nepoužíváme trubku, tak jako v předchozím skriptu). Na další pozici tohoto příkazu stojí název proměnné, již máme za cíl rozdělit. Následně pomocí příkazu `c()` vypíšeme názvy nových sloupců, načež příkaz zakončíme parametrem `sep`, který definuje, podle jakého znaku má být lom v proměnné proveden.
+
+Obdobně jako příkaz `spread()` měl svého bratříčka ve formě příkazu `gather()`, nejinak tomu bude u příkazu `separate()`. Ten se kamarádí s příkazem `unite()`. Ukažme si v následujícím skriptu, kterak lze zpětně vytvořit proměnnou Jméno_příjmení.
+
+```{r, eval=F, echo=T}
+Jméno_příjmení <- c("Jakub_Novák", "Jakub_Novák", "Jakub_Novák", 
+                    "David_Bubák", "David_Bubák", "David_Bubák", 
+                    "Petra_Hloubavá", "Petra_Hloubavá", "Petra_Hloubavá")
+Známka <- c(1, 2, 3, 4, 5, 1, 2, 3, 4)
+Předmět <- c("AJ", "NJ", "ČJ", "AJ", "NJ", 
+             "ČJ", "AJ", "NJ", "ČJ")
+Pohlaví <- c("muž", "muž", "muž", "muž", "muž", 
+             "muž", "žena", "žena", "žena")
+Věk <- c(14, 14, 14, 15, 15, 15, 16, 16, 16)
+
+Škola <-  data.frame(Jméno_příjmení, Pohlaví, Věk, Předmět, Známka) %>%
+separate(Jméno_příjmení, c("Jméno", "Příjmení"), sep = "_") %>%
+unite(Jméno_příjmení, c("Jméno", "Příjmení"), sep = "_")
+```
+```{r echo=FALSE}
+library(tidyverse)
+Jméno_příjmení <- c("Jakub_Novák", "Jakub_Novák", "Jakub_Novák", 
+                    "David_Bubák", "David_Bubák", "David_Bubák", 
+                    "Petra_Hloubavá", "Petra_Hloubavá", "Petra_Hloubavá")
+Známka <- c(1,2,3,4,5,1,2,3,4)
+Předmět <- c("AJ","NJ","ČJ","AJ","NJ","ČJ","AJ","NJ","ČJ")
+Pohlaví <- c("muž","muž","muž","muž","muž","muž","žena","žena","žena")
+Věk <- c(14,14,14,15,15,15,16,16,16)
+Škola <-  data.frame(Jméno_příjmení, Pohlaví, Věk, Předmět, Známka) %>%
+separate(Jméno_příjmení, c("Jméno", "Příjmení"), sep="_") %>%
+unite(Jméno_příjmení, c("Jméno", "Příjmení"), sep="_")
+Škola
+```
+
+Téma „čištění“ dat je nesmírně bohaté a takřka nekonečné. Přesto jsme díky této lekci učinili další významný krok kupředu, jelikož jsme se naučili další nové příkazy, která nám s úpravou dat pomohou. K tomu navíc nesmíme zapomenout, že ještě před touto kapitolou jsme se potkali s mnoha příkazy, které nám budou při úpravě dat též velice nápomocné. Za zmínku stojí např. `edit()` či příkazy zabývající se změnou názvů proměnných, jejich přeskupením atd. Bez připomínky nelze ponechat ani `complete.cases()`, se kterým jsme se seznámili ve třetí kapitole v Medellínu.
+
+```{r, eval=F, echo=T}
+TF_Škola <- complete.cases(Škola)
+# Pomocí tohoto příkazu získáme logický vektor ve tvaru 
+# TRUE/FALSE, kde TRUE značí řádky bez chybějících údajů.
+
+NARM_Škola <- DirtyKatan[complete.cases(Škola), ]
+# Zde získáme databázi Škola obsahující pouze úplné řádky,
+# výsledek bude přiřazen do data frame NARM_Škola.
+```
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Seznamme se s databází příjmové nerovnosti s názvem <a href="https://www.rlandio.cz/SWIID.csv" target="_blank">SWIID</a>, která sleduje tento fenomén v jednotlivých letech a státech. Příjmová nerovnost se měří pomocí tzv. <a href="https://cs.wikipedia.org/wiki/Giniho_koeficient" target="_blank">Giniho koeficientu</a>, jenž nabývá hodnot od nuly do jedné (kde 0 značí absolutní rovnost - všichni vlastní stejně a 1 absolutní nerovnost - jeden člověk vlastní vše). 
+
+Databáze SWIID (Standardized World Income Inequality Database) však bohužel není připravena k okamžité analýze v R. Vaším úkolem bude tento stav napravit. Problémů, které v této databázi naleznete, je hned několik. Podívejte se proto nejdříve na následující srovnání, ve kterém je zobrazen stav databáze SWIID před úpravou a po ní.
+
+```{r}
+library(tidyverse)
+SWIID <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/SWIID.csv")
+print("Databáze SWIID před úpravou")
+head(SWIID)
+```
+
+```{r}
+library(tidyverse)
+SWIID <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/SWIID.csv")
+
+SWIID <- gather(SWIID, Rok, Gini, 2:56) %>%
+separate(stát, c("stát","Kód_země"), sep="/")
+SWIID$Rok <- sub(".", "", SWIID$Rok)
+# Výše uvedený příkaz byl použit proto, aby odstranil
+# písmeno X na začátku každého letopočtu.
+# A kde se vlastně X na začátku všech roků vzala?
+# Po nahrání databáze SWIID stály letopočty v prvním řádku
+# databáze, proto se z nich staly názvy proměnných. Proměnná se 
+# však nemůže jmenovat pouze číslem, proto R ke všem letopočtům
+# automaticky přidal X.
+
+SWIID <- SWIID[complete.cases(SWIID), ]
+
+rownames(SWIID) <- 1:nrow(SWIID)
+# Na závěr ještě musíme upravit číslování řádků, které před tím 
+# převzalo hodnoty z původní databáze SWIID.
+
+print("Databáze SWIID po úpravě")
+head(SWIID)
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 88.363892, lat = 22.572645, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 88.363892, lat = 22.572645, 
+                   '<h6><a href="https://cs.wikipedia.org/wiki/Kalkata" target="_blank" style="color:#014B7C">Kalkata</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Statistika 2
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Dillí: Statistika 2 {.pozadi}
+
+Testování hypotéz je nedílnou součástí základních statistických dovedností. Z tohoto důvodu nesmí tato lekce na naší cestě do Katanu scházet. V případě, že jste se ale s tímto tématem ještě doposud nesetkali, bude lepší, když si nejdříve doplníte nezbytné základy a to třeba <a href="https://cit.vfu.cz/statpotr/POTR/Teorie/Predn3/ttest.htm" target="_blank">zde</a>. Na druhé straně bude naše povídání velice názorné, proto ho jistě zvládnou i ti, kteří se tomuto tématu někdy v minulosti sice věnovali, ale v současnosti si nevzpomenou na nic víc než na t-test či p-hodnotu.
+
+Statistika se obdobně jako matematika učí nejlépe na příkladech, proto přejděme hned na ten první. V
+jednom nejmenovaném časopisu jsem si před lety přečetl článek s názvem „Osadníky hrají gentlemani“, kde se vlevo dole psalo o tom, že průměrný majitel deskové hry Osadníci z Katanu odehraje minimálně tři partie za měsíc. My v naší databázi Katan disponujeme náhodným výběrem 200 Osadníků, s jejichž pomocí se pokusíme tento výrok vyvrátit, jelikož se nám jeví jako přespříliš optimistický (ačkoliv je nutné podotknout, že bohužel). 
+
+Před tím, než budeme moci testovat samotnou hypotézu, musíme zjistit, zdali náš výběr z proměnné Partie splňuje předpoklad normality. Toho docílíme pomocí Shapiro-Wilkova testu.
+
+```{r, eval=F, echo=T}
+shapiro.test(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+shapiro.test(Katan$Partie)
+```
+
+Test byl proveden na hladině významnosti 5 % (později si vysvětlíme, o co se jedná). Vzhledem k tomu, že p-hodnota (`p-value = 1.161e-12`) je menší než 0,05, musíme předpoklad normality (nezbytný pro provedení t-testu) vyvrátit. Co s tím? V tuto chvíli máme dvě možnosti. Tou první je pokračovat dále a předpokládat tzv. asymptoticky normální rozdělení, a to vzhledem k tomu, že náš výběr obsahuje více než 50 hodnot (velice laicky řečeno). Druhou z možností je zvolit neparametrickou variantu t-testu ve formě Wilcoxonova testu. My si vyzkoušíme obojí, začneme ovšem t-testem.  
+
+Pro testování hypotéz je nezbytné v první fázi definovat tzv. nulovou hypotézu (H0), kterou se budeme snažit vyvrátit. Jak si totiž jistě pamatujete, statistika nedokáže hypotézy potvrzovat, ale pouze vyvracet. V případě, že není statistik schopen nulovou hypotézu vyvrátit, nemůže i tak tvrdit, že je platná (jelikož pouze nedokáže s jistotou tvrdit, že je neplatná). Je to veskrze stejné jako v běžném životě. Můžete si třeba o někom myslet, že kupříkladu krade, nemůžete to ale s naprostou jistotou veřejně tvrdit, pokud nemáte jasný důkaz. V případě testování hypotéz by proto naší nulovou hypotézou bylo, že daný člověk nekrade a naší alternativní hypotézou (H1), že krade. Do té doby, než byste nalezli dostatečný důkaz, platila by nulová hypotéza, a to samozřejmě i tehdy, pokud by ve skutečnosti byla nepravdivá (tj. že daný člověk doopravdy krade). Na této podstatě je vlastně založen celý koncept presumpce neviny. Vidíte, i takovéto justiční přesahy má testování hypotéz a statistika. 
+
+Vraťme se však zpět k našemu příkladu. Dokážete v této chvíli určit, co bude naší nulovou hypotézou? Jsem přesvědčen, že je vaše odpověď naprosto správná. Do naší nulové hypotézy vložíme tvrzení, že střední hodnota (rozuměj průměrný počet) odehraných partií v České republice činí více jak tři za měsíc. Do alternativní hypotézy vložíme opak nulové hypotézy, tj. že hráči Osadníků z Katanu odehrají méně než tři partie. Do alternativy vkládáme vždy taková tvrzení, která chceme dokázat. Naším úkolem totiž je vyvrátit úvodní tvrzení z článku, které se nám navzdory lásce k Osadníkům zdálo poněkud přehnané.
+
+Statistický zápis našich hypotéz zní následovně:<br>
+H0: μ >= 3 <br>
+H1: μ < 3
+
+Pro výpočet našeho příkladu budeme potřebovat **jednovýběrový** t-test. Naším výběrem bude proměnná `Katan$Partie`, naší nulovou hypotézou ` μ >= 3` a naší hranicí významnosti (kterou jsme si sami zvolili) 5 %. Proveďme samotný test.
+
+```{r, eval=F, echo=T}
+t.test(Katan$Partie, alternative = "less", mu = 3)
+# v případě pravostranné alternativy bychom použili alternative = "greater"
+# viz help(t.test)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+t.test(Katan$Partie, alternative = "less", mu = 3)
+```
+
+Výsledek našeho testu je zřejmý. P-hodnota je větší než 0,05. Z tohoto důvodu nulovou hypotézu nemůžeme zamítnout, a tudíž nemůžeme tvrdit, že by autor článku neměl pravdu (i když ji třeba ve skutečnosti nemá, pokud daný článek vůbec napsal). Co je to však p-hodnota a proč vlastně 0,05? Testování hypotéz lze provádět pomocí tzv. kritického oboru či p-hodnoty, která je mnohem jednodušší na interpretaci a výpočet, pokud používáte nějaký software jako třeba R, Gretl či Statisticu. 
+
+Vzhledem k tomu, že testujeme na hladině významnosti 5 % (často se ještě pracuje s hladinou 1 %), chceme s nejméně 95% pravděpodobností tvrdit, že je naše nulová hypotéza neplatná a vhodná k zamítnutí ve prospěch té alternativní. V případě, že by p-hodnota byla například `0,0099`, mohli bychom test provést na hladině významnosti 1 %, a přesto bychom nulovou hypotézu zamítli. Z tohoto důvodu platí, že čím menší p-hodnota je, tím pro naše testování lépe. V našem případě p-hodnota činí 0.7388, z čehož vyplývá, že nelze vyvrátit argument o tom, že by hráči Osadníků z Katanu odehráli v průměru tři a více partií této hry. Na druhé straně je na tomto místě nezbytné zdůraznit, že problematika p-hodnoty je přeci jenom komplikovanější. Nelze tak například podle ní „srovnávat“ různé testy a jejich výsledky. Není totiž možné obecně říct, že pokud dosáhneme v testu hodnotu p = 0,005, je nulová hypotéza (H0) tohoto testu zamítnuta „spolehlivěji“ než u testu, kde p = 0,01.
+
+Náš prvotní t-test byl založen na jednostranné hypotéze. Proto jsme v rámci parametrů t-testu zvolili formulaci: `alternative = "less", mu = 3`.<br>
+H0: μ >= 3<br>
+H1: μ < 3
+
+V našem případě by však dávalo smysl testovat i oboustrannou hypotézu, ve které se budeme ptát, zdali může být pravda, že průměrný počet odehraných partií Osadníků činí právě tři hry za měsíc?<br>
+H0: μ = 3<br>
+H1: μ != 3
+
+```{r, eval=F, echo=T}
+t.test(Katan$Partie, alternative = "two.sided", mu = 3)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+t.test(Katan$Partie, alternative = "two.sided", mu = 3)
+```
+
+Ani v této chvíli nemůžeme vyvrátit, že by průměrný počet partií mohl činit právě tři za měsíc. A na čem vlastně obecně závisí výsledek t-testu? Ten se samozřejmě v první řadě odvíjí od hodnoty výběrového průměru z dané proměnné, kterou sledujeme (Partie). To však zdaleka nestačí, protože do výpočtu velice výrazně vstupuje i rozptyl včetně množství samotných hodnot. Netřeba jistě dodávat, že čím více hodnot máme a čím nižší rozptyl mezi nimi je, tím snadněji jsme schopni nulovou hypotézu vyvrátit.
+
+To byl tedy jednovýběrový t-test, ale co jeho neparametrická varianta vzhledem k porušené normalitě? Získáme díky ní odlišné výsledky? Pojďme se podívat.
+
+```{r, eval=F, echo=T}
+wilcox.test(Katan$Partie, alternative = "less", mu = 3)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+wilcox.test(Katan$Partie, alternative = "less", mu = 3)
+```
+```{r, eval=F, echo=T}
+wilcox.test(Katan$Partie, alternative = "two.sided", mu = 3)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+wilcox.test(Katan$Partie, alternative = "two.sided", mu = 3)
+```
+
+Wilcoxonův test potvrdil naše úvodní zjištění získaná pomocí t-testu, proto se můžeme v klidu přesunout od jednovýběrového t-testu k tomu dvouvýběrovému. Uveďme si následující příklad. V něm budeme chtít zjisti, zdali kuřáci odehrají stejné množství partií Osadníků nežli nekuřáci. Testování budeme chtít provést na hladině významnosti 5 % (tj. p-hodnota musí být nižší než 0,05).
+
+H0: μ = 0 (μ kuřáků - μ nekuřáků)<br>
+H1: μ != 0
+
+Dříve než se pustíme do testování, musíme nejdříve opět zkontrolovat normalitu obou výběrů (podle proměnné Kouření). K tomu použijeme příkaz `byf.shapiro()`, který je součástí balíčku **RVAideMemoire**. Původní příkaz `shapiro.test()` použít nemůžeme, jelikož ten nedokáže roztřídit proměnnou Partie podle faktoru Kouření.
+
+```{r, eval=F, echo=T}
+install.packages("RVAideMemoire")
+
+byf.shapiro(Partie ~ Kouření, data = Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+library("RVAideMemoire")
+
+byf.shapiro(Partie ~ Kouření, data = Katan)
+```
+
+Oproti úvodnímu příkladu žádná změna, normalita znovu porušena, proto budeme opět používat nejen t-test, ale i Wilcoxonův test.
+
+```{r, eval=F, echo=T}
+t.test(Katan$Partie ~ Katan$Kouření, alternative = "two.sided", 
+       mu = 0, conf.level = 0.95)
+wilcox.test(Katan$Partie ~ Katan$Kouření, alternative = "two.sided", 
+            mu = 0, conf.level = 0.95)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+t.test(Katan$Partie ~ Katan$Kouření, alternative = "two.sided", mu = 0, conf.level = 0.95)
+wilcox.test(Katan$Partie ~ Katan$Kouření, alternative = "two.sided", mu = 0, conf.level = 0.95)
+```
+
+Na hladině významnosti 5 % můžeme díky t-testu tvrdit, že kuřáci neodehrají stejný počet partií jako nekuřáci. Na druhou stranu Wilcoxonův test nulovou hypotézu na hladině významnosti 5 % vyvrátit nemůže. 
+
+Abychom však mohli testovat, zda kuřáci odehrají méně partií než nekuřáci, budeme muset zvolit levostrannou hypotézu. Nulovou hypotézou v tomto případě bude charakterizovat tvrzení, že kuřáci odehrají více partií než nekuřáci.
+
+H0: μ >= 0 (μ kuřáků - μ nekuřáků)<br>
+H1: μ < 0
+
+```{r, eval=F, echo=T}
+t.test(Katan$Partie ~ Katan$Kouření, alternative = "less", mu = 0)
+wilcox.test(Katan$Partie ~ Katan$Kouření, alternative = "less", mu = 0)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+t.test(Katan$Partie ~ Katan$Kouření, alternative = "less", mu = 0)
+wilcox.test(Katan$Partie ~ Katan$Kouření, alternative = "less", mu = 0)
+```
+
+Zde je p-hodnota v obou testech nižší než 0,05. Lze tudíž tvrdit, že milovníci nikotinu odehrají méně partií než nekuřáci. A proč je tu p-hodnota nižší než v předchozím příkladě s oboustrannou alternativou? Důvod je takový, že v případě oboustranné alternativy se p-hodnota stejně jako α (hladina významnosti) „dělí“ na poloviny na obě strany testu. V případě, že vám toto téma není úplně jasné, podívejte se prosím na následující <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-the-differences-between-one-tailed-and-two-tailed-tests/" target="_blank">text</a>, který vám vše osvětlí.
+
+Pro velký úspěch si vyzkoušejme ještě jeden příklad. V něm nás bude zajímat, zdali odehrají muži více partií než ženy. Nejdříve opět začněme s oboustrannou hypotézou, tj. v nulové hypotéze budeme tvrdit, že ženy odehrají stejný počet partií jako muži.
+
+H0: μ = 0 (μ mužů - μ žen)<br>
+H1: μ != 0
+
+```{r, eval=F, echo=T}
+t.test(Katan$Partie ~ Katan$Pohlaví, alternative = "two.sided", mu = 0)
+wilcox.test(Katan$Partie ~ Katan$Pohlaví, alternative = "two.sided", mu = 0)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+t.test(Katan$Partie ~ Katan$Pohlaví, alternative = "two.sided", mu = 0)
+wilcox.test(Katan$Partie ~ Katan$Pohlaví, alternative = "two.sided", mu = 0)
+```
+
+Jak je vidět, ženy odehrají v průměru 3,844828 Partií za měsíc, kdežto muži pouze 2,788732. P-hodnota činí 0,001722 (respektive 0.0001842). S téměř absolutní jistotou proto zamítáme hypotézu, že by muži a ženy hráli Osadníky stejně často. A co když budeme chtít testovat jednostrannou hypotézu, jež bude tvrdit, že ženy odehrají více partií? Na základě předchozího testu budeme očekávat, že p-hodnota bude 0,001722 / 2, tj. 0,0008612 (respektive 0.0001842 / 2).
+
+H0: μ >= 0 (μ mužů - μ žen)<br>
+H1: μ < 0
+
+```{r, eval=F, echo=T}
+t.test(Katan$Partie ~ Katan$Pohlaví, alternative = "less", mu = 0)
+wilcox.test(Katan$Partie ~ Katan$Pohlaví, alternative = "less", mu = 0)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+t.test(Katan$Partie ~ Katan$Pohlaví, alternative = "less", mu = 0)
+wilcox.test(Katan$Partie ~ Katan$Pohlaví, alternative = "less", mu = 0)
+```
+
+Máte problémy s tím, zdali v t-testu zvolit `alternative = "less" nebo "greater"`? Stačí trocha matematiky. Podíváme-li se na průměry odehraných partií mezi muži a ženami, vidíme, že rozdíl mezi hodnotami 2,788732 a 3,844828 je záporný, tím pádem použijeme levostrannou alternativu (`alternative = "less"`), tj. `alternative hypothesis: true difference in means is less than 0`. Hodnoty μ se od sebe odečítají dle abecedy (tj. μ mužů - μ žen nebo μ kuřáků - μ nekuřáků).
+
+Statistika dokáže být v některých případech velice zrádná. V předchozím příkladě jsme totiž statisticky dokázali, že ženy odehrají více partií než muži. Z předchozích kapitol jsme ale získali odlišný pocit a byli to naopak muži, kteří Osadníkům holdovali více nežli ženy. Tak kde leží pomyslný zakopaný pes? Problém nastal při výběru osob ze souboru Katan, který nebyl nijak omezen. Naše databáze totiž obsahuje velké množství mužů nad 26 let, kteří osadníky stále hrají, ale už v mnohem menší míře než za dob studií. U žen je situace zcela opačná. Ty sice Osadníky taktéž rády hrají, ale po dokončení vysokoškolských studií už na ně nemají čas, přestávají je hrát, a tudíž už se v naší databázi neobjevují. Abychom tak mohli smysluplně testovat hypotézu, zdali muži a ženy hrají Osadníky se stejnou intenzitou, budeme muset náš soubor dat omezit věkem. Toho docílíme pomocí hranatých závorek nebo balíčku dplyr.
+
+```{r, eval=F, echo=T}
+library(tidyverse)
+
+# Nejdříve s pomocí filtru vybereme jedince s věkem <= 25,
+# u kterých nechybí hodnota v proměnné Partie.
+
+Katan2 <- 
+  filter(Katan, 
+  Věk <= 25,
+  !is.na(Partie))
+
+t.test(Katan2$Partie ~ Katan2$Pohlaví, alternative = "two.sided", mu = 0)
+wilcox.test(Katan2$Partie ~ Katan2$Pohlaví, alternative = "two.sided", mu = 0)
+```
+```{r}
+library(tidyverse)
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Katan2 <- 
+  filter(Katan, 
+  Věk <= 25,
+  !is.na(Partie))
+
+t.test(Katan2$Partie ~ Katan2$Pohlaví, alternative = "two.sided", mu = 0)
+wilcox.test(Katan2$Partie ~ Katan2$Pohlaví, alternative = "two.sided", mu = 0)
+```
+
+Z tohoto testu získáváme naprosto odlišný obrázek, na jehož základě nezamítáme hypotézu o tom, že ženy a muži odehrají stejný počet partií. P-hodnota v tomto případě hovoří zcela jasně.
+
+Kromě jednovýběrového a dvouvýběrového t-testu nesmíme zapomenout taktéž na párový t-test. Jak ten se odlišuje? Základní charakteristikou tohoto testu je, že zde máme dva stejně dlouhé výběry, u kterých testujeme rozdíly mezi nimi. Představme si například školáky ze šesté až deváté třídy, u kterých bude sledovat jejich studijní výsledky z matematiky. Předpokládejme, že první pololetí učila hodná paní učitelka, která ale onemocněla, takže za ní musel nastoupit jiný hodný pan učitel. V následující databázi s názvem Vysvědčení uvidíme kromě jednotlivých jmen studentů zejména známky na vysvědčení v prvním pololetí (hodná paní učitelka) a ve druhém pololetí (hodný pan učitel). Budou výsledky studentů stále stejné nebo se budou lišit mezi sebou?
+
+```{r, eval=F, echo=T}
+library(randomNames)
+# vzhledem k tomu, že použijeme balíček randomNames,
+# budeme pracovat se školou poněkud mezinárodní
+
+Jména <- randomNames(120,
+                ethnicity = 5,
+                which.names = "both",
+                name.order = "last.first",
+                name.sep = ", ",
+                sample.with.replacement = TRUE,
+                return.complete.data = FALSE)
+
+Matematika_žena <-  sample(1:5, size = 120, replace = TRUE, 
+                           prob = c(.33, .50, .10, .5, .2))
+Matematika_muž <-  sample(1:5, size = 120, replace = TRUE, 
+                           prob = c(.40, .44, .9, .6, .1))
+
+Vysvědčení <- data.frame(Jména, Matematika_žena, Matematika_muž)
+
+head(Vysvědčení)
+
+t.test(Vysvědčení$Matematika_žena, Vysvědčení$Matematika_muž, 
+  alternative = "two.sided", 
+  mu = 0, 
+  paired = TRUE)
+```
+```{r}
+library(randomNames)
+
+Jména <- randomNames(120,
+                ethnicity = 5,
+                which.names = "both",
+                name.order = "last.first",
+                name.sep = ", ",
+                sample.with.replacement = TRUE,
+                return.complete.data = FALSE)
+
+Matematika_žena <-  sample(1:5, size = 120, replace = TRUE, prob = c(.33, .50, .10, .5, .2))
+Matematika_muž <-  sample(1:5, size = 120, replace = TRUE, prob = c(.40, .44, .9, .6, .1))
+
+Vysvědčení <- data.frame(Jména, Matematika_žena, Matematika_muž)
+
+head(Vysvědčení)
+
+t.test(Vysvědčení$Matematika_žena, Vysvědčení$Matematika_muž, 
+  alternative = "two.sided", 
+  mu = 0, 
+  paired = TRUE)
+```
+
+Výsledek p-hodnoty je vyšší než 0,05, proto nemůžeme vyloučit, že se učební metody obou hodných učitelů matematiky mezi sebou nikterak neliší. Párové testy se používají velice často například ve zdravotnictví, ve kterém srovnáváme stav pacientů před požitím léku a po něm. Podstatou párového t-testu je, že měříme hodnoty v rámci jednoho subjektu (v našem případě studentů) a to dvakrát. Před zásahem a po něm. Vůči tomu dvouvýběrový t-test zkoumá rozdíly v hodnotách mezi dvěma odlišně rozsáhlými subjekty (jako byly například muži a ženy, kuřáci a nekuřáci atd.). Poslední variantou t-testu je test jednovýběrový, se kterým jsme začínali, jenž používáme v experimentálních situacích, kdy známe střední hodnotu μ v populaci, kterou chceme porovnat s naším výběrem a dokázat, zdali tento náš výběr vychází ze sledované populace či ne.
+
+<div id="demobox">
+
+<h2>Box: Regresní analýza</h2>
+
+S tématem testování statistických hypotéz velice úzce souvisí i téma tzv. regresní analýzy. My se na tomto místě nebudeme příliš zabývat teoretickou stránkou tohoto testu a jeho předpoklady, pouze si ukážeme, jak ho provést. K tomu budeme potřebovat jako vždy naši databázi Katan.
+```{r, eval=F, echo=T}
+regrese <- lm(formula = Katan$Partie ~ Katan$Věk + 
+                  Katan$Pohlaví + 
+                  Katan$Vzdělání + 
+                  Katan$Kolej + 
+                  Katan$Práce + 
+                  Katan$Kouření + 
+                  Katan$Klub + 
+                  Katan$Děti)
+
+summary(regrese)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+regrese <- lm(formula = Katan$Partie ~ Katan$Věk + 
+                  Katan$Pohlaví + 
+                  Katan$Vzdělání + 
+                  Katan$Kolej + 
+                  Katan$Práce + 
+                  Katan$Kouření + 
+                  Katan$Klub + 
+                  Katan$Děti)
+
+summary(regrese)
+```
+
+Koeficienty jednotlivých proměnných (respektive jejich hodnot) lze pozorovat v přehledném uspořádání. Jaká je jejich interpretace? Tak například vidíme, že s každým rokem věku klesá průměrný počet odehraných partií Osadníků o 0,04251. Jste-li však žena, odehrajete o 0,36350 partie za měsíc více nežli muž. A jste-li nečlen klubu deskových her, bude vás tato skutečnost stát 0,10940 partie. Na druhé straně musíme brát veškeré výsledky s jistou rezervou, protože adjustovaný index determinace činí relativně pouhých 0,4191. Jinými slovy pouze přibližně 42 % variability dat je vysvětleno tímto modelem.
+
+
+</div>
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 2
+
+Otestujte v databázi <a  href="https://www.rlandio.cz/LungCapData.xlsx" target="_blank">LungCapData</a> na hladině významnosti 5 % hypotézu, že nekuřáci mají větší kapacitu plic nežli kuřáci.
+
+> Příklad 3
+
+Otestujte v databázi <a  href="https://www.rlandio.cz/Investice.xlsx" target="_blank">Investice</a> na hladině významnosti 5 % hypotézu, že investiční strategie č. 1 má výnosnost alespoň 130 $ za měsíc.
+
+> Příklad 4
+
+Otestujte v databázi <a  href="https://www.rlandio.cz/Investice.xlsx" target="_blank">Investice</a> na hladině významnosti 5 % hypotézu, zdali jsou investiční strategie č. 1 a č.2 stejně úspěšné.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 77.216721, lat = 28.6448, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 77.216721, lat = 28.6448, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Dill%C3%AD" target="_blank" style="color:#014B7C">Dillí</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# R Markdown
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Karáčí: R Markdown {.pozadi}
+
+Přestože Karáčí není zrovna symbolem elegance, ukážeme si v něm, kterak vytvořit základní webovou stránku v R. K tomu si však budeme muset nejdříve nainstalovat balíček s názvem R Markdown, který umí vytvářet nejen překrásné webové prezentace s našimi grafy a tabulkami, ale i pdf dokumenty a wordovské dokumenty.
+
+```{r, eval=F, echo=T}
+install.packages("rmarkdown")
+```
+
+Oproti ostatním balíčkům v R má R Markdown tu výhodu, že jej nemusíme do RStudia neustále načítat, tak jako např. ggplot2 či dplyr. R Markdown po instalaci spustíme tím způsobem, že v menu přejdeme na  **File -> New File -> R Markdown**.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr1.png)](#r-markdown)</p align="center">
+
+Následně se otevře dialogové okno, ve kterém nemusíme výchozí nastavení nijak měnit. Pouze do něj zapíšeme námi požadovaný název stránky, v našem případě **Náš první web**. Ačkoliv v této chvíli máme možnost zakliknout mezi třemi výstupy (HTML, PDF, WORD), není třeba se v této chvíli touto volbou zabývat. Po vytvoření dokumentu totiž budeme moci mezi těmito třemi formáty libovolně přecházet. Jedinou výjimkou je v tomto ohledu výstup ve formátu PDF, pro který je potřebné do R ještě naistalovat balíček s názvem **Tinytex** (`install.packages('tinytex')`, viz <a href="https://bookdown.org/yihui/rmarkdown/installation.html" target="_blank">R Markdown: The Definitive Guide</a>).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr2.png)](#r-markdown)</p align="center">
+
+Poté stačí již jen kliknout na OK a **Náš první web** je na světě. Skript tohoto webu budeme upravovat v levém horním panelu RStudia. V něm můžete vidět, že se nám zde zobrazil vzorový dokument, který obsahuje tři základní segmenty. První z nich se týká nadpisu dokumentu, který bude v budoucí fázi obsahovat též i příkazy definující grafickou podobu stránky. Tento segment je na dolním obrázku zobrazen modrou barvou.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr3.png)](#r-markdown)</p align="center">
+
+Druhá část skriptu je zobrazena červenou barvou a značí průvodní text dokumentu. Poslední třetí část, která je na předchozím obrázku ohraničena žlutě na šedém pozadí, značí samotné příkazy v R.
+
+Pojďme si nyní náš web spustit a zobrazit v prohlížeči. K tomu stačí kliknout na tlačítko Knit a zvolit Knit to HTML (respektive Knit to PDF či WORD).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr4.png)](#r-markdown)</p align="center">
+
+Následně RStudio skript zpracuje (proces lze sledovat v konzoli) a vytvoří soubor, který uvidíte jako další eRkový dokument. Před tím ale budete muset ještě tento soubor uložit a pojmenovat jej. Dialogové okno se zobrazí automaticky. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr5.png)](#r-markdown)</p align="center">
+
+A toto je výsledek. **Náš první web**.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr6.png)](#r-markdown)</p align="center">
+
+Vzhledem k tomu, že R požívá trochu jiné rozlišení pro webové stránky než běžné webové prohlížeče (Google Chrome, Firefox, MS Edge atd.), bude lépe zobrazit tento dokument v našem primárním prohlížeči. Toho docílíme tak, že klikneme na tlačítko **Open in Browser**. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr7.png)](#r-markdown)</p align="center">
+
+A hle, **Náš první web** je zobrazen ve Firefoxu.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr8.png)](#r-markdown)</p align="center">
+
+Pojďme se nyní s R Markdownem trochu blíže seznámit, a to za pomoci následujícího skriptu **Osadníci z Katanu**, který si zkopírujte do vašeho R Markdownu (stáhnout si ho lze i <a href="https://www.rlandio.cz/Osadnici_z_Katanu.rar" target="_blank">zde</a>). Výsledný web si můžete prohlédnout pomocí tohoto <a href="https://www.rlandio.cz/Osadnici_z_Katanu.html" target="_blank"> odkazu</a>.
+
+<div id="demobox">
+
+<h2>Vzorový skript pro R Markdown </h2>
+```{r, eval=F, echo=T}
+---
+title: Osadníci z Katanu
+output: 
+  html_document:
+    theme: "default"
+    toc: true
+    toc_float: true
+    toc_depth: 3 
+    number_sections: true
+---
+
+<style>
+
+div.main-container {
+   max-width: 1350px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+h1.title {
+  font-size: 70px;
+  text-align: center;
+  color: #337AB7;
+}
+
+h1 {
+  font-size: 30px;
+  color: #337AB7;
+}
+
+body { 
+  font-size: 17px;
+  text-align: justify;
+  color: #000000;
+  background-color: #ffffff;
+
+</style>
+```
+
+```{r, eval=F, echo=T, message=FALSE,warning=FALSE}
+# Úvod
+
+Osadníci z Katanu jsou legendou ve světě deskových her, která si získala přízeň milionů hráčů po celém světě. A čím tato hra jednoznačně předčí jiné deskové hry? Především variabilitou herního plánu. Každá partie je jedinečná. Spolu s protihráči osidlujete ostrov Katan.
+
+Vítězem se stává hráč, který vybuduje nejmocnější osídlení. Získávejte potřebné suroviny, obchodujte s nimi a díky nim dále budujte cesty, vesnice, města… Staňte se pánem Katanu!
+
+Závod o nadvládu nad ostrovem právě začal! Muži a ženy z vaší expedice už objevili první 2 vesnice. Naštěstí je ostrov velmi bohatý na přírodní zdroje. Budujete silnice a také další vesnice, které se později rozrostou v města. Budete úspěšní v boji o to, kdo se stane vládcem Katanu?
+ 
+Klíčem k tomu je obchodování - některých surovin budete mít nadbytek, jiné vám budou chybět. Kamení za vlnu, obilí za dřevo. Obchodujete s tím co potřebujete, i s tím, co se právě nabízí. Dobře si rozmyslete, jaký bude váš další krok, postavte svoje vesnice na těch pravých místech a obchodujte tak chytře jak jen dokážete. Možná si vytvoříte slušné šance na výhru, nezapomeňte ale, že vaši spoluhráči také nejsou žádní hlupáci. Když se tím vším budete řídit, kdo ví - možná právě vy budete příštím vládcem ostrova Katan!
+```
+
+```{r, eval=F, echo=T}
+<p align="center">![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\catan.jpg)</p align="center">
+```
+
+```{r, eval=F, echo=T}
+# Osadníci v České republice
+
+Osadníci z Katanu jsou nejen deskovou hrou, ale i zdrojem dat pro studenty programovacího jazyka R. Pojďme se proto nyní podívat na výsledky ze spotřebitelského šetření, které bylo provedeno mezi aktivními hráči této hry.
+```
+
+```{r, eval=F, echo=T}
+``{r echo = FALSE, fig.width = 10}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+library("DT") 
+
+Katan <- transform(Katan, 
+                   Partie = as.integer(Partie), 
+                   Věk = as.integer(Věk),
+                   Pohlaví = as.factor(Pohlaví),
+                   Vzdělání = as.factor(Vzdělání),
+                   Kolej = as.factor(Kolej),
+                   Práce = as.factor(Práce),
+                   Kouření = as.factor(Kouření),
+                   Klub = as.factor(Klub),
+                   Děti = as.integer(Děti))
+
+datatable(Katan[,c(-7)], rownames = FALSE, filter = 'top', options = list(
+  pageLength = 10, autoWidth = TRUE, scrollX = TRUE, scrollCollapse = TRUE, 
+  columnDefs = list(list(className = 'dt-center', targets = "_all"))))
+``
+```
+
+```{r, eval=F, echo=T}
+Navzdory tomu, že Osadníci z Katanu jsou hrou pro celou rodinu, svoji největší oblibu si k ní nalezli spíše muži než ženy. To dokazuje následující graf, který vychází z výše uvedeného spotřebitelského šetření.
+```
+
+```{r, eval=F, echo=T}
+``{r echo = FALSE, fig.width = 10}
+library(readxl)
+library(ggplot2)
+library(ggthemes)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+ggplot(Katan, 
+       aes(x = Pohlaví)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..)), fill = "#145C82")+ 
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_discrete(labels= (Pohlaví<- c("osadníci", "osadnice"))) +
+  ggtitle("Podíly mužů a žen v databázi Katan") +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title=element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0.5), 
+    plot.background = element_rect(fill = "#DDDDDD"),
+    axis.text.y = element_text(colour = "black", size = 12),
+    axis.text.x = element_text(colour = "black", size = 12))
+``
+```
+
+```{r, eval=F, echo=T}
+A takto bychom v textu mohli pokračovat donekonečna...
+```
+
+```{r, eval=F, echo=T}
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
+```
+
+</div>
+
+Nefunguje Vám výše zkopírovaný skript? Není divu. Byla v něm totiž záměrně ponechána dvojice chyb. Dokážete ji najít a opravit? Podíváte-li se na jiný R Markdownovský dokument, jistě brzy zjistíte, že zakopaný pes se nachází u eRkových skriptů (s šedým ohraničením). Takovýto skript totiž musí být definován následujícími příkazy (viz modré obdélníky).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr9.png)](#r-markdown)</p align="center">
+
+Nám však v našem skriptu vždy jedna uvozovka chybí.
+
+```{r, eval=F, echo=T}
+``{r echo = FALSE, fig.width = 10}
+library(readxl)
+library(ggplot2)
+library(ggthemes)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+ggplot(Katan, 
+       aes(x = Pohlaví)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..)), fill = "#145C82")+ 
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_discrete(labels= (Pohlaví<- c("osadníci", "osadnice"))) +
+  ggtitle("Podíly mužů a žen v databázi Katan") +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title=element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0.5), 
+    plot.background = element_rect(fill = "#DDDDDD"),
+    axis.text.y = element_text(colour = "black", size = 12),
+    axis.text.x = element_text(colour = "black", size = 12))
+``
+```
+
+Na předchozím obrázku se prosím zaměřte ještě na jeden detail a tím je samotný obsah úvodního příkazu ````{r echo = FALSE, fig.width = 10}`. Ten můžete jednoduše měnit pomocí ozubeného kolečka (viz červený obdélník na předchozím obrázku), díky němuž můžete určit, zdali se má zobrazit pouze výsledek příkazu (např. graf) či i samotný skript. Tato část příkazu však může obsahovat i řadu dalších parametrů, které nicméně povětšinou řešit nebudeme (viz <a href="https://bookdown.org/yihui/rmarkdown/r-code.html" target="_blank">odkaz</a>, příkladem takového parametru může být například šířka výsledného grafu `fig.width = 10`).
+
+Pak je tu nicméně ještě druhá chyba, která se též týká tzv. code chunks (odstavců s kódy v R). Projděte si celý výše uvedený kód ještě jednou a určete, kde se tato chyba nachází. Už máte jasno? Řešení není příliš složité. Chyba se nachází hned v úvodu celého skriptu, který definuje cestu k databázi Katan (`Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")`). Tu si totiž musíte nastavit podle svého, a nikoliv mého počítače. Code chunks ve své podstatě fungují jako tabula rasa. Ačkoliv ve vašem RStudiu můžete mít databázi Katan načtenou, je nezbytné v rámci každého code chunk tento soubor nahrát znovu, a to včetně jednotlivých balíčků. Při načítání dat ve formátu xlsx nezapomínejte tudíž ani na balíček `readxl`. V případě načítání dokumentů ve formátu csv nicméně žádný balíček potřeba není. Pro osvěžení znalostí se v následujícím příkazu podívejte, kterak csv soubor do R načíst.
+
+```{r, eval=F, echo=T}
+# jako příklad si uveďme databázi akcií společnosti Amazon v csv
+stock_amzn <- 
+  read.csv("http://sharpsightlabs.com/wp-content/uploads/2017/09/AMZN_stock.csv")
+```
+
+Code chunks jsme probrali velice podrobně, pojďme se proto posunout o trochu dál, a to do textové části R Markdownu. Každý text je obvykle uveden nějakým nadpisem. Tyto nadpisy jsou v R definovány pomocí mřížek, kde jedna mřížka značí nadpis 1. úrovně, dvě mřížky nadpis 2. úrovně atd. Samotný průvodní text píšeme obdobně jako v běžném textovém editoru (poznámkovém bloku). Odstavce stačí oddělovat běžným enterem. 
+
+```{r, eval=F, echo=T}
+# Úvod
+
+Osadníci z Katanu jsou legendou ve světě deskových her.
+```
+
+V případě, že do textu chcete vložit např. obrázek či odrážky, musíte se řídit pravidly programovacího jazyka HTML. Následující příkaz nám například ukáže, kterak na stránkách zobrazit obrázek stažený z jiných webových stránek, jenž bude zarovnán na střed.
+
+```{r, eval=F, echo=T}
+<p align="center">![](https://upload.wikimedia.org/wikipedia/commons/7/70/A_game_of_Settlers_of_Catan.jpg)</p align="center">
+  
+# pokud váš obrázek neleží na webu, ale počítači, stačí zaměnit URL adresu za cestu k vašemu souboru:
+# C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr1.png
+```
+
+Pokud má obrázek po zakliknutí odkazovat na jinou stránku, bude nezbytné výše uvedený příkaz upravit do následující podoby.
+
+```{r, eval=F, echo=T}
+<p align="center">[![](https://upload.wikimedia.org/wikipedia/commons/7/70/A_game_of_Settlers_of_Catan.jpg)](https://cs.wikipedia.org/wiki/Osadn%C3%ADci_z_Katanu)</p align="center">
+```
+
+Budete-li chtít v textu použít tučné písmo, kurzívu, odrážky atd., podívejte se prosím na následující <a href="https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf" target="_blank">dokument</a>, který je v této oblasti zcela vyčerpávající. V něm navíc naleznete též mnoho informací vztahujících se k práci s code chunks.
+
+Nás však v tuto chvíli více než jazyk HTML bude zajímat jazyk CSS. Jaký je mezi nimi vlastně rozdíl? Jazykem HTML definujeme v R Markdown konkrétní části podoby dokumentu a pomocí CSS ty obecné. Mnozí programátoři by s touto definicí jistě nesouhlasili, zde v R má však tato definice smysl. Uveďme si konkrétní příklad. Pokud budeme chtít do textu vložit obrázek, tučný text, odrážky atd., budeme volit jazyk HTML, jelikož náš HTML kód bude ovlivňovat pouze tu část dokumentu, ve které je uveden. Když však budeme chtít definovat obecnou podobu například nadpisů 1. úrovně (viz např. `# Úvod`), použijeme jazyk CSS, stejně jako v případě, budeme-li určovat barvu pozadí celého dokumentu nebo jeho rozměry. Velice často se však bude stávat, že budeme využívat jazyky CSS a HTML společně. Příkladem může být situace, kde pomocí CSS kódu stanovíme obecnou podobu např. nějakého nadpisu a pomocí HTML zvolíme jeho umístění v textu. Ukažme si vše na konkrétních příkladech.
+
+```{r, eval=F, echo=T}
+---
+title: "Osadníci z Katanu"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+    source_code: embed
+    theme: cerulean
+    Color: "black"
+---
+
+<style>
+
+div.main-container {
+   max-width: 1350px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+h1.title {
+  font-size: 70px;
+  text-align: center;
+  color: #337AB7;
+}
+
+h1 {
+  font-size: 30px;
+  color: #337AB7;
+}
+
+body { 
+  font-size: 17px;
+  text-align: justify;
+  color: #000000;
+  background-color: #ffffff;
+
+</style>
+```
+
+Parametry dokumentu definované jazykem CSS (viz výše) nalezneme v úvodu skriptu. Jednotlivé příkazy jsou uvedeny uvnitř příkazů `<style> </style>`. Projděme si je krok za krokem.
+
+První sadou příkazů je `div.main-container`. Ten definuje rozložení celého dokumentu, respektive šířku textu. Tento příkaz není ve skriptu nezbytný. Naším cílem však bylo rozšířit šířku textu více do stran, čehož jsme docílili parametrem `max-width: 1350px`. Vyzkoušejte si, co se stane, pokud celý tento příkaz `div.main-container` ze skriptu odstraníte. K tomu ještě obecně doplním, že jednotlivé parametry příkazu jsou vždy odděleny středníkem a vloženy do složené závorky.
+
+```{r, eval=F, echo=T}
+<style>
+
+div.main-container {
+   max-width: 1350px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+</style>
+```
+
+Dalším příkazem CSS je `h1.title`. S jeho pomocí upravíme nadpis dokumentu, tj. (`title: "Osadníci z Katanu"`). Nadpisy jsou obvykle definovány z hlediska nejméně tří parametrů (velikost, zarovnání, barva). Na příkaz `h1.title` navazuje samotný příkaz `h1`, jenž ovlivňuje nadpisy první úrovně (v textu začínají jednou mřížkou, např. `# Úvod`). Pokud bychom chtěli měnit formát nadpisů druhé úrovně, použili bychom analogický postup s příkazem `h2`.
+
+```{r, eval=F, echo=T}
+<style>
+
+h1.title {
+  font-size: 70px;
+  text-align: center;
+  color: #337AB7;
+}
+
+h1 {
+  font-size: 30px;
+  color: #337AB7;
+}
+
+</style>
+```
+
+Posledním příkazem CSS v našem skriptu je `body`, který se vztahuje k běžnému textu v dokumentu. V něm nalezneme parametr `background-color: #ffffff`, pomocí něhož můžeme změnit barvu pozadí celé webové stránky (v tomto případě bílá barva). Veškeré barvy jsou stejně jako v ggplot2 definovány pomocí hex formátu (či rgba).
+
+```{r, eval=F, echo=T}
+body { 
+  font-size: 17px;
+  text-align: justify;
+  color: #000000;
+  background-color: #ffffff;
+
+</style>
+```
+
+Čím složitější vaše dokumenty budou, tím více CSS a HTML kódů v nich nalezneme. Skutečnost, že v této chvíli upravujeme pouze některé malé výseky, znamená, že necháváme ostatní příkazy v R Markdownu nezměněny. Co je tím myšleno? R Markdown v každé ze svých šablon definuje veškerý vzhled dokumentu. CSS příkazy v úvodu vašeho skriptu proto plní funkci přepisování původních kódů CSS v šabloně. Kde je ale tato šablona ve skriptu vlastně definována? Pojďme se v závěru této lekce seznámit ještě s jednou části skriptu, které jsme se prozatím nikterak významně nevěnovali. Je jím úvodní část našeho dokumentu ohraničená třemi spojovníky.
+
+```{r, eval=F, echo=T}
+---
+title: Osadníci z Katanu
+output: 
+  html_document:
+    theme: "default"
+    toc: true
+    toc_float: true
+    toc_depth: 3 
+    number_sections: true
+---
+```
+
+V úvodu skriptu volíme název a formát výsledného výstupu, v našem případě se jedná o dokument HTML (tj. web). Příkaz `html_document:` není nutné do dokumentu ručně zapisovat, jelikož vzniká automaticky.  Dalším příkazem je `theme: "default"`, jenž definuje šablonu dokumentu R Markdown. Těchto šablon nalezneme v R hned několik. Já osobně preferuji ponechávat šablonu základní a případné změny provádět pomocí CSS kódů. Volba je však čistě na vás. Pro inspiraci se můžete podívat na následující přehled <a href="https://www.datadreaming.org/post/r-markdown-theme-gallery/" target="_blank">šablon</a>.
+
+Součástí výše uvedených příkazů jsou ještě příkazy toc (table of contents), které do dokumentu přidají levý postranní panel s obsahem. Příkaz `toc_depth: 3` určuje, do jaké úrovně nadpisů (zde do třetí, tj. ###) budou tyto v obsahu zobrazeny. Poslední příkaz `number_sections` značí, zdali budou jednotlivé úrovně nadpisů automaticky očíslovány. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr10.png)](#r-markdown)</p align="center">
+
+A to je z R Markdownu vše, respektive pouze pro tuto lekci. V té následující na nás totiž čeká mnohem vyšší úroveň tvorby webových stránek, a to ve formě šablony s názvem flexdashboard. Přesuňme se proto do Dubaje.
+
+<div id="demobox">
+  
+<h2>Box: Příkaz datatable</h2>
+  
+Jistě jste si ve skriptu našeho prvního webu všimli zobrazení datové tabulky Katan. K tomu jsme použili příkaz `datatable()`, se kterým se nyní naučíme pracovat. Projděme si ho ještě jednou.
+
+```{r, eval=F, echo=T}
+library("readxl")
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+library("DT") 
+
+Katan <- transform(Katan, 
+                   Partie = as.integer(Partie), 
+                   Věk = as.integer(Věk),
+                   Pohlaví = as.factor(Pohlaví),
+                   Vzdělání = as.factor(Vzdělání),
+                   Kolej = as.factor(Kolej),
+                   Práce = as.factor(Práce),
+                   Kouření = as.factor(Kouření),
+                   Klub = as.factor(Klub),
+                   Děti = as.integer(Děti))
+
+datatable(Katan[,c(-7)], rownames = FALSE, filter = 'top', options = list(
+  pageLength = 10, autoWidth = TRUE, scrollX = TRUE, scrollCollapse = TRUE, 
+  columnDefs = list(list(className = 'dt-center', targets = "_all"))))
+
+```
+
+Výše uvedený skript má tři části. První z nich se týká načtení databáze Katan a balíčků readxl a DT (datatable). Druhá část skriptu se zabývá převodem datových typů uvnitř databáze Katan na faktory a integery. Tyto příkazy sice nejsou nezbytně nutné pro fungování příkazu `datatable()`, nicméně nám zlepší přehlednost tabulky během filtrace (Př. nikdo nemůže vychovávat kupříkladu půl dítěte, proto nedává smysl umožnit uživateli webové stránky do filtru zadávat jiná než celá čísla, z tohoto důvodu měníme u této proměnné datový typ z numeric na integer).
+
+Poslední třetí část se týká samotného příkazu `datatable()`, kde na prvním místě definujeme zdroj dat, v našem případě všechny sloupce mimo sedmého z databáze Katan. Parametr `filter = 'top'` značí, že chceme uživateli umožnit vyhledávat podle daných hodnot proměných (např. muž, nekuřák, 2 děti). V databázi nechceme uvádět názvy řádků (čísla), proto volíme `rownames = FALSE`. Datová tabulka má najednou zobrazovat 10 řádků, což umožníme příkazem `pageLength = 10`.
+
+Příkaz `datatable()` může obsahovat nespočet parametrů. Pokud tak máte o tento balíček zájem, stačí se podívat do následující <a href="https://rstudio.github.io/DT/" target="_blank">dokumentace</a>, která vaše chutě bezpochyby uspokojí.
+
+</div>
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 5
+
+Ve skriptu „Osadníci z Katanu“ byl použit HTML příkaz `<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>`. Z jakého důvodu se tomu tak stalo?
+
+> Příklad 6
+
+Představte si, že chcete, aby pozadí vaší webové stránky mělo následující barvu. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr21.png)](#r-markdown)</p align="center">
+
+Jak nejrychleji zjistíte kód této barvy v hex formátu?
+
+> Příklad 7
+
+Jaký HTML kód použijete pro tučný text, kurzívu a webový odkaz?
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 67.022095, lat = 24.926294, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 67.022095, lat = 24.926294, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Kar%C3%A1%C4%8D%C3%AD" target="_blank" style="color:#014B7C">Karáčí</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Flexdashboard
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Dubaj: Flexdashboard {.pozadi}
+
+Pokud se vám webové stránky vytvářené pomocí R Markdownu v předchozí lekci zdály příliš jednoduché a neatraktivní, máme pro vás řešení. Je jím balíček **flexdashboard**. Vítejte v Dubaji.
+
+```{r, eval=F, echo=T}
+install.packages("flexdashboard")
+```
+
+Při vytváření dokumentu flexdashboard postupujeme obdobně jako u R Markdownu, tj. přejdeme na **File -> New File -> R Markdown**.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr1.png)](#flexdashboard)</p align="center">
+
+Poté ovšem změníme nastavení výstupu na flexdashboard.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr12.png)](#flexdashboard)</p align="center">
+
+Následně se nám ve skriptu objeví něco podobného jako v R Markdownu. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr13.png)](#flexdashboard)</p align="center">
+
+Rozdíl však nastane, pokud budeme chtít tento dokument spustit a otevřít v našem webovém prohlížeči. Struktura dokumentu totiž bude zcela jiná. Flexdashboard umí vytvářet vícestránkové weby a ty následně dělit na četné panely. Hledáte-li konkrétní příklad, tak jeden vidíte právě před sebou. Je jím celý tento web, který byl rovněž naprogramován pomocí aplikace flexdashboard.
+
+Vraťme se však zpět k našemu úvodnímu skriptu, který byl vygenerován automaticky a spusťme jej pomocí tlačítka **Knit -> Knit to flex_dashboard**.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr14.png)](#flexdashboard)</p align="center">
+
+Odlišnost vůči R Markdownu je vidět na první pohled, jelikož jedna stránka R Markdownu zde byla vyměněna za několik obdélníkových panelů. Ptáte se, pomocí jakých příkazů byly tyto panely vytvořeny? Pojďme se nyní společně znovu podívat na úvodní skript uvedený na následujícím obrázku.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr15.png)](#flexdashboard)</p align="center">
+
+V něm nalezneme dvě barevná rozlišení. Kódy v modrém dělí náš dokument na jednotlivé sloupce a kódy v červeném na konkrétní panely. Vzhledem k tomu, že máme v dokumentu sloupce dva, budeme potřebovat dva příkazy `Column{}`. V nich nalezneme parametr `data-width=650 (respektive data-width=350`), který označuje šířku sloupce. Celý dokument má základní délku 1000, takže pokud bychom chtěli vytvořit dva stejně široké sloupce, použijeme následující dva příkazy `Column{data-width=500}`.
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+### Panel A
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+### Panel B
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr22.png)](#flexdashboard)</p align="center">
+
+V rámci sloupců jsou zobrazeny jednotlivé panely. Ty vytvoříme pomocí příkazu tří mřížek `###`. Pokud tedy chceme vytvořit například dva obdélníkové panely o délce 1/3 obrazovky a výšce 2/3, respektive 1/3 obrazovky, které budou dále doplněny o obdélník o délce 2/3 obrazovky, použijeme následující skript.
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+      
+Column {data-width=333}
+-----------------------------------------------------------------------
+
+### Panel A {data-width=666}
+text
+
+
+### Panel B {data-width=333}
+text
+
+Column {data-width=667}
+-----------------------------------------------------------------------
+### Panel C
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr23.png)](#flexdashboard)</p align="center">
+
+V případě, že naše webová stránka bude delší a komplikovanější a již nám nebude stačit několik panelů na jedné obrazovce, můžeme vytvořit další list pomocí jedné mřížky `#`. Uveďme si konkrétní příklad. Naším úkolem bude vytvořit dvě stránky, kde ta první bude rozdělena na dva sloupce po dvou panelech a ta druhá bude rozdělena na tři sloupce po jednom panelu. Napišme si celý skript.
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+# První stránka
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Panel A
+text
+
+### Panel B
+text
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Panel C
+text
+
+### Panel D
+text
+
+# Druhá stránka
+
+Column {data-width=333}
+-----------------------------------------------------------------------
+
+### Panel E
+text
+
+Column {data-width=333}
+-----------------------------------------------------------------------
+
+### Panel F
+text
+
+Column {data-width=333}
+-----------------------------------------------------------------------
+
+### Panel G
+text
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr16.png)](#flexdashboard)</p align="center">
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr24.png)](#flexdashboard)</p align="center">
+
+Pokud by vám ani výše uvedené dělení na jednotlivé listy a panely nestačilo, lze do dokumentu ještě přidat postranní panel (tzv. sidebar), jenž se bude vyskytovat na všech stránkách. Ten označíme pomocí jedné mřížky s příkazem uvnitř složených závorek `# {.sidebar}`. Text pro postranní panel uvádíme vždy na začátek dokumentu.
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+# {.sidebar}
+text
+      
+# První stránka
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Panel A
+text
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Panel B
+text
+
+# Druhá stránka
+
+### Panel C
+text
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr17.png)](#flexdashboard)</p align="center">
+
+Lámete si v tuto chvíli hlavu, k čemu slouží příkaz skládající se ze dvou mřížek? Tento příkaz by šlo použít místo příkazu `Column{}` pro vytváření jednotlivých sloupců. My však sloupce definujeme tímto způsobem, proto nás dvě mřížky zajímat vůbec nemusí.
+
+Dále vás možná trápí otázka, proč zde vlastně tak často používáme příkazy `Column{}` a nikoliv třeba `Row{}`? O žádnou diskriminaci řádků se zde nejedná. Jednotlivé panely totiž lze definovat i v tomto rozložení. Vyzkoušejte si proto následující skript. Před tím nicméně nezapomeňte v záhlaví skriptu změnit příkaz `orientation: columns` na `orientation: rows`.
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+
+# {.sidebar}
+text
+      
+# První stránka
+
+Row {data-height=600}
+-----------------------------------------------------------------------
+
+### Panel A
+text
+
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
+### Panel B
+text
+
+# Druhá stránka
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
+### Panel C
+text
+
+
+Row {data-height=600}
+-----------------------------------------------------------------------
+
+### Panel D
+text
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr18.png)](#flexdashboard)</p align="center">
+
+V úvodu jednotlivých skriptů nalezneme kromě příkazu `orientation: columns` (popřípadě rows) též i příkaz `vertical_layout: fill`. Co se stane, když tento příkaz zaměníme za `vertical_layout: scroll`? Jednotlivé panely přestanou být vůči obrazovce fixní, čímž pádem vznikne na pravé straně posunovací lišta. To ale není úplně výhodné, a je lépe tak ponechat původní nastavení na `vertical_layout: fill`. V případě, že totiž text či příkazy v určitém panelu přesáhnou jeho délku, automaticky se vytvoří posunovací lišta v daném panelu, místo toho abychom museli pohybovat se všemi panely zároveň. Vyzkoušejte si však sami rozdíl v následujících dvou skriptech.
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+
+# {.sidebar}
+text
+      
+# První stránka
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
+### Panel A
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc tincidunt ante vitae massa. Fusce nibh. Morbi scelerisque luctus velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis viverra diam non justo. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Etiam dictum tincidunt diam. Praesent vitae arcu tempor neque lacinia pretium. Vivamus porttitor turpis ac leo. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Donec quis nibh at felis congue commodo.
+
+Maecenas sollicitudin. Pellentesque pretium lectus id turpis. Suspendisse nisl. Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam. Nulla non arcu lacinia neque faucibus fringilla. Curabitur sagittis hendrerit ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam erat volutpat. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Nullam at arcu a est sollicitudin euismod. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Mauris dictum facilisis augue. Nunc dapibus tortor vel mi dapibus sollicitudin. Proin pede metus, vulputate nec, fermentum fringilla, vehicula vitae, justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas libero. Donec iaculis gravida nulla. 
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc tincidunt ante vitae massa. Fusce nibh. Morbi scelerisque luctus velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis viverra diam non justo. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Etiam dictum tincidunt diam. Praesent vitae arcu tempor neque lacinia pretium. Vivamus porttitor turpis ac leo. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Donec quis nibh at felis congue commodo.
+
+Maecenas sollicitudin. Pellentesque pretium lectus id turpis. Suspendisse nisl. Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam. Nulla non arcu lacinia neque faucibus fringilla. Curabitur sagittis hendrerit ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam erat volutpat. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Nullam at arcu a est sollicitudin euismod. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Mauris dictum facilisis augue. Nunc dapibus tortor vel mi dapibus sollicitudin. Proin pede metus, vulputate nec, fermentum fringilla, vehicula vitae, justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas libero. Donec iaculis gravida nulla. 
+
+
+Row {data-height=600}
+-----------------------------------------------------------------------
+
+### Panel B
+text
+```
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: scroll
+---
+
+# {.sidebar}
+text
+      
+# První stránka
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
+### Panel A
+ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc tincidunt ante vitae massa. Fusce nibh. Morbi scelerisque luctus velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis viverra diam non justo. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Etiam dictum tincidunt diam. Praesent vitae arcu tempor neque lacinia pretium. Vivamus porttitor turpis ac leo. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Donec quis nibh at felis congue commodo.
+
+Maecenas sollicitudin. Pellentesque pretium lectus id turpis. Suspendisse nisl. Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam. Nulla non arcu lacinia neque faucibus fringilla. Curabitur sagittis hendrerit ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam erat volutpat. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Nullam at arcu a est sollicitudin euismod. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Mauris dictum facilisis augue. Nunc dapibus tortor vel mi dapibus sollicitudin. Proin pede metus, vulputate nec, fermentum fringilla, vehicula vitae, justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas libero. Donec iaculis gravida nulla. 
+
+
+Row {data-height=600}
+-----------------------------------------------------------------------
+
+### Panel B
+text
+```
+
+Prozatím jsme se zabývali pouze základním rozložením dokumentu ve flexdashboardu a nijak jsme se nesnažili takový dokument formátovat a jinak upravovat. Na to přichází čas právě nyní. Na úvod se podívejme na následující dvě webové stránky, které si zkusíme vytvořit. Stránky jsou po obsahové stránce naprosto totožné, liší se pouze svou grafickou úpravou. Mnozí z vás tak jistě v tuto chvíli tuší, že bude řeč o CSS kódech. Na závěr nicméně ještě doplním, že celé skripty níže uvedených webových stránek naleznete po jejich otevření v jejich pravém horním rohu po zakliknutí tlačítka `</>Source Code` nebo <a href="https://www.rlandio.cz/Osadnici.rar">zde</a>. Pokud si budete chtít tyto skripty spustit na svém počítači, budete též potřebovat i následující <a href="https://www.rlandio.cz/media.rar">soubor</a>, který obsahuje obrázky a tabulky, jež jsou pro spuštění skriptů nezbytné.
+
+<center>[![Caption for the picture.](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr19.png)](https://www.rlandio.cz/Osadnici_full.html)   [![Caption for the picture.](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr20.png)](https://www.rlandio.cz/Osadnici_light.html)</center> 
+
+Máte již oba weby otevřeny? Pokud ano, můžeme si nyní podrobně prozkoumat jejich kód. Začněme tím jednodušším (light). Zde se prakticky jedná o nijak neupravenou základní verzi šablony **cerulean**, jež je doplněna pouze o několik málo CSS příkazů. Podívejme se na ně. 
+
+```{r, eval=F, echo=T}
+---
+title: "Osadníci z Katanu"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+    source_code: embed
+    theme: cerulean
+    Color: "black"
+---
+
+<style>
+
+.navbar-brand {
+   font-size: 0px;
+}
+
+.chart-title {  
+   font-size: 20px;
+   text-align: center;
+}  
+
+body {
+   background-color:#F5F5F5;
+   color: #000000;
+   font-size: 13px;
+   text-align: justify;
+}
+
+#footer {
+   bottom: 10px;
+   left: 50px;
+   position: absolute;
+}
+
+</style> 
+```
+
+První příkaz `.navbar-brand` definuje vlastnosti nadpisu Osadníci z Katanu v modré liště na vrcholu webové stránky. Vzhledem k tomu, že tento název webu nechceme v této liště zobrazovat, uvádíme zde velikost písma 0px (`font-size: 0px`). Důvod je takový, že logo Osadníků máme zobrazeno v postranním panelu. Stejného výsledku bychom mohli dosáhnout též i parametrem `display: none`.
+
+Druhý a třetí CSS příkaz definují vlastnosti jednotlivých nadpisů panelů (`.chart-title`), respektive těla textu (`body`). Poslední příkaz `#footer` upravuje usazení patičky webu, která je zobrazena v postranním panelu. Tento příkaz však sám o sobě nestačí, jelikož musí být doplněn o HTML kód `<div id="footer">© 2020 **RLANDIO** S.R.O.</div>`. Ostatně podívejme se na celé znění skriptu pro sidebar.
+
+```{r, eval=F, echo=T}
+# {.sidebar}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\logo_vector.png)]()</p align="center">
+
+<p align="center">**Osadníci z Katanu**</p align="center">
+
+Osadníci z Katanu jsou legendou ve světě deskových her, která si získala přízeň milionů hráčů po celém světě. A čím tato hra jednoznačně předčí jiné deskové hry? Především variabilitou herního plánu. Každá partie je jedinečná. Spolu s protihráči osidlujete ostrov Katan.
+
+Vítězem se stává hráč, který vybuduje nejmocnější osídlení. Získávejte potřebné suroviny, obchodujte s nimi a díky nim dále budujte cesty, vesnice, města… Staňte se pánem Katanu!
+
+<div id="footer">© 2020 **RLANDIO** S.R.O.</div> 
+```
+
+Jeho úvod začínáme příkazem definujícím cestu k logu na našem počítači. Na tomto místě je nutné upozornit, že pokud chcete vložit do dokumentu logo s prázdným pozadím (tj. ne bílým), je nutné využít formát png a nikoliv jpg.
+
+Další řádek skriptu upravuje název nadpisu Osadníci z Katanu pomocí HTML příkazu (zarovnání na střed). Tučné písmo je dále vytvořeno za pomocí dvou hvězdiček zleva i zprava. Poté následuje obyčejný text, jenž bychom mohli upravit pomocí CSS kódu (viz níže, příkaz `.section.sidebar`). V závěru postranního panelu nalézáme naši patičku webu.
+
+Zbytek webové stránky Osadníci (light) již neskýtá žádná velká překvapení. Nalezneme v něm jak běžný text, tak i jeden graf v ggplot2 a dvě zobrazené databáze pomocí funkce `datatable()`, se kterou jsme se seznámili v minulé lekci. Jedinou neznámou jsou pro nás v tuto chvíli již jen mapy, jimž ale budeme věnovat celou následující lekci. Pojďme se proto přesunout k další části našeho povídání, která se bude zabývat plnou verzí webu o Osadnících, která nám již nabídne mnohem četnější zastoupení CSS kódů. 
+
+Přehled těchto kódů můžeme vidět v následujícím skriptu, ve kterém je v úvodu každého příkazu uveden stručný popis jeho funkce. Popisky jsou uvedeny vždy v takovémto ohraničení `/* text */`, které se používá pro poznámky v CSS stylu. Jedná se tedy o ekvivalent mřížky v jazyce R.  
+
+```{r, eval=F, echo=T}
+---
+title: "Osadníci z Katanu"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+    source_code: embed
+    theme: cerulean
+    Color: "black"
+---
+
+<style> 
+
+/* navigační lišta webu */
+.navbar {
+      background: linear-gradient(90deg, 
+                                  rgba(152,39,23,1) 0%, 
+                                  rgba(71,0,0,1) 50%, 
+                                  rgba(152,39,23,1) 100%);
+      border-color: transparent;
+      font-family: Helvetica;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: bold;
+}
+
+
+/* zvýraznění listu stránky na navigační liště */
+.navbar-nav > .active > a {
+      background: linear-gradient(90deg, 
+                                  rgba(246,228,24,1) 0%, 
+                                  rgba(244,186,18,1) 50%);
+      color: #ffffff !important;
+} 
+
+/* zvýraznění listu stránky při najetí myší */
+.navbar-nav li a:hover {
+      background-color:  #982717 !important;
+      background-image: none !important;
+      color: #ffffff !important;
+}
+    
+/* název webu na navigační liště */
+.navbar-brand {
+      font-size: 0px;
+}
+
+/* úprava grafiky jednotlivých názvů panelů */
+.chart-title {
+      background: linear-gradient(90deg, rgba(152,39,23,1) 0%, rgba(71,0,0,1) 75%);
+      border-color: transparent;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      color: #ffffff;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: -1px;
+      margin-right: -0.5px;
+      margin-left: -0.5px;
+} 
+
+/* úprava postranního panelu */
+.section.sidebar {
+      background-color: transparent;
+      border-color: transparent;
+      color: #ffffff;
+      font-size: 13px;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* Úprava těla textu. */
+/* Pozadí se načte pomocí odkazu z webu: */
+/* background-image: url('https://www.rlandio.cz/catan.jpg'). */
+/* Alternativně lze vložit soubor catan.jpg do složky, */
+/* ve které bude uveden váš dokument flexdashboard: */
+/* background-image: url('catan.jpg') */
+  
+body {
+      background-image: url('https://www.rlandio.cz/catan.jpg');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-attachment: fixed;
+      color: #000000;
+      font-size: 16px;
+      font-family: Arial;
+      text-align: justify;
+      line-height: 150%;
+}
+
+/* úprava názvů zvýrazněných měst na mapě: Karáčí, Katan */
+h6 {
+      background-color: #962616;
+      color: #ffffff;
+      font-size: 16px;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 300%;
+      margin-right: -20px;
+      margin-left: -20px;
+      margin-top: -14px;
+      margin-bottom: -14px;
+      border-radius: 4px;
+}
+
+/* úprava textu na mapě: Závod o nadvládu... */
+h7 {
+      font-size: 13px;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      text-align: justify;
+      line-height: 150%;
+}
+
+/* úprava stylu nadpisu, viz HTML příkaz > */
+blockquote {
+      background: rgb(28,25,73);
+      background: linear-gradient(90deg, rgba(152,39,23,1) 0%, rgba(71,0,0,1) 75%); 
+      border-left: 10px solid #F4BB18;
+      border-radius: 5px;
+      color: #ffffff;
+      font-size: 16px;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+}
+
+/* vytvořený styl pro úpravu panelu Flexdashboard */
+/* použití ve skriptu: "### Závěr {.background}" */
+/* podívejte se, co se stane při odstranění tohoto CSS kódu */
+/* název background byl zvolen námi, tj. není to předdefinovaný styl */
+.background {
+      border-top-right-radius: 42px;
+      border-top-left-radius: 42px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-color: transparent;
+}
+
+/* Další styl pro úpravu panelu Flexdashboard je */
+/* určený pro odstranění bílého pozadí u úvodní mapy. */
+/* Název nobackground byl zvolen námi, tj. není to předdefinovaný styl. */
+.nobackground {
+      background-color: transparent;
+      border-color: transparent;
+}
+
+/* zaoblené rohy u map */
+/* projeví se až ve webovém prohlížeči */  
+.leaflet-container{
+      border-radius: 5px;
+      border-color: transparent;
+}
+    
+/* úprava patičky webu, napojeno na HTML kód */
+/* viz: <div id="footer">© 2020 **RLANDIO** S.R.O.</div> */
+#footer {
+      bottom: 10px;
+      left: 50px;
+      position: absolute;
+}
+
+</style> 
+```
+
+Výčet výše uvedených CSS příkazů byl sice vcelku obsáhlý, nikoliv však vyčerpávající, jelikož takovýchto příkazů lze vymyslet nespočet. Naším cílem však nebylo ukázat si všechny, nýbrž pouze ty, které z 90 % pokryjí naši běžnou práci ve flexdashboardu. 
+
+Na úplný závěr vás ještě seznámím s následující <a href="https://rmarkdown.rstudio.com/flexdashboard/examples.html" target="_blank">webovou stránku</a>, na které naleznete mnoho užitečných informací a praktických příkladů na téma flexdashboard. Pro inspiraci se můžete podívat i na tento <a href="https://www.rlandio.cz/Arcadis.html" target="_blank">web</a>, který byl též vytvořen ve flexdashboardu. Vyznačuje se zejména tím, že k němu nepotřebujete velké množství CSS kódů navzdory tomu, že po vizuální stránce vypadá vcelku atraktivně (jednalo se o mou vůbec první práci ve flexdashboardu, proto trocha samochvály neuškodí).
+
+<div id="demobox">
+<h2>Box: Problémy s obrázky a grafy</h2>
+
+Pokud budete chtít vložit do panelu ve flexdashboardu graf pomocí eRkového skriptu, žádný problém to nebude. Ostatně na vzorových webových stránkách o Osadnících jsme takový graf mohli vidět. Představte si ale, že chceme tento graf doplnit textem, který mu bude předcházet. V takovém případě nastane problém, jelikož graf zůstane zafixován uprostřed panelu, a tudíž se nezobrazí až za textem, jak bychom očekávali a potřebovali. Jak tento problém vyřešit? Obrázek stačí nespouštět přímo ze skriptu v code chunk, ale nejdříve si ho uložit na svůj počítač jako soubor a následně jej vložit zpět do skriptu pomocí odkazu ze složky. Aby nicméně vše fungovalo tak jak má, musí být tento obrázek doplněn o hypertextový odkaz. Zní to složitě, ale zase až tak hrozné to není. Ostatně příklad html příkazu na obrázek s hypertextovým odkazem jsme si ukázali již v minulé lekci o R Markdownu.
+
+`<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr27.png)](#flexdashboard)</p align="center">`
+
+Takto například vypadá odkaz na jeden z obrázků v této lekci. Obrázek je zarovnán na střed a nazývá se obr27.png. Hypertextový odkaz následně obsahuje text `#flexdashboard`, protože tak se jmenuje tato stránka v mém flexdashboardu (`# Flexdashboard` byl v rámci URL adresy zkrácen na `#flexdashboard`) . Pokud by zůstaly závorky prázdné, tj. `()`, tak byste se při kliknutí na daný obrázek na takovém webu dostali na jeho úvodní stranu. Pokud však chcete zůstat na stejné stránce a při kliknutí na obrázek neprovádět žádnou akci, zapíšete do něj konečnou část URL cesty, která vede k té stránce, kde se obrázek nachází. URL adresu není nutné psát celou, tj. `https://www.rlandio.cz/8.kapitola.html#flexdashboard`. Stačí její konec.
+
+Na závěr ještě zmíním, že se tento problém netýká R Markdownu a flexdashboardu v případě, používáte-li `vertical_layout: scroll`.
+
+</div>
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+
+> Příklad 8
+
+CSS a HTML kódů není nikdy dostatek, proto si vyzkoušejme následující úkol. V předchozí lekci o R Markdownu jsme se v závěru setkali s jedním z modrých boxů, které jsme potkávali po celou dobu naší cesty kolem Světa. Jak ale takový modrý či jinak barevný box vlastně vytvořit? Vaším prvním úkolem se tak stane vytvořit vzorový dokument ve flexdashboardu, který bude zobrazovat modrý box. Jistě netřeba zmiňovat, že výsledný skript nenaleznete zde, ale někde jinde na internetu. Přeji hodně štěstí.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 55.296249, lat = 25.276987, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 55.296249, lat = 25.276987, 
+                   '<h6><a href="https://cs.wikipedia.org/wiki/Dubaj" target="_blank" style="color:#014B7C">Dubaj</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Mapy 
+
+Column {vertical_layout: scroll}
+-----------------------------------------------------------------------
+
+### Katan: Mapy {.pozadi}
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+m <- leaflet() %>% setView(lng = -74.005974, lat = 40.712776, zoom = 12) %>% 
+  addProviderTiles(providers$Esri.NatGeoWorldMap) %>%
+  addPopups(lng = -74.005974, lat = 40.712776, '<h7><p align="justify"><p>Mapy jsou nejen krásným, ale též i velice užitečným nástrojem, kterým můžeme obohatit naše webové stránky vytvořené v R Markdownu či flexdashboardu. Chcete s nimi také umět pracovat? Stačí kliknout na tuto <a href="https://www.rlandio.cz/cesta/Mapy_leaflet.html" target="_blank">stránku</a>.</p></h7>',
+    options = popupOptions(closeButton = TRUE))
+m
+```
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### {.mapa}
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.5.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 47.0447, lat = 38.2554, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 47.0447, lat = 38.2554, 
+                  '<h6><a href="https://en.wikipedia.org/wiki/Mordeh_Katan" target="_blank" style="color:#014B7C">Katan</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+Seznamme se s databází příjmové nerovnosti s názvem <a href="https://www.rlandio.cz/SWIID.csv" target="_blank">SWIID</a>, která sleduje tento fenomén v jednotlivých letech a státech. Příjmová nerovnost se měří pomocí tzv. <a href="https://cs.wikipedia.org/wiki/Giniho_koeficient" target="_blank">Giniho koeficientu</a>, jenž nabývá hodnot od nuly do jedné (kde 0 značí absolutní rovnost - všichni vlastní stejně a 1 absolutní nerovnost - jeden člověk vlastní vše). 
+
+Databáze SWIID (Standardized World Income Inequality Database) však bohužel není připravena k okamžité analýze v R. Vaším úkolem bude tento stav napravit. Problémů, které v této databázi naleznete, je hned několik. Podívejte se proto nejdříve na následující srovnání, ve kterém je zobrazen stav databáze SWIID před úpravou a po ní.
+
+```{r}
+library(tidyverse)
+SWIID <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/SWIID.csv")
+print("Databáze SWIID před úpravou")
+head(SWIID)
+```
+
+```{r}
+library(tidyverse)
+SWIID <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/SWIID.csv")
+
+SWIID <- gather(SWIID, Rok, Gini, 2:56) %>%
+separate(stát, c("stát","Kód_země"), sep="/")
+SWIID$Rok <- sub(".", "", SWIID$Rok)
+# Výše uvedený příkaz byl použit proto, aby odstranil
+# písmeno X na začátku každého letopočtu.
+# A kde se vlastně X na začátku všech roků vzala?
+# Po nahrání databáze SWIID stály letopočty v prvním řádku
+# databáze, proto se z nich staly názvy proměnných. Proměnná se 
+# však nemůže jmenovat pouze číslem, proto R ke všem letopočtům
+# automaticky přidal X.
+
+SWIID <- SWIID[complete.cases(SWIID), ]
+
+rownames(SWIID) <- 1:nrow(SWIID)
+# Na závěr ještě musíme upravit číslování řádků, které před tím 
+# převzalo hodnoty z původní databáze SWIID.
+
+print("Databáze SWIID po úpravě")
+head(SWIID)
+```
+
+```{r, eval=F, echo=T}
+print("Databáze SWIID před úpravou")
+head(SWIID)
+
+# úprava dat
+SWIID <- gather(SWIID, Rok, Gini, 2:56) %>%
+SWIID <- separate(Stát,c("Stát","Kód_země"), sep="/")
+SWIID$Rok <- sub(".", "", SWIID$Rok)
+# Výše uvedený příkaz byl použit proto, aby odstranil
+# písmeno X na začátku každého letopočtu.
+# A kde se vlastně X na začátku všech roků vzala?
+# Po nahrání databáze SWIID stály letopočty v prvním řádku
+# databáze, proto se z nich staly názvy proměnných. Proměnná se 
+# však nemůže jmenovat pouze číslem, proto R ke všem letopočtům
+# automaticky přidal X.
+SWIID <- SWIID[complete.cases(SWIID), ]
+
+rownames(SWIID) <- 1:nrow(SWIID)
+# Na závěr ještě musíme upravit číslování řádků, které před tím 
+# převzalo hodnoty z původní databáze SWIID.
+
+print("Databáze SWIID po úpravě")
+head(SWIID)
+```
+
+> Příklad 2
+
+Otestujte v databázi <a  href="https://www.rlandio.cz/LungCapData.xlsx" target="_blank">LungCapData</a> na hladině významnosti 5 % hypotézu, že nekuřáci mají větší kapacitu plic nežli kuřáci.
+
+```{r, eval=F, echo=T}
+t.test(LungCapData$LungCap ~ LungCapData$Smoke, alternative = "less", 
+       mu = 0, conf.level = 0.95)
+```
+```{r, eval=F, echo=T}
+library(readxl)
+LungCapData <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/LungCapData.xlsx")
+
+t.test(LungCapData$LungCap ~ LungCapData$Smoke, 
+       alternative = "less", mu = 0, conf.level = 0.95)
+```
+
+Na hladině významnosti 5 % zamítáme hypotézu o tom, že by kuřáci měli stejnou nebo vyšší kapacitu plic než nekuřáci.
+
+> Příklad 3
+
+Otestujte v databázi <a  href="https://www.rlandio.cz/Investice.xlsx" target="_blank">Investice</a> na hladině významnosti 5 % hypotézu, že investiční strategie č. 1 má výnosnost alespoň 137 $ za měsíc.
+
+```{r, eval=F, echo=T}
+t.test(Investice$Strategie1, alternative = "greater", mu = 137)
+```
+```{r}
+library(readxl)
+Investice <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Investice.xlsx")
+
+t.test(Investice$Strategie1, alternative = "greater", mu = 137)
+```
+
+Na hladině významnosti 5 % zamítáme hypotézu o tom, že by Strategie č. 1 měla výnosnost stejnou nebo menší než 137 $ za měsíc.
+
+> Příklad 4
+
+Otestujte v databázi <a  href="https://www.rlandio.cz/Investice.xlsx" target="_blank">Investice</a> na hladině významnosti 5 % hypotézu, zdali jsou investiční strategie č.1 a č.2 stejně výnosné.
+
+```{r, eval=F, echo=T}
+t.test(Investice$Strategie1, Investice$Strategie2, 
+  alternative = "two.sided", 
+  mu = 0, 
+  paired = TRUE)
+```
+```{r}
+library(readxl)
+Investice <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Investice.xlsx")
+
+t.test(Investice$Strategie1, Investice$Strategie2, 
+  alternative = "two.sided", 
+  mu = 0, 
+  paired = TRUE)
+```
+
+Na hladině významnosti 5 % zamítáme hypotézu o tom, že by Strategie č.1 a Strategie č.2 byly stejně výnosné.
+
+> Příklad 5
+
+Ve skriptu „Osadníci z Katanu“ byl použit HTML příkaz `<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>`. Z jakého důvodu se tomu tak stalo?
+
+Vzhledem k tomu, že používáme v dokumentu R Markdown příkaz TOC (table of content, levý navigační panel s obsahem), vzniká na konci dokumentu prázdná proluka. Tu lze odstranit právě výše uvedeným HTML kódem.
+
+
+> Příklad 6
+
+Představte si, že chcete, aby pozadí vaší webové stránky mělo následující barvu. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr21.png)](#r-markdown)</p align="center">
+
+Jak nejrychleji zjistíte kód této barvy v hex formátu?
+
+Nejjednodušší je použít tlačítko printscreen a grafický editor Paint.net, respektive jeho funkci kapátka. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr25.png)](https://www.getpaint.net/)</p align="center">
+
+
+> Příklad 7
+
+Jaký HTML kód použijete pro tučný text, kurzívu a webový odkaz?
+
+```{r, eval=F, echo=T}
+**tučný text**, 
+_kurzíva_, 
+<a href="https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf" target="_blank">odkaz</a>
+```
+
+> Příklad 8
+
+CSS a HTML kódů není nikdy dostatek, proto si vyzkoušejme následující úkol. V předchozí lekci o R Markdownu jsme se v závěru setkali s jedním z modrých boxů, které jsme potkávali po celou dobu naší cesty kolem Světa. Jak ale takový modrý či jinak barevný box vlastně vytvořit? Vaším prvním úkolem se tak stane vytvořit vzorový dokument ve flexdashboardu, který bude zobrazovat modrý box. Přeji hodně štěstí (při řešení tohoto úkolu jistě budete muset využít diskuzních fór na internetu).
+
+```{r, eval=F, echo=T}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+<style>
+      
+/* Úvodní CSS kód pro demobox */
+
+#demobox {
+  border-color: #E7E8EA;
+  background-color: #E7E8EA;
+  border-left: 3px solid #E7E8EA;
+  border-right: 3px solid #E7E8EA;
+  border-down: 20px solid #E7E8EA;
+  border-up: 10px solid #E7E8EA;
+  margin-left: -px;
+  border-radius: 5px;
+}
+
+/* CSS kód pro nadpis uvnitř demoboxu */
+  
+h2 {
+  background-color: #2B3990;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  margin-right: -5px;
+  margin-left: -4px;
+  border-radius: 5px;
+  line-height: 200%;
+}      
+</style>
+  
+# První stránka
+
+### Panel A
+
+<div id="demobox">
+  
+<h2>Box: Boxplot</h2>
+  
+Text červeného boxu uvnitř dokumentu.
+
+</div>
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\8.kapitola\obr26.png)]()</p align="center">
+
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+# Závěr
+
+### {.mapa .tabletmod}
+
+<font color="white">Ptáte se nyní kam dál? Tak to už je v této chvíli pouze na vás! Znalosti, které jste obdrželi na cestě kolem světa jsou již takové, že jste v této chvíli schopni pracovat na sebe komplikovanějších úkolech v R. Jistě, stále se budete muset neustále učit stejně jako absolvent vysoké školy po obdržení svého diplomu. Přesto mohu s klidným srdcem tvrdit, že žádný úkol v R pro vás v tomto okamžiku není natolik těžký, abyste ho nedokázala vyřešit. Důvod mého optimismu je prostý. Řeč jazyka R zvládáte parádně a pokud něčemu rozumět nebudete, dokážete se zeptat. Od toho tu přeci jazyk je. Přeji vám hodně štěstí na vaší cestě, která v Katanu nekončí, nýbrž právě začíná!</font>
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=23, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/8.5.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=10,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 14.289571, lat = 50.386464, 
+             '<h6><a href="https://www.rlandio.cz/vyzva/1.kapitola.html#instalace" target="_blank" style="color:#014B7C">Říp</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 47.0447, lat = 38.2554, 
+            '<h6><a href="https://www.rlandio.cz/cesta/8.kapitola.html#mapy" target="_blank" style="color:#014B7C">Katan</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```

@@ -1,0 +1,2097 @@
+---
+title: Grafy v ggplot2
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+    highlight: tango
+    colour: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 5**</p align="center">
+<p align="center">**GRAFY V GGPLOT2**</p align="center">
+
+Říká se, že dobrý graf může vydat za desítky stran dobrého a stovky stran nudného textu. Abychom se však mohli tímto moudrým příslovím řídit, musíme se nejdříve takové grafy naučit vytvářet. K tomu nám poslouží právě tato kapitola.
+
+V ní se naučíme tvořit nejenom liniové, bodové a sloupcové grafy, ale i histogramy a krabicové diagramy, které možná doposud ani neznáte. Nejdříve se však seznámíme s instalací balíčku rozšíření ggplot2.
+
+<div id="footer">© 2020 **RLANDIO**.CZ </div>
+
+
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 5**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**GRAFY V GGPLOT2**</p align="center"></font>
+
+<font color="white">
+Říká se, že dobrý graf může vydat za desítky stran dobrého a stovky stran nudného textu. Abychom se však mohli tímto moudrým příslovím řídit, musíme se nejdříve takové grafy naučit vytvářet. K tomu nám poslouží právě tato kapitola.
+
+V ní se naučíme tvořit nejenom liniové, bodové a sloupcové grafy, ale i histogramy a krabicové diagramy, které možná doposud ani neznáte. Nejdříve se však seznámíme s instalací balíčku rozšíření ggplot2.
+</font>
+
+### {.mapa}
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/5.kapitola/5.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 36.821945, lat = -1.292066, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 36.821945, lat = -1.292066, 
+            '<h6><a href="https://www.rlandio.cz/cesta/5.kapitola.html#r-packages" target="_blank" style="color:#014B7C">Nairobi</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 18.424055, lat = -33.92487, 
+            '<h6><a href="https://www.rlandio.cz/cesta/5.kapitola.html#histograms" target="_blank" style="color:#014B7C">Kapské Město</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# R Packages
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Nairobi: Balíčky v R {.pozadi}
+Jižní část Afriky nabízí jedny z nekrásnějších přírodních scenérií na celém světě. Kde jinde se proto začít učit vytvářet grafy než právě zde. R nabízí dvě základní možnosti, kterak vizualizaci dat provádět. Tou první je použít příkazy, které jsou v jazyce přímo implementovány (např. příkaz `plot()`) a tou druhou možností je použít balíček rozšíření s názvem **ggplot2**. Co je to však balíček a proč ho vlastně používat?
+
+Představte si R jako bednu s nářadím, kterou koupíte v hobby marketu. Umí toho mnoho, ne vždy ale všechny nástroje pracují tak, jak bychom potřebovali. Pomocí různých balíčků se nicméně R, stejně jako vaše bedna s nářadím, dá všemožně rozšiřovat a upravovat. Balíček po jeho stažení totiž obsahuje podle svého zaměření další sadu příkazů.
+
+Jedním z takových balíčků je právě ggplot2, který pokrývá drtivou většinu myslitelné i nemyslitelné grafické vizualizace. Není proto třeba učit se dopodrobna pracovat se základními grafy, které lze v R i bez použití balíčku vytvářet, když stejně dříve či později zcela přesedláte na ggplot2. ggplot2 je totiž po estetické stránce mnohem přitažlivější nežli základní vizualizace v R, což je asi hlavní důvod naučit se do hloubky pracovat pouze s ním. 
+
+Vzhledem k tomu, že nás v příští kapitole čeká ještě balíček **dplyr**, nebudeme nyní instalovat pouhý ggplot2, nýbrž **tidyverse**, který v sobě (nejen) tyto dva balíčky agreguje. Samotná instalace není nikterak složitá a lze k ní přistoupit dvěma různými způsoby. Nejrychlejším z nich je kliknout v RStudiu na Tools – > Install Packages a do políčka zapsat název balíčku, v našem případě tidyverse. Poté stačí již jen volbu potvrdit tlačítkem Install. Po instalaci je nutné nezapomenout, že balíček musíme do RStudia načíst s každou novou relací. K tomu využijeme následujícího příkazu `library()`.
+
+```{r, eval=F, echo=T}
+library(tidyverse)
+```
+
+Pokud nicméně toužíte instalaci provádět přes konzoli, žádný problém. Použijte příkazy uvedené níže.
+
+```{r, eval=F, echo=T}
+# instalace balíčku, uvozovky používat nemusíme
+install.packages("tidyverse") 
+
+# spuštění balíčku, uvozovky používat nemusíme
+library("tidyverse")
+
+# Chcete-li balíček z nějakého důvodu instalovat na vámi určené místo 
+# na PC, budete muset do příkazu uvést cestu do příslušné složky.
+
+# instalace balíčku
+install.packages("tidyverse", lib = "C:/Users/…/R/tidyverse") 
+
+# spuštění balíčku
+library("tidyverse", lib.loc = "C:/Users/…/R/tidyverse") 	
+```
+
+Balíček máme nainstalován a spuštěn, můžeme se proto pustit do samotné tvorby grafů.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Vaším prvním úkolem pro tuto kapitolu se stane nainstalovat si balíček **tidyverse** a alespoň zběžně se seznámit s jeho <a href="https://www.tidyverse.org/" target="_blank">nabídkou</a> a možnostmi.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=12.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/5.kapitola/5.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 36.821945, lat = -1.292066, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 36.821945, lat = -1.292066, 
+            '<h6><a href="https://en.wikipedia.org/wiki/Nairobi" target="_blank" style="color:#014B7C">Nairobi</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Line & scatter charts
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Dar es Salaam: Liniové a bodové grafy {.pozadi}
+
+Začátek našeho putování ggplotem zahájíme nejběžnějším grafickým zpracováním, které představují liniové a bodové grafy. Ty obsahují dvě osy x a y, kde svislá osa y značí závislou (vysvětlovanou) proměnnou a vodorovná osa x nezávislou (vysvětlující) proměnnou. Ukažme si vše na následujícím příkladu. V něm se pokusíme pomocí liniového a bodového grafu zobrazit vztah mezi počtem sehraných partií Osadníků z Katanu (vysvětlovaná proměnná) a věkem (vysvětlující proměnná). Před tím, jak už je naším dobrým zvykem, si však načtěme databázi Katan (a k ní tidyverse). Vítejte v Tanzanii.
+
+```{r, eval=F, echo=T}
+library(tidyverse)
+
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+	aes(x = Věk, y = Partie)) +
+	geom_smooth() +
+	geom_point()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf1.png)](#line-scatter-charts)</p align="center">
+
+Náš skript začínáme klíčovým slovem `ggplot()`, za nímž do kulaté závorky zapíšeme název databáze, ze které budou pocházet použité proměnné. Dále v závorce pokračujeme příkazem `aes()`, kam do další vložené závorky uvedeme proměnné pro osy x a y (pište samotný název proměnné bez dolarového znaku, jelikož ggplot2 již ví, s jakou databází pracujeme). Na závěr obě závorky uzavřeme. Poté pokračujeme znaménkem plus s příkazy, jež definují samotnou podobu grafu. V našem případě se jedná o příkazy `geom_smooth()` (značí regresní křivku, tj. trend posloupnosti bodů) a `geom_point()` (značí samotné body xy). Prosím pozor, znaménko plus nesmí ve skriptu nikdy stát na začátku řádku, jako například takto:
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # vadný zápis
+	aes(x = Věk, y = Partie))
+	+ geom_smooth()
+	+ geom_point()
+```
+
+Díky předchozímu skriptu jsme zjistili, že rozptyl počtu sehraných partií Osadníků z Katanu má významný klesající trend, a to zejména s postupným koncem vysokoškolských studií. Existuje tu však rozdíl mezi muži a ženami? Ukažme si další skript, který bude oproti tomu předchozímu doplněn o parametr `colour` v rámci příkazu `aes()`. Ten nám pomůže rozdělit data podle proměnné Pohlaví.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+  aes(x = Věk, y = Partie, colour = Pohlaví)) +
+  geom_smooth() +
+  geom_point()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf2.png)](#line-scatter-charts)</p align="center">
+
+Víte, jaký smysl má šedý obrys kolem jednotlivých linií grafu? Ten zobrazuje interval spolehlivosti, jenž je v základu nastaven na 95 %. Ženy ho mají širší než muži z toho důvodu, jelikož pro ně databáze Katan obsahuje výrazně méně údajů nežli pro muže (interval samozřejmě závisí též na rozptylu jednotlivých hodnot). V případě, že byste tento interval toužili změnit na 99 %, stačí použít parametr level (`geom_smooth(level = 0.99)`). Barvu obou intervalů lze změnit parametrem fill (`geom_smooth(fill = "#ffffff")`, ve kterém požíváme <a href="https://htmlcolorcodes.com/" target="_blank">hex formát barev</a>).
+
+Barvy, které byly ve výše uvedeném grafu použity jak pro regresní křivku, tak pro samotné body, ggplot2 dodal automaticky. Pokud se vám tudíž z nějakého důvodu nelíbí, můžete je jednoduše změnit přidáním nového příkazu `scale_colour_manual()`.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+       aes(x = Věk, y = Partie, colour = Pohlaví)) +
+  geom_smooth() +
+  geom_point() +
+  scale_colour_manual(values = c("#1F497D", "#C0504D"))
+# Srovnej parametr colour = Pohlaví s příkazem scale_colour_manual().
+# V rámci ggplot2 budeme používat pro členění grafu též i parametr fill
+# a s ním spojený scale_fill_manual(), a to zejména v příští lekci
+# věnované sloupcovým grafům. Ti odvážnější z vás nicméně mohou
+# zaexperimentovat už nyní a vyměnit colour za fill. Nezapomeňte
+# v takovém případě též na příkaz scale_fill_manual().
+
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+       aes(x = Věk, y = Partie, fill = Pohlaví)) +
+  geom_smooth() +
+  geom_point() +
+  scale_fill_manual(values = c("#1F497D", "#C0504D"))
+
+# A proč nezajít ještě dál a nepoužít fill a colour zároveň?
+
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+       aes(x = Věk, y = Partie, colour = Pohlaví, fill = Pohlaví)) +
+  geom_smooth() +
+  geom_point() +
+  scale_colour_manual(values = c("#1F497D", "#C0504D")) +
+  scale_fill_manual(values = c("#1F497D", "#C0504D"))
+
+# Rozdíl mezi fill a colour si lze vysvětlit následovně.
+# Oba tyto parametry používáme k tomu, abychom rozdělili
+# hodnoty z proměnných x a y podle určitého faktoru, v našem 
+# případě podle Pohlaví. Jediný rozdíl je v tom, že fill 
+# vyplňuje geom a colour definuje jeho obrys (což zahrnuje 
+# i geom_point).
+```
+
+```{r}
+print("Zde definujeme pouze parametr colour.")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf29.png)](#line-scatter-charts)</p align="center">
+
+```{r}
+print("Místo parametru colour volíme parametr fill.")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf38.png)](#line-scatter-charts)</p align="center">
+
+```{r}
+print("Použití parametrů fill a colour dohromady.")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf37.png)](#line-scatter-charts)</p align="center">
+
+Ne vždy je ale vhodné jednotlivé grafy spojovat do jednoho. Proto se nyní naučíme, jak jedním skriptem vytvoříme grafy rovnou dva, jeden pro muže a druhý pro něžné pohlaví. K tomu postačí jednoduchý, nicméně nesmírně užitečný příkaz `facet_grid()`, který si určitě zapamatujte. V něm prosím nezapomeňte na vlnovku před názvem proměnné, podle které budou jednotlivé grafy vytvořeny.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+  aes(x = Věk, y = Partie)) +
+  facet_grid(~Pohlaví) +
+  # tento příkaz by šlo zapsat i takto: facet_grid(cols = vars(Pohlaví))
+  geom_smooth() +
+  geom_point()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf3.png)](#line-scatter-charts)</p align="center">
+
+V případě, že vám nevyhovují pozice jednotlivých grafů seřazených do sloupců, můžete je seřadit i na řádky pod sebe.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+  aes(x = Věk, y = Partie)) +
+  facet_grid(rows = vars(Pohlaví)) +
+  # Srovnejte s příkazem facet_grid(cols = vars(Pohlaví)), 
+  # který řadí grafy vedle sebe.
+  geom_smooth() +
+  geom_point()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf9.png)](#line-scatter-charts)</p align="center">
+
+Rozdělení podle jedné proměnné nemusí být vždy dostačující, jelikož mnohdy budeme vyžadovat hlubší členění. Ukažme si proto segmentaci grafů podle dvou proměnných na celkově osm grafů (rozdělení provedeme podle pohlaví a vzdělání).
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+  aes(x = Věk, y = Partie)) +
+  facet_grid(vars(Pohlaví), vars(Vzdělání)) +
+  geom_smooth(se = FALSE) +
+  # V grafech potřebujeme vymazat intervaly spolehlivosti, 
+  # jelikož ty by neúměrně zvětšovaly stupnice na ose y,
+  # proto volíme parametr se = FALSE.
+  geom_point()
+
+# Všimněte si, že úrovně faktoru Vzdělání nejsou seřazeny v logickém pořadí.
+# Pro změnu pořadí hodnot použijte následující příkaz:
+Katan$Vzdělání <- factor(Katan$Vzdělání, levels = c("ZŠ", "SŠ", "Bc - VŠ", "VŠ"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf10.png)](#line-scatter-charts)</p align="center">
+
+Výše uvedený graf má za cíl nejenom demonstrovat možnosti příkazu `facet_grid()`, ale i jeho omezení. V případě, že totiž nedisponujeme dostatečným počtem hodnot, může se stát, že interpretace jednotlivých regresních křivek `geom_smooth()` může být vysoce zavádějící až nesmyslná. Proto si vždy dejte veliký pozor na to, z kolika hodnot se jednotlivý graf skládá a zdali jeho výsledek není přespříliš ovlivněn existencí několika málo samostatných a odlehlých pozorování.
+
+Navzdory bohaté výpovědní hodnotě našich předcházejících grafů, jsou tyto stále poněkud holé a vizuálně neatraktivní. Vyšperkujme je. Zkusme třeba pro začátek změnit barvu a tloušťku křivek a puntíků. K tomu přidejme popisky os, název grafu, nové měřítko osy x a nový barevný podklad. Upravovat budeme původní graf ze začátku této lekce, tj. bez rozdělení na muže a ženy.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # bodový a liniový graf mezi proměnnými Věk a Partie
+       aes(x = Věk, y = Partie)) + 
+  # nejdříve určíme proměnné na osách
+  
+  geom_smooth(colour = "#1F497D", size = 1.5) + 
+  # barvy udáváme v hexovém formátu s uvozovkami
+  # do příkazu můžete psát colour nebo color
+  # tloušťka čáry je uvedena v parametru size
+  
+  geom_point(colour = "#C0504D", size = 2) +
+  # Barvy jednotlivých bodů společně s velikostí 
+  # změníme obdobně jako u geom_smooth().
+
+  ggtitle(" Vztah mezi věkem a počtem partií") +
+  # pomocí příkazu ggtitle() doplníme název grafu
+  
+  labs(x = "Věk", y = "Partie") +
+  # pomocí příkazu labs() doplníme názvy os
+  # názvy se samozřejmě nemusí shodovat s názvy proměnných
+  
+  scale_x_continuous(
+    breaks = seq(from = min(Katan$Věk), to = max(Katan$Věk), by = 3)) +
+  # scale_x_continuous() s pomocí parametru breaks udává hodnoty na 
+  # x-ové ose, obdobně funguje příkaz scale_y_continuous().
+  # Příkazy min(Katan$Věk) a max(Katan$Věk) nejsou příkazy z balíčku 
+  # ggplot2, proto je nutné nezapomenout na dolarový znak.
+  
+  theme_economist() +
+  # Příkaz theme_economist() definuje základní grafický podklad grafu, 
+  # výběr je široký (viz následující text a balíček ggthemes). 
+  
+  theme(
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0.5), 
+    # Pomocí příkazu theme() upravujeme grafickou podobu grafu, zde například 
+    # měníme vzhled nadpisu.
+    
+    # Pozor!: všechny následující příkazy tohoto skriptu jsou součástí
+    # příkazu theme(), proto nezapomeňte na konec závorky na konci skriptu!
+    
+    # hjust = 0.5 znamená zarovnání textu na střed, 0 doleva a 1 doprava
+    
+    axis.title.x = element_text(
+      colour = "black", size = 12, face = "bold",
+      margin = margin(t = 10, r = 0, b = 0, l = 0)),
+    # axis.title.x upraví podobu x-ové osy, resp. popisku "Věk"
+    # parametr margin určí pozici popisku v grafu
+    
+    axis.title.y = element_text(
+      colour = "black", size = 12, face = "bold",
+      margin = margin(t = 0, r = 10, b = 0, l = 0)),
+    # axis.title.y upraví podobu y-ové osy, resp. popisku "Partie"
+    # parametr margin určí pozici popisku v grafu
+    
+    axis.text.x = element_text(colour = "black", size = 12),
+    # axis.text.x upraví podobu x-ové osy, resp. samotných hodnot na osách
+    
+    axis.text.y = element_text(colour = "black", size = 12),
+    # axis.text.y upraví podobu y-ové osy, resp. samotných hodnot na osách
+    
+    plot.background = element_rect(fill = "#EAEAEA"))
+    # Na závěr změníme pozadí grafu pomocí parametru plot.background,
+    # pokud se nám nelíbí defaultní barva pozadí z theme_economist().
+
+    # Pozor!: nezapomeňte na konec závorky, který patří
+    # k příkazu theme().
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf4.png)](#line-scatter-charts)</p align="center">
+
+Nefunguje vám výše uvedený skript? Nainstalujte si balíček **ggthemes**. Ten nám totiž zpřístupní další grafické podklady pro naše grafy, jako kupříkladu `theme_economist()`, který byl použit v předchozím kódu a jež není základní součástí ggplot2. Vyzkoušejte si ale i další pozadí. Nejjednodušeji vám to půjde tak, že do skriptu (či konzole) napíšete začátek příkazu theme_ a v RStudiu se vám objeví roletka s nápovědou, ve které uvidíte veškeré dostupné podklady pro grafy v ggplot2.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\obr1.png)](#line-scatter-charts)</p align="center">
+
+Nyní si představte, že chcete vytvořit liniový graf, kde na ose x máme zobrazenou časovou řadu a na ose y sledovanou veličinu, například počet nezaměstnaných v USA. Budeme moci opět použít příkaz `geom_smooth()`? Nebo budeme muset využít odlišný příkaz? Ukažme si následující skript. V něm však nebudeme pracovat s databází Katan, jelikož v ní žádnou časovou řadu nenalezneme. Seznamte se proto s databází **economics**. Tu není nutné nikde stahovat, jelikož je přímo implementována v balíčku ggplot2. Stačí tedy napsat příkaz `View(economics)` a můžete se podívat na její proměnné. Nás budou prozatím zajímat proměnné date (datum) a unemploy (počet nezaměstnaných v USA v tisících).
+
+```{r, eval=F, echo=T}
+ggplot(economics, # liniový graf mezi proměnnými date a uempmed
+       aes(x = date, y = unemploy)) + 
+  geom_smooth(colour = "#1F497D", size = 1) +
+  geom_line(colour = "#C0504D", size = 1) +
+  # Zde se seznamujeme s novým příkazem geom_line(),
+  # již známe geom_smooth() a geom_point().
+  
+  ggtitle("Vývoj počtu nezaměstnaných v USA ") +
+  labs(x = "", y = "měřeno v tisících") +
+  theme_economist() +
+  theme(plot.title = element_text(size = 20, hjust = 0.5,
+                                  margin = margin(t = 0, r = 0, b = 20, l = 0)),  
+        axis.title.y = element_text(colour = "black", size = 12, face = "bold",
+                                  margin = margin(t = 0, r = 10, b = 0, l = 0)))
+  # příkaz theme_něco() musí vždy předcházet příkazu theme(...)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf5.png)](#line-scatter-charts)</p align="center">
+
+Ve výše uvedeném skriptu jsme použili kromě příkazu `geom_smooth()` též i příkaz `geom_line()`. Jaký je mezi nimi rozdíl? Podívejme se ještě jednou na předchozí graf. Příkaz `geom_smooth()` nám v grafu zobrazuje regresní křivku a příkaz `geom_line()` nám spojuje jednotlivé body na xy souřadnici mezi proměnnými date a unemploy. 
+
+Co když ale budeme chtít v grafu obsáhnout na ose y více proměnných se stejnou osou x, kde x bude třeba opět časová řada? Ukažme si další skript s dvěma proměnnými z databáze economics. Tou první bude proměnná <a href="https://fred.stlouisfed.org/series/PSAVERT">psavert</a>, která obsahuje data o podílu úspor amerických domácností na jejich disponibilním příjmu a tou druhou bude proměnná <a href="https://fred.stlouisfed.org/series/UEMPMED">uempmed</a>, která sleduje medián délky trvání nezaměstnanosti v týdnech. 
+
+```{r, eval=F, echo=T}
+# liniový graf pro proměnné psavert a uempmed
+ggplot(economics, 
+  aes(x = date)) + 
+  geom_line(aes(y = uempmed), colour = "blue") + 
+  # základní barvy lze zapsat nejen pomocí hexu, ale i slovně
+  
+  geom_line(aes(y = psavert), colour = "grey") +
+  labs(x = "", y = "měřeno v procentech/v týdnech")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf6.png)](#line-scatter-charts)</p align="center">
+
+V R lze téměř vše zapsat mnoha způsoby, nicméně stále se stejným výsledkem. V následujícím grafu tak osu x určíme nikoliv v rámci příkazu `ggplot(aes())`, ale přímo `geom_line()`. V tomto grafu si navíc předvedeme, kterak lze změnit pozici legendy pomocí parametru `legend.position = "bottom"`.
+
+```{r, eval=F, echo=T}
+# liniový graf pro proměnné psavert a uempmed s legendou
+ggplot(economics) +
+  geom_line(
+    aes(y = psavert, x = date,
+        colour = "Míra úspor v %"), size = 1) +
+  geom_line(
+    aes(y = uempmed, x = date, 
+        colour = "Medián trvání nezaměstnanosti v týdnech"), size = 1) +
+  scale_colour_manual(
+        values = c("Míra úspor v %" = "#1F497D", 
+               "Medián trvání nezaměstnanosti v týdnech" = "#C0504D")) +
+  # barvu jednotlivých křivek změníme pomocí příkazu scale_colour_manual()
+  
+  labs(x = "", y = "", colour = "") +
+  # Text uvedený v parametru colour = "" by byl uveden před legendou.
+  # Tímto příkazem zajistíme, aby se žádný nezobrazoval. V opačném
+  # případě by se v grafu objevil popisek colour.
+  
+  ggtitle("Míra úspor a medián trvání nezaměstnanosti v USA") +
+  theme_economist() +
+  theme(plot.title = element_text(size = 20, hjust = 0.5,
+                                  margin = margin(t = 0, r = 0, b = 20, l = 0)), 
+        legend.position = "bottom")
+  # legendu přidáme pomocí parametru legend.position
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf7.png)](#line-scatter-charts)</p align="center">
+
+Na závěr si ještě ukážeme, jak lze na x-ové ose pozměnit časové rozmezí a na y-ové ose zobrazit procenta. Oproti minulému skriptu proto vyřadíme proměnnou uempmed, jelikož ta byla vedena v týdnech.
+
+```{r, eval=F, echo=T}
+# liniový graf pro proměnnou psavert s procenty a bez legendy
+ggplot(economics) +
+  geom_line(aes(y = psavert/100, x = date, colour = "Úspory"), 
+            size = 1, show.legend = FALSE) +
+  # barvu křivek změníme pomocí příkazu scale_colour_manual()
+  
+  scale_colour_manual(values = c("#1F497D")) +
+  labs(colour = "") +
+  labs(x = "", y = "") +
+  scale_y_continuous(breaks = seq(from = 0.02, to = 0.16, by = 0.02), 
+                     labels = scales::percent_format(accuracy = 1)) +
+  # pomocí parametru breaks zajistíme, že stupnice se bude měnit po 2 % 
+  # pomocí parametru labels přidáme k hodnotám znak procenta
+  
+  scale_x_date(limits = as.Date(c("1967-01-01", "2014-01-01")), 
+               date_breaks = "5 years", date_labels = "%Y") +
+  ggtitle("Podíl úspor na disponibilním příjmu v USA") +
+  theme_economist() +
+  theme(plot.title = element_text(size = 20, hjust = 0.5,
+                                  margin = margin(t = 0, r = 0, b = 0, l = 0)), 
+        axis.title.y = element_text(colour = "black", size = 12, 
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0)))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf8.png)](#line-scatter-charts)</p align="center">
+
+Oproti předminulému grafu jsme do skriptu přidali příkaz `scale_y_continuous(labels = scales::percent_format(accuracy = 1)`), který udává hodnoty na y-ové ose, v našem případě procenta zaokrouhlená na celá čísla (pokud bychom chtěli čísla zaokrouhlit na jedno desetinné místo, uvedli bychom `accuracy = 0.1` atd.). Tento samotný příkaz nicméně nestačí, jelikož hodnoty v proměnné psavert nejsou uvedeny ve zlomcích. Z tohoto důvodu musíme ještě vydělit tuto proměnnou stem (`geom_line(aes(y = psavert/100, x = date, colour = "Úspory")`). Samotná škála na ose y byla vytvořena příkazem `scale_y_continuous()` za pomoci parametru `breaks = seq(from = 0, to = 0.2, by = 0.02)`.
+
+Úprava hodnot na ose x byla o maličko složitější, jelikož na ní pracujeme s datem. Podívejme se proto nejdříve na datový typ proměnné date.
+
+```{r, eval=F, echo=T}
+class(economics$date)
+```
+```{r echo=FALSE}
+library(ggplot2)
+economics <- economics
+class(economics$date)
+```
+
+Datový typ se nazývá Date, což jistě není příliš překvapující zpráva, navzdory tomu, že jsme se s tímto datovým typem ještě doposud nesetkali. V případě, že bude naším cílem tento datový typ na některé z os grafu zobrazit, nebudeme používat příkaz `scale_x_continuous()` (`respektive scale_y_continuous()`), nýbrž `scale_x_date()` (`respektive scale_y_date()`). V jeho útrobách budeme nejčastěji používat tři parametry. Prvním z nich je limits, který označuje začátek a konec škály na ose (`limits = as.Date(c("1967-01-01", "2014-01-01"))`). Druhým z nich je `date_breaks`, jenž určuje délku rozmezí jednotlivých hodnot (`date_breaks = "5 years"`) a posledním z nich je `date_labels`, který definuje formát času, který bude na ose zobrazen (`date_labels = "%Y"`). V následující tabulce jsou uvedeny jednotlivé formáty dat (času), jichž může parametr `date_labels` nabývat.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\obr3.png)](#line-scatter-charts)</p align="center">
+
+S balíčkem ggplot2 si lze všemožně hrát. My jsme si v rámci liniových a bodových grafů prozatím ukázali pouhý základ. Možnosti jsou však mnohonásobně širší. Proto se nebojte experimentovat a používat nápovědu na internetu. S liniovými grafy nicméně na naší cestě do Katanu ještě nekončíme, jelikož se jím budeme znovu podrobně věnovat v přespříští sedmé kapitole.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 2
+
+Vytvořte bodový a liniový graf (regresní křivku) na základě databáze <a href=" https://www.rlandio.cz/LungCapData.xlsx " target="_blank">LungCapData</a>, který bude zobrazovat vztah mezi věkem a výškou. Styl grafu by měl být založen na podkladu `theme_economist()`.
+
+Graf bude dále splňovat následující podmínky:
+
+<ul>
+<li>barva linie: #1F497D;</li>
+<li>tloušťka linie: 1.5;</li>
+<br/>
+<li>barva bodů: #C0504D;</li>
+<li>tloušťka bodů: 2;</li>
+<br/>
+<li>nadpis: Vztah mezi věkem a výškou;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>osy x a y: Věk, Výška;</li>
+<li>barva názvů os: černá;</li>
+<li>velikost písma názvů os: 12;</li>
+<li>pozice názvů os: uprostřed;</li>
+<li>pozice názvu osy y: 10 bodů vpravo od osy;</li>
+<li>pozice názvu osy x: 10 bodů nahoře od osy.</li>
+</ul>
+
+Škála na ose x bude tvořena minimem a maximem proměnné Age mezi nimiž budou hodnoty rozestoupeny po jednom roce. V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+> Příklad 3 
+
+Vytvořte liniový graf zobrazující vývoj ceny akcií společnosti Amazon. Nejdříve však načtěte do RStudia databázi stock_amzn pomocí tohoto příkazu.
+
+```{r, eval=F, echo=T}
+stock_amzn <- 
+  read.csv("http://sharpsightlabs.com/wp-content/uploads/2017/09/AMZN_stock.csv")
+```
+
+Následně v této databázi využijte proměnných Date a Close (uzavírací cena za akcii), kterou zobrazíte na ose y. Graf bude splňovat následující podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva pozadí: #444B5A;</li>
+<li>barva linie: #AEFFFF;</li>
+<br/>
+<li>nadpis: Uzavírací ceny akcií Amazonu;</li>
+<li>barva nadpisu: bílá/tučně;</li>
+<li>písmo nadpisu: Gill Sans;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>barva vodorovných os v mřížce grafu vedoucích od hodnot na ose y: #586174;</li>
+<li>barva vodorovných a svislých os v grafu mimo výše uvedené osy: #4d5566;</li>
+<li>názvy os x a y: Datum, Cena;</li>
+<li>barva popisků a hodnot na osách: bílá;</li>
+<li>pozice názvů os: uprostřed;</li>
+</ul>
+
+Na závěr zvýrazněte pozadí pod linií osy y pomocí příkazu `geom_area()`:
+
+```{r, eval=F, echo=T}
+geom_area(fill = 'cyan', alpha = .1)
+```
+
+V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/5.kapitola/5.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 39.28841, lat = -6.81492, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 39.28841, lat = -6.81492, 
+            '<h6><a href="https://en.wikipedia.org/wiki/Dar_es_Salaam" target="_blank" style="color:#014B7C">Dar es Salaam</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))  %>%
+  addPopups(lng = 138.600739, lat = -34.928497, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Adelaide" target="_blank" style="color:#014B7C">Adelaide</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))  %>%
+    addPopups(lng = 144.963058, lat = -37.813629, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Melbourne" target="_blank" style="color:#014B7C">Melbourne</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+  
+```
+
+# Bar charts
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Harare: Sloupcové grafy {.pozadi}
+Sloupcové grafy (chcete-li diagramy) představují další významnou kapitolu v rámci ggplot2, se kterou se seznámíme v hlavním městě bývalé Rhodesie (dnešní Zimbabwe). Ta ještě za vlády bílé menšiny (před prohrou v občanské válce vůči komunistickým povstalcům) mohla svojí životní úrovní směle konkurovat některým zemím Evropy, zatímco dnes je synonymem pro dysfunkční stát (např. v roce 2015 činil kurz Zimbabwského dolaru 35 000 000 000 000 000 za 1 Americký dolar). 
+
+Sloupcové diagramy se hodí zejména pro práci s faktorovými proměnnými, jak to ukazuje následující příklad, ve kterém si zobrazíme zastoupení mužů a žen v databázi Katan. Z něj poznáme, jak již víme ze třetí kapitoly, že Osadníci z Katanu přitahují převelice mnoho osadníků, ale již poněkud méně osadnic.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # sloupcový graf četnosti proměnné Pohlaví
+       aes(Pohlaví)) + 
+  geom_bar()
+
+# v nezkrácené verzi
+ggplot(Katan,
+       aes(x = Pohlaví)) + 
+  geom_bar()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf23.png)](#bar-charts)</p align="center">
+
+Podíváme-li se na náš skript, jistě ho není nutné příliš detailně popisovat, jelikož jeho struktura je obdobná jako u liniových či bodových grafů. Pracujeme zde pouze s jedinou proměnnou Pohlaví a místo `geom_line()` (nebo `geom_smooth()`, respektive `geom_point()`) z minulé lekce uvedeme `geom_bar()`, což je příkaz pro sloupcový diagram. 
+
+Graf je nicméně ve své základní podobě poněkud holý, proto si ho vyzdobíme podobně jako v Tanzanii. K tomu se též na y-ové ose zbavíme hodnot četností mužů a žen a nahradíme je procenty. 
+
+```{r, eval=F, echo=T}
+ggplot(Katan, 
+  aes(x = Pohlaví)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..)), fill = "#145C82") + 
+  # příkaz převede absolutní hodnoty na procenta (uvedené od nuly do jedné)
+  # fill změní barvu sloupců
+  
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  # Tento příkaz vynásobí podíly stem a přidá k nim symboly procenta.
+  # Parametr accuracy = 1 zaokrouhlí údaje na celá čísla, pokud bychom chtěli 
+  # např. dvě desetinná místa, napsali bychom accuracy = 0.01.
+  
+  scale_x_discrete(labels = (Pohlaví <- c("osadníci", "osadnice"))) +
+  # Chceme-li změnit názvy hodnot z proměnné, použijeme příkaz 
+  # scale_x_discrete().
+  
+  ggtitle("Podíly mužů a žen v databázi Katan") +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0.5), 
+    plot.background = element_rect(fill = "#E5E5E5"),
+    axis.text.y = element_text(colour = "black", size = 12),
+    axis.text.x = element_text(colour = "black", size = 12))
+  # Parametr axis.text.y (respektive axis.text.x) modifikuje popisky os. Prosím, 
+  # neplést si s parametrem axis.title.y (respektive axis.title.x), jelikož ten 
+  # využíváme pro modifikace názvů os a ty zde nemáme (viz labs(x = "", y = "")).
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf24.png)](#bar-charts)</p align="center">
+
+Výše uvedený skript je možné použít pouze tehdy, pokud hodnoty ve sloupcích nejsou explicitně dány, nýbrž jsou skriptem teprve vypočítány (R samo si spočítalo počty mužů a žen v proměnné Pohlaví). Podívejme se proto na následující tabulku s názvem Tabulka, která obsahuje pouze sloupce Pohlaví a Zastoupení, v níž jsou uvedeny konkrétní procentuální podíly mužů a žen.
+
+```{r, eval=F, echo=T}
+Četnost <- table(Katan$Pohlaví)/length(Katan$Pohlaví)
+Tabulka <- as.data.frame(Četnost)
+names(Tabulka) <- c("Pohlaví", "Zastoupení")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Četnost <- table(Katan$Pohlaví)/length(Katan$Pohlaví)
+Tabulka <- as.data.frame(Četnost)
+names(Tabulka) <- c("Pohlaví", "Zastoupení")
+Tabulka
+```
+
+<div id="demobox">
+
+<h2>Box: as.data.frame.matrix vs. as.data.frame</h2>
+
+Zastavme se na chvíli u výše uvedeného skriptu pro získání podílů mužů a žen. Ty nejzvídavější z vás totiž bezpochyby napadne poněkud hloubavá otázka. Proč ve skriptu nepoužíváme příkaz `as.data.frame.matrix()`, tak jako ve třetí kapitole? 
+
+```{r, eval=F, echo=T}
+Četnost <- table(Katan$Pohlaví)/length(Katan$Pohlaví)
+Tabulka <- as.data.frame(Četnost)
+names(Tabulka) <- c("Pohlaví", "Zastoupení")
+```
+
+Pravidlo je následující. Pokud v příkazu `table()` pracujeme pouze s jednou proměnnou (např. `table(Pohlaví)`) a chceme z jeho výstupu vytvořit data frame, použijeme prostý příkaz `as.data.frame()`.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\obr2.png)](#bar-charts)</p align="center">
+
+Pokud však pracujeme s dvěma proměnnými (např. `table(Pohlaví, Kouření)`), použijeme příkaz `as.data.frame.matrix()`, chceme-li uchovat výstup v podobě matice. Výsledek z tohoto příkazu totiž není typickým data framem, protože ten by u příkazu `table(Pohlaví, Kouření)` vypadal takto:
+
+```{r, eval=F, echo=T}
+#  standardní data frame
+Tabulka <- as.data.frame(table(Pohlaví, Kouření))
+# versus data frame matrix
+Tabulka <- as.data.frame.matrix(table(Pohlaví, Kouření))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Tabulka <- as.data.frame(table(Katan$Pohlaví, Katan$Kouření))
+Tabulka
+# versus
+Tabulka <- as.data.frame.matrix(table(Katan$Pohlaví, Katan$Kouření))
+Tabulka
+```
+
+V závěru chci nicméně zdůraznit, že chcete-li uchovat výsledky z příkazu `table()`, ve kterém uvádíte dvě proměnné, neznamená to, že musíte vždy použít `as.data.frame.matrix()`. Vše totiž záleží pouze na vás a vaší aktuální potřebě. Jediným cílem tohoto boxu bylo pouze ukázat, kam jednotlivé příkazy povedou a jaký bude jejich konečný výstup. V praxi se vám totiž budou hodit oba příkazy.
+
+</div>
+
+Z tabulky Tabulka nyní budeme chtít vytvořit totožný graf, jako byl ten předchozí. Pro dosažení námi požadovaného výsledku bude muset náš skript nově obsahovat v rámci příkazu `geom_bar()` parametr `stat = "identity"`. Implicitně totiž příkaz `geom_bar()` má nastaven parametr `stat = "bin"`.
+
+```{r, eval=F, echo=T}
+Četnost <- table(Katan$Pohlaví)/length(Katan$Pohlaví)
+Tabulka <- as.data.frame(Četnost)
+names(Tabulka) <- c("Pohlaví", "Zastoupení")
+
+ggplot(Tabulka, # skript zobrazí procentuální zastoupení mužů a žen 
+  aes(x = Pohlaví, y = Zastoupení)) +
+  geom_bar(stat = "identity", fill = "#145C82") +
+  ggtitle("Podíly mužů a žen v databázi Katan") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_discrete(labels = (Pohlaví <- c("osadníci", "osadnice"))) +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0.5), 
+    plot.background = element_rect(fill = "#E5E5E5"),
+    axis.text.y = element_text(colour = "black", size = 12),
+    axis.text.x = element_text(colour = "black", size = 12))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf24.png)](#bar-charts)</p align="center">
+
+Je vám rozdíl mezi `stat = "identity"` a `stat = "bin"` dostatečně zřejmý? Podívejme se opět na první skript, se kterým jsme téma sloupcových diagramů začínali.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # příkaz zobrazí počty mužů a žen z databáze Katan
+  aes(x = Pohlaví)) + 
+  geom_bar()
+```
+
+V tomto skriptu pracujeme pouze s jednou proměnnou. To však neznamená, že obsah osy y zůstane v grafu prázdný, když není v příkazu `aes()` explicitně definován. Obsah osy x je dán samotnými názvy hodnot, kterých proměnná Pohlaví nabývá a obsah osy y je dán četností, se kterou jsou muži a ženy v proměnné x zastoupeny.
+
+Na rozdíl od parametru `stat = "bin"` však parametr `stat = "identity"` provádí něco jiného. Žádnou četnost nepočítá, pouze zobrazí unikátní hodnoty z proměnné x a k nim přiřadí hodnoty z proměnné y, což my v našem skriptu potřebujeme. Z tohoto důvodu musíme explicitně definovat nejenom proměnnou pro osu x, ale i proměnnou pro osu y.
+
+```{r, eval=F, echo=T}
+Četnost <- table(Katan$Pohlaví)/length(Katan$Pohlaví)
+Tabulka <- as.data.frame(Četnost)
+names(Tabulka) <- c("Pohlaví", "Zastoupení")
+
+ggplot(Tabulka,
+  aes(x = Pohlaví, y = Zastoupení)) +
+  geom_bar(stat = "identity")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf40.png)](#bar-charts)</p align="center">
+
+Pokračujme dál. Co se třeba nyní podívat na otázku, zdali jsou kuřáci v naší databázi spíše ženy či muži? 
+
+```{r, eval=F, echo=T}
+ggplot(Katan, 
+  aes(x = Pohlaví, fill = Kouření)) + 
+  geom_bar()
+  # příkaz na ose x zobrazí pohlaví a na ose y počty kuřáků a nekuřáků
+  # vyzkoušejte, co se stane, pokud použijete místo fill colour (color)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf25.png)](#bar-charts)</p align="center">
+
+Pokud chceme sloupec diagramu rozdělit na několik dílčích částí podle určité (nejčastěji faktorové) proměnné, použijeme parametr fill v rámci příkazu `aes()`. Legendu není potřeba utvářet zvlášť, ggplot2 ji vytvoří automaticky stejně jako barevné schéma, pomocí něhož jasně vidíme, že muži si ničí své plíce více nežli ženy.
+
+Obdobně jako u liniových a bodových grafů, tak i u těch sloupcových lze využít nám už známý příkaz `facet_grid()`, který pomůže rozčlenit informace z databáze ještě o krok dál nežli parametr fill. Vytvořme si proto graf četnosti mužů a žen rozdělených podle kouření do pěti kategorií podle počtu dětí (v databázi Katan mají osadníci a osadnice od nuly do čtyř potomků).
+
+```{r, eval=F, echo=T}
+# sloupcový diagram rozlišující počty mužů a žen dle kouření a počtu dětí
+ggplot(Katan,
+  aes(x = Pohlaví, fill = Kouření)) + 
+  facet_grid(~Děti) +
+  # příkaz facet_grid(~Děti) rozdělí náš graf na pět podle proměnné Děti
+  geom_bar()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf26.png)](#bar-charts)</p align="center">
+
+Pokud bychom chtěli do grafu přiřadit konkrétní čísla, použijeme příkaz `geom_text()`. Pozor, tento příkaz vkládejte vždy až za příkaz `geom_bar()` či jiný příkaz, který definuje samotnou podobu grafu (např. `geom_point(), line(), smooth()` atd.).
+
+```{r, eval=F, echo=T}
+# sloupcový diagram rozlišující počty mužů a žen dle kouření a počtu dětí
+ggplot(Katan,
+       aes(x = Pohlaví, fill = Kouření)) + 
+  facet_grid(~Děti) +
+  geom_bar() +
+  geom_text(stat = "count", position = position_stack(0.5), 
+            aes(label = ..count.., y = ..count..), 
+            size = 5, 
+            colour = "white")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf27.png)](#bar-charts)</p align="center">
+
+V závěru této lekce si ještě vyzkoušíme práci s jedním typem databáze, kde na nás budou čekat nejenom kategorické, ale i numerické proměnné. Opět tu nebude nutné stahovat žádný soubor, protože soubor **txhousing** je stejně jako data frame **economics** součástí balíčku ggplot2.
+
+V rámci txhousing nás budou zajímat zejména proměnné **year** a **sales**, kde sales sleduje počet prodaných domů v daném městě státu Texas (proměnná **city**). Ukažme si pro začátek, jak získat přehledný sloupcový diagram, kde na x-ové ose budeme mít zobrazeny léta 2000 až 2015 a na y-ové ose celkový počet prodaných domů v rámci všech měst, které jsou v databázi **txhousing** obsaženy.
+
+Dříve než vytvoříme samotný graf, musíme vytvořit pomocí funkce `aggregate()` nový data frame, který bude obsahovat souhrnná data za všechny jednotlivé měsíce a města, tak abychom u každého roku viděli celkový počet prodaných domů.
+
+```{r, eval=F, echo=T}
+txhousing.aggregate <- aggregate( 
+  txhousing$sales, 
+  list(txhousing$year), 
+  sum, na.rm = TRUE)
+names(txhousing.aggregate) <- c("year", "sales")
+txhousing.aggregate$sales1000 <- round(txhousing.aggregate$sales/1000, 2)
+# Příkaz vytvoří data.frame, který obsahuje tři proměnné, year, sales a sales1000.
+# V databázi nám chybí některé údaje za jednotlivá města, proto musíme použít 
+# funkci na.rm = TRUE.
+# V závěru je proměnná sales vydělena tisícem a vytvořena proměnná sales1000, 
+# aby se nám tyto hodnoty vešly do grafu.
+```
+```{r echo=FALSE}
+library(ggplot2)
+txhousing <- txhousing
+txhousing.aggregate <- aggregate( 
+  txhousing$sales, 
+  list(txhousing$year), 
+  sum, na.rm = TRUE)
+names(txhousing.aggregate) <- c("year", "sales")
+txhousing.aggregate$sales1000 <- round(txhousing.aggregate$sales/1000, 2)
+txhousing.aggregate
+```
+
+Nyní můžeme přistoupit k samotnému skriptu pro náš graf.
+
+```{r, eval=F, echo=T}
+ggplot(txhousing.aggregate, 
+       aes(x = year, y = sales1000, label= sales1000)) + 
+  geom_bar(stat = "identity", fill = "#1F497D") + 
+  geom_text(size = 3, vjust = 3, colour = "white") +
+  # Příkaz geom_text() vytvoří bílé popisky čísel na vrcholcích 
+  # sloupců grafu.
+  
+  ggtitle("Počty prodaných domů") +
+  labs(x = "", y = "v tisících") +
+  scale_x_continuous(breaks = seq(2000, 2015, 1)) + 
+  theme_economist() +
+  theme(  
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0.5),
+    axis.title.y = element_text(colour = "black", size = 12, face = "bold",
+                                margin = margin(t = 0, r = 10, b = 0, l = 0)))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf28.png)](#bar-charts)</p align="center">
+
+Sloupcové diagramy máme úspěšně za sebou, proto se opět přesuňme k dalšímu tématu, které se věnuje krabicovým grafům. Sloupcovým grafům se nicméně budeme ještě do hloubky věnovat v sedmé kapitole.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 4
+
+Vytvořte graf procentuálního zastoupení členů a nečlenů klubů deskových her. Na ose y mějte zobrazená procenta.
+
+Výsledný graf by měl dále splňovat tyto podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva sloupců: #D7585E;</li>
+<li>barva pozadí grafu: #444B5A</li>
+<br/>
+<li>nadpis: Zastoupení členů klubů deskových her;</li>
+<li>barva nadpisu: bílá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>názvy os x a y: žádné;</li>
+<li>barva osy x: bílá;</li>
+<br/>
+<li>hodnoty zobrazené na ose x: členové, nečlenové;</li>
+<li>barva písma na ose x: bílá/tučně.</li>
+</ul>
+
+V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+> Příklad 5
+
+Vytvořte sloupcový graf znázorňující počty členů a nečlenů klubů deskových her podle věku. Graf rozdělte do několika dílčích grafů dle věkových skupin (0 až 17 let, 18 až 25 let, 26 až 38 let, 39 až 49 let, 50 a více let), jež budou zobrazeny vedle sebe v jedné řadě. Graf by měl zobrazovat též i samotné počty členů a nečlenů klubů deskových her.
+
+Výsledný graf by měl dále splňovat tyto podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva sloupce: #559AB7 pro člena klubu;</li>
+<li>barva sloupce: #D7585E pro nečlena klubu;</li>
+<br/>
+<li>nadpis: Počty členů klubů deskových her dle pohlaví a věku;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>názvy os x a y: žádné;</li>
+<br/>
+<li>čísla zobrazující počty členů a nečlenů: bílá, velikost písma 4;</li>
+<li>barva pozadí věkových skupin: #559AB7;</li>
+<li>barva písma věkových skupin: bílá/tučně;</li>
+</ul>
+
+V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/5.kapitola/5.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 31.03351, lat = -17.825167, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 31.03351, lat = -17.825167, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Harare" target="_blank" style="color:#014B7C">Harare</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Boxplots
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Johannesburg: Krabicové grafy {.pozadi}
+
+Ačkoliv krabicové grafy možná nejsou tak často využívány jako předchozí typy grafických zobrazení, mohou nám být přesto velice užitečné. Před tím, než se však pustíme do práce, podívejte se prosím na následující obrázek, který nám krabicové grafy představí. Jistě jsou mezi vámi totiž i tací, kteří se s tímto typem grafu doposud nesetkali. Ukažme si proto ukázkový krabicový graf proměnné Věk.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf17.png)](#boxplots)</p align="center">
+
+Střední čára uprostřed krabice symbolizuje aritmetický průměr proměnné Věk (osa y). Samotná horní a dolní hrana krabice zobrazuje 75., respektive 25. percentil téže proměnné. Horní a dolní svislá čára se řídí následujícími vzorci.
+
+**Konec horní svislé čáry (lidově horní knír):**
+
+min(max(Věk), Q3 + 1.5 * IQR), kde Q3 je třetí kvartil (75. percentil) a IQR mezikvartilové rozpětí: Q3 – Q1 (šířka krabice).
+Horní knír dosahuje buď maximální hodnoty proměnné Věk, nebo výsledku Q3 + 1.5 * IQR. Zvítězí minimální hodnota.
+
+**Konec dolní svislé čáry (lidově dolní knír):**
+
+max(min(Věk), Q1 – 1.5 * IQR), kde Q1 je první kvartil (25. percentil) a IQR mezikvartilové rozpětí: Q3 – Q1 (šířka krabice).
+Dolní knír dosahuje buď minimální hodnoty proměnné Věk, nebo výsledku Q1 – 1.5 * IQR. Zvítězí maximální hodnota.
+
+A co znamenají jednotlivé puntíky nad (pod) kníry? Ty symbolizují odlehlé hodnoty v proměnné Věk. Nejvyšší puntík proto ukazuje na maximum a nejnižší puntík zase na minimum (je-li přítomen).
+
+Teorie už bylo dost, ukažme si vlastní skript, pomocí kterého jsme výše uvedený graf vytvořili.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # krabicový graf proměnné Věk
+	aes(x = "", y = Věk)) + 
+	geom_boxplot()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf17.png)](#boxplots)</p align="center">
+
+Podoba zápisu neobsahuje nic překvapivého. Pouze na jednu věc vás upozorním. V rámci příkazu `aes()` definujeme osu y, proto píšeme `aes(x = "", y = Věk)` nebo zkráceně `aes(y = Věk)`, kdežto u sloupcového grafu (viz minulá lekce) volíme osu x. U sloupcového diagramu dokonce není nutné ani uvádět celý příkaz (např. `aes(x = Pohlaví)`), protože dostačující je i zápis `aes(Pohlaví)` (osa x stojí v `aes()` defaultně na první pozici, osa y na druhé). U krabicového grafu tudíž nelze použít zkrácený příkaz `aes(Věk)`, protože ten by ve skutečnosti implikoval `aes(x = Věk)` (a tím pádem error).
+
+Obecně lze říct, že ggplot2 nám významně zjednodušuje život. Ne vždy tomu tak ale je. Kdybychom totiž napsali naprosto triviální příkaz `boxplot(Katan$Věk)`, uviděli bychom následující obrázek a ušetřili si celý výše uvedený odstavec.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf18.png)](#boxplots)</p align="center">
+
+Takovýto zápis nicméně obsahuje mnoho nedostatků, zejména pokud byste potřebovali vytvořit složitější a vizuálně atraktivnější formu krabicového grafu. Z tohoto důvodu pokračujme v naší pouti ggplotem dále a podívejme se, kterak lze vytvořit boxploty pro proměnnou Věk podle pohlaví.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # krabicový graf proměnné Věk podle proměnné Pohlaví
+	aes(x = Pohlaví, y = Věk)) + 
+	geom_boxplot()
+
+# podobného výsledku bychom dosáhli i za použití parametru fill 
+ggplot(Katan, # krabicový graf proměnné Věk podle proměnné Pohlaví
+	aes(x = "", y = Věk, fill = Pohlaví)) + 
+	geom_boxplot()
+
+# a dokonce i colour
+ggplot(Katan, # krabicový graf proměnné Věk podle proměnné Pohlaví
+	aes(x = "", y = Věk, colour = Pohlaví)) + 
+	geom_boxplot()
+```
+
+```{r}
+print("Zde definujeme osu x.")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf19.png)](#boxplots)</p align="center">
+
+```{r}
+print("Zde definujeme parametr fill.")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf20.png)](#boxplots)</p align="center">
+
+```{r}
+print("Zde definujeme parametr colour.")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf39.png)](#boxplots)</p align="center">
+
+Z výše uvedených grafů je patrné, že věkové rozpětí mužů a žen v databázi Katan je dosti rozdílné. Ženy jsou v průměru mladší než muži, nejstarší z nich je pouze 44 let, zatímco nejstaršímu muži je 75 let.
+
+Obraťme list a podívejme se na další příklad, v němž se zaměříme se na proměnnou Partie. V něm bude naším cílem vytvořit boxplot, jenž bude zobrazovat počet sehraných partií ve věkových skupinách 0 až 17 let, 18 až 25 let, 26 až 64 let a 65 let a více. Pro vypracování skriptu budeme muset využít znalostí z předchozích kapitol (jedná se o příkazy `cut()` či `ifelse()`).
+
+```{r, eval=F, echo=T}
+# nejdříve vytvoříme faktor, který rozdělí osadníky a osadnice do věkových skupin
+AgeGroup <- cut(
+	Katan$Věk, 
+	breaks = c(0, 17, 25, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17","18 až 25", "26 až 64", "65 a více"))
+
+# následně vytvoříme krabicový graf proměnné Partie podle proměnné AgeGroup
+ggplot(Katan,
+aes(x = AgeGroup, y = Partie)) + 
+# AgeGroup je samostatný vektor, jenž stojí mimo Katan, to však ničemu nevadí
+	geom_boxplot()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf21.png)](#boxplots)</p align="center">
+
+Jak je z jednotlivých boxplotů vidět, s věkem výrazně klesá počet sehraných partií Osadníků z Katanu. Zlom však nastává v důchodovém věku, ve kterém s přibývajícím volným časem u některých znovu propuká touha si Osadníky z Katanu zahrát. Na druhé straně je nutné brát tyto údaje s jistým odstupem, jelikož v databázi Katan nedisponujeme dostatečným množstvím pozorování pro jednotlivé věkové skupiny, jak to například dokazuje příkaz `table()`. Mezi hráči v důchodovém věku totiž máme zastoupeny pouze čtyři jedince, což věru není mnoho. Na druhé straně jsme si alespoň opětovně ukázali, jak je nutné s grafy a obecně s celou statistikou nakládat opatrně.
+
+```{r, eval=F, echo=T}
+table(AgeGroup)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+AgeGroup <- cut(
+	Katan$Věk, 
+	breaks = c(0, 17, 25, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17","18 až 25", "26 až 64", "65 a více"))
+table(AgeGroup)
+```
+
+Prozatím jsme pracovali s esteticky nedokonalými grafy. Pojďme si proto výše uvedený graf, navzdory jeho statistické nedokonalosti trochu zkrášlit. A aby toho nebylo málo, rozdělme si data jako již po několikáté podle pohlaví.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, 
+       aes(x = AgeGroup, y = Partie)) + 
+  geom_boxplot(fill = "#1F497D", colour = "#000000") +
+  facet_grid(rows = vars(Pohlaví)) +
+  # rozdělení grafu podle pohlaví provedeme pomocí příkazu facet_grid()
+  
+  ggtitle("Počet sehraných partií podle věku a pohlaví") +
+  labs(x = "Věková skupina", y = "Partie") +
+  theme(
+    plot.title = element_text(colour ="black", size = 20, 
+                              face = "bold", hjust = 0.5),
+    axis.title.x = element_text(colour ="black", size = 12, 
+                                margin = margin(t = 10, r = 0, b = 0, l = 0)),
+    axis.title.y = element_text(colour = "black", size = 12,  
+                                margin = margin(t = 0, r = 10, b = 0, l = 0)),
+    plot.background = element_rect(fill = "#EAEAEA"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf22.png)](#boxplots)</p align="center">
+
+Výše uvedený graf ukazuje jednu velice zajímavou informaci. Zatímco u mužů s přibývajícím věkem výrazně klesá touha (a možná i čas) Osadníky z Katanu hrát, ženy jsou mnohem věrnější a své zvyky s věkem mění výrazně méně (alespoň co se týče námi zkoumané deskové hry). Je toto tvrzení správné?
+
+```{r, eval=F, echo=T}
+table(AgeGroup, Katan$Pohlaví)
+# proměnná AgeGroup zde vystupuje jako vektor, proto je uvedena bez dolaru
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+AgeGroup <- cut(
+	Katan$Věk, 
+	breaks = c(0, 17, 25, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17","18 až 25", "26 až 64", "65 a více"))
+table(AgeGroup, Katan$Pohlaví)
+```
+
+Bohužel nevíme. Celkově 58 pozorování pro ženy není pro tento příklad dostatečně reprezentativní vzorek (viz osmá kapitola, která se kromě jiného zabývá testováním statistických hypotéz). Navíc v naší databázi nijak nesledujeme ty hráče, kteří Osadníky v mládí třeba hráli, ale později přestali.
+
+A to je z krabicových grafů pro seznámení vše. Přesuňme proto naši pozornost k závěrečné lekci, která nás seznámí s histogramy.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 6
+
+Vytvořte krabicový graf pro proměnnou Pohlaví. Zkuste vyřešit tento příklad, aniž byste se podívali do řešení.
+
+> Příklad 7
+
+Vytvořte krabicový graf pro proměnnou LungCap, která bude zobrazovat zvlášť muže a ženy. Kromě tohoto rozlišení proveďte následně i věkové rozdělení do skupin 0 až 5 let, 6 až 10 let, 11 až 15 let a nakonec 16 až 20 let. Proměnnou LungCap naleznete v databázi <a href=" https://www.rlandio.cz/LungCapData.xlsx " target="_blank">LungCapData</a>.
+
+Graf by měl dále splňovat tyto podmínky:
+
+<ul>
+<li>barva krabic: #009CB8;</li>
+<li>nadpis: Kapacita plic podle věku a pohlaví;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>názvy os x a y: Věková skupina, Kapacita plic;</li>
+<li>barva názvů os: černá;</li>
+<li>velikost písma názvů os: 12;</li>
+<li>pozice názvů os: uprostřed;</li>
+<br/>
+<li>názvy grafů rozdělených dle `facet_grid()`: ženy, muži;</li>
+<li>barva pozadí grafu: #EAEAEA.</li>
+</ul>
+
+V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/5.kapitola/5.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 28.047304, lat = -26.204103, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 28.047304, lat = -26.204103, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Johannesburg" target="_blank" style="color:#014B7C">Johannesburg</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Histograms
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Kapské Město: Histogramy {.pozadi}
+
+Naše povídání obvykle začínáme krátkým a jednoduchým příkladem. Ani případ histogramu z Kapského Města přezdívaného jako „Mother City“ nebude výjimkou. Ukažme si proto základní histogram pro proměnnou Partie.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+	aes(x = Partie)) + 
+	geom_histogram()
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf11.png)](#histograms)</p align="center">
+
+Výše uvedený histogram nevypadá příliš přitažlivě. Nejdříve se proto vypořádáme s šířkou jednotlivých sloupců, která nejvíce ruší vizuální stránku grafu. K tomu nám poslouží parametr binwidth v rámci příkazu `geom_histogram()`. Následně se zaměříme na změnu barvy jednotlivých sloupců (parametr fill), mezi které navíc vložíme bílé ohraničení (parametr colour).
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+  aes(x = Partie)) + 
+  geom_histogram(binwidth = 1, colour = "#ffffff", fill = "#E77856")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf12.png)](#histograms)</p align="center">
+
+Histogram proměnné Partie je sice sám o sobě nesmírně vzrušujícím tématem, přesto by byl možná ještě o trochu zajímavějším, kdyby rozlišoval mezi muži a ženami. Dokázali byste sami bez pomoci přijít na to, který parametr (příkaz) budeme muset v této záležitosti využít? 
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+  aes(x = Partie, fill = Pohlaví)) + 
+  geom_histogram(binwidth = 1, colour = "#ffffff")
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf13.png)](#histograms)</p align="center">
+
+Rozlišovat data lze nejenom podle parametru fill, ale též i podle nám už notoricky známého příkazu `facet_grid()`. Vytvořme proto čtyři histogramy seřazené pod sebe, a to podle vzdělání.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+  aes(x = Partie, fill = Pohlaví)) + 
+  geom_histogram(binwidth = 1, colour = "#ffffff", fill = "#E77856") +
+  facet_grid(rows = vars(Vzdělání))
+
+# Všimněte si, že úrovně faktoru Vzdělání nejsou seřazeny v logickém pořadí.
+# Pro změnu pořadí hodnot použijte následující příkaz:
+Katan$Vzdělání <- factor(Katan$Vzdělání, levels = c("ZŠ", "SŠ", "Bc - VŠ", "VŠ"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf14.png)](#histograms)</p align="center">
+
+Nevím jak vám, ale mně se náš histogram, navzdory jeho bohaté výpovědní hodnotě, zdá stále poněkud nedokončený. Přidejme k němu z tohoto důvodu popisky os, nadpis, podnadpis, zdroj, barevné pozadí ve stylu The Economist a nové barvy pro muže a ženy. Upravovat budeme předposlední histogram, který ještě nebyl rozdělen podle proměnné Vzdělání.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+  aes(x = Partie, fill = Pohlaví)) + 
+  geom_histogram(binwidth = 1, colour = "#ffffff") +
+  scale_x_continuous(
+         breaks = seq(from = 0, to = 10, by = 1)) +
+  scale_y_continuous(
+        breaks = seq(from = 0, to = 55, by = 5)) +
+  ggtitle("Histogram proměnné Partie") +
+  labs(x = "Partie", y = "Četnost", subtitle = "vytvořený v GGPLOT2", 
+    caption = "Zdroj: databáze Katan") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+       colour = "black", size = 20, face = "bold", hjust = 0), 
+    plot.subtitle = element_text(
+       colour = "black", size = 16, face = "italic", hjust = 0),
+    plot.caption = element_text(
+       colour = "black", size = 12, face = "italic", hjust = 1),
+    axis.title.x = element_text(colour = "black", size = 12, face = "bold",
+       margin = margin(t = 10, r = 0, b = 0, l = 0)),
+    axis.title.y = element_text(colour = "black", size = 12, face = "bold",
+       margin = margin(t = 0, r = 10, b = 0, l = 0))) +
+  theme(legend.title = element_blank()) +
+  scale_fill_manual(values = c("#559AB7", "#D7585E"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf15.png)](#histograms)</p align="center">
+
+V případě, že vám nynější podoba histogramu stále nevyhovuje a vy byste měli zájem o něco poněkud minimalistického, vyzkoušejte příkaz `geom_freqpoly()`, který vytvoří liniovou verzi histogramu.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+       aes(x = Partie, colour = Pohlaví)) + 
+  geom_freqpoly(binwidth = 1, size = 2) +
+  scale_x_continuous(
+    breaks = seq(from = 0, to = 10, by = 1)) +
+  scale_y_continuous(
+    breaks = seq(from = 0, to = 55, by = 5)) +
+  ggtitle("Polygon četností proměnné Partie") +
+  labs(x = "Partie", y = "Četnost", subtitle = "vytvořený v GGPLOT2", 
+       caption = "Zdroj: databáze Katan") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0,
+                                margin = margin(t = 0, r = 0, b = 5, l = 0)),
+    plot.subtitle = element_text(
+      colour = "black", size = 16, face = "italic", hjust = 0,
+                                margin = margin(t = 0, r = 0, b = 15, l = 0)),
+    plot.caption = element_text(
+      colour = "black", size = 12, face = "italic", hjust = 1),
+    axis.title.x = element_text(colour = "black", size = 12, face = "bold",
+                                margin = margin(t = 10, r = 0, b = 0, l = 0)),
+    axis.title.y = element_text(colour = "black", size = 12, face = "bold",
+                                margin = margin(t = 0, r = 10, b = 0, l = 0)), 
+    legend.title = element_blank(),
+    legend.position = "bottom") +
+  scale_colour_manual(values = c("#559AB7", "#D7585E"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf16.png)](#histograms)</p align="center">
+
+Ve výše uvedeném grafu si dejte oproti tomu předchozímu pozor na to, že zde místo parametru fill používáme v rámci příkazu `aes()` parametr colour, jelikož pracujeme veskrze s liniovým grafem a nikoliv běžným histogramem či sloupcovým diagramem. Tomu následně odpovídá i příkaz `scale_colour_manual()`. Jinými slovy, fill (respektive `scale_fill_manual()`) definuje proměnnou (respektive barvu), kterou je `geom()` vyplněn, zatímco colour (respektive `scale_colour_manual()`) definuje proměnnou (respektive barvu), kterou je `geom()` obtažen. 
+
+S příkazy fill se nicméně, jak už všichni víme, nepotkáváme pouze v rámci příkazu `aes()`, ale též i samotných příkazů `geom()`, ve kterých platí stejná poučka. Ostatně stačí se podívat ještě jednou na následující histogram z počátku této lekce, ve které jsme použili fill a colour zároveň.
+
+```{r, eval=F, echo=T}
+ggplot(Katan, # histogram proměnné Partie
+  aes(x = Partie)) + 
+  geom_histogram(binwidth = 1, colour = "#ffffff", fill = "#E77856")
+  # fill definuje vnitřek histogramu, colour jeho okraje
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf12.png)](#histograms)</p align="center">
+
+Dalších histogramů, krabicových, sloupcových, liniových a bodových grafů bychom mohli stvořit ještě tisíce a stále bychom nebyli s tématem u konce. Cíl této kapitoly však byl mnohem skromnější. Ačkoliv se tedy budete muset ještě mnoho naučit, jste již schopni od nynějška s ggplotem samostatně pracovat. A to není málo. K tématu grafů se nicméně ještě vrátíme. Stane se tak v sedmé kapitole, poté co si v následující kapitole probereme balíček dplyr, který se zabývá úpravou a analýzou datových tabulek (data frame).
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 8
+
+Vytvořte histogram proměnné LungCap, jenž bude rozlišovat kuřáky a nekuřáky. Pro kuřáky zvolte barvu modrou a pro nekuřáky žlutou. Proměnnou LungCap naleznete v databázi <a href=" https://www.rlandio.cz/LungCapData.xlsx " target="_blank">LungCapData</a>. V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+> Příklad 9
+
+Vytvořte obdobný histogram jako v příkladu 8 s tím rozdílem, že tento bude vytvořen pomocí polygonu četností (`geom_freqpoly()`).
+
+Graf bude splňovat následující podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva linie pro nekuřáky: #559AB7;</li>
+<li>barva linie pro kuřáky: #D7585E;</li>
+<li>šířka linií: 2;</li>
+<br/>
+<li>nadpis: Polygon četností kapacity plic;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: vlevo;</li>
+<br/>
+<li>podnadpis: vytvořený v ggplot2;</li>
+<li>barva podnadpisu: černá/kurzíva;</li>
+<li>velikost písma podnadpisu: 16;</li>
+<li>pozice podnadpisu: vlevo;</li>
+<br/>
+<li>názvy os x a y: Kapacita plic, Četnost;</li>
+<li>barva názvů os: černá/tučně;</li> 
+<li>velikost písma názvů os: 12;</li>
+<li>pozice názvu osy y: 10 bodů vpravo od osy;</li>
+<li>pozice názvu osy x: 10 bodů nahoře od osy;</li>
+<li>pozice názvů os: uprostřed;</li>
+<br/>
+<li>pozice legendy: nahoře;</li>
+<li>popisky legendy: nekuřáci a kuřáci;</li>
+<br/>
+<li>název zdroje: Zdroj: databáze LungCapData;</li>
+<li>barva zdroje: černá/kurzíva;</li> 
+<li>velikost písma zdroje: 12;</li>
+<li>pozice zdroje: vpravo dole;</li>
+</ul>
+
+V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/5.kapitola/5.5.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 18.424055, lat = -33.92487, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 18.424055, lat = -33.92487, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Kapsk%C3%A9_M%C4%9Bsto" target="_blank" style="color:#014B7C">Kapské Město</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Příklady: řešení {.pozadi}
+
+> Příklad 2
+
+Vytvořte bodový a liniový graf (regresní křivku) na základě databáze <a href=" https://www.rlandio.cz/LungCapData.xlsx " target="_blank">LungCapData</a>, který bude zobrazovat vztah mezi věkem a výškou. Styl grafu by měl být založen na podkladu `theme_economist()`.
+
+Graf bude dále splňovat následující podmínky:
+
+<ul>
+<li>barva linie: #1F497D;</li>
+<li>tloušťka linie: 1.5;</li>
+<br/>
+<li>barva bodů: #C0504D;</li>
+<li>tloušťka bodů: 2;</li>
+<br/>
+<li>nadpis: Vztah mezi věkem a výškou;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>osy x a y: Věk, Výška;</li>
+<li>barva názvů os: černá;</li>
+<li>velikost písma názvů os: 12;</li>
+<li>pozice názvů os: uprostřed;</li>
+<li>pozice názvu osy y: 10 bodů vpravo od osy;</li>
+<li>pozice názvu osy x: 10 bodů nahoře od osy.</li>
+</ul>
+
+Škála na ose x bude tvořena minimem a maximem proměnné Age mezi nimiž budou hodnoty rozestoupeny po jednom roce.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf30.png)](#line-scatter-charts)</p align="center">
+
+```{r, eval=F, echo=T}
+library(ggplot2)
+library(ggthemes)
+
+ggplot(LungCapData, # bodový a liniový graf mezi proměnnými Age a Height
+       aes(x = Age, y = Height)) + 
+  geom_smooth(color = "#1F497D", size = 1.5) + 
+  geom_point(color = "#C0504D", size = 2) +
+  ggtitle("Vztah mezi věkem a výškou") +
+  labs(x = "Věk", y = "Výška") +
+  scale_x_continuous(breaks = seq(from = min(LungCapData$Age), 
+                                  to = max(LungCapData$Age), 
+                                  by = 1)) +
+  theme_economist() +
+  theme(
+  plot.title = element_text(color = "black", size = 20, face = "bold", hjust = 0.5), 
+  axis.title.x = element_text(color = "black", size = 12, 
+                              margin = margin(t = 10, r = 0, b = 0, l = 0)),
+  axis.title.y = element_text(color = "black", size = 12, 
+                              margin = margin(t = 0, r = 10, b = 0, l = 0)))
+```                              
+
+> Příklad 3 
+
+Vytvořte liniový graf zobrazující vývoj ceny akcií společnosti Amazon. Nejdříve však načtěte do RStudia databázi stock_amzn pomocí tohoto příkazu.
+
+```{r, eval=F, echo=T}
+stock_amzn <- 
+  read.csv("http://sharpsightlabs.com/wp-content/uploads/2017/09/AMZN_stock.csv")
+```
+
+Následně v této databázi využijte proměnných Date a Close (uzavírací cena za akcii), kterou zobrazíte na ose y. Graf bude splňovat následující podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva pozadí: #444B5A;</li>
+<li>barva linie: #AEFFFF;</li>
+<br/>
+<li>nadpis: Uzavírací ceny akcií Amazonu;</li>
+<li>barva nadpisu: bílá/tučně;</li>
+<li>písmo nadpisu: Gill Sans;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>barva vodorovných os v mřížce grafu vedoucích od hodnot na ose y: #586174;</li>
+<li>barva vodorovných a svislých os v grafu mimo výše uvedené osy: #4d5566;</li>
+<li>názvy os x a y: Datum, Cena;</li>
+<li>barva popisků a hodnot na osách: bílá;</li>
+<li>pozice názvů os: uprostřed;</li>
+</ul>
+
+Na závěr zvýrazněte pozadí pod linií osy y pomocí příkazu `geom_area()`:
+
+```{r, eval=F, echo=T}
+geom_area(fill = 'cyan', alpha = .1)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf31.png)](#line-scatter-charts)</p align="center">
+
+```{r, eval=F, echo=T}
+library(ggplot2)
+library(ggthemes)
+
+stock_amzn <- 
+  read.csv("http://sharpsightlabs.com/wp-content/uploads/2017/09/AMZN_stock.csv")
+stock_amzn$Date <- as.Date(stock_amzn$Date)
+
+ggplot(stock_amzn, aes(x = Date)) + 
+  geom_line(aes(y = Close), colour = "#AEFFFF") + 
+  geom_area(aes(y = Close), fill = 'cyan', alpha = .1) +
+  labs(x = 'Datum', 
+       y = 'Cena', 
+       title = "Uzavírací ceny akcií Amazonu") +
+  theme_economist() +
+  theme(text = element_text(family = 'Gill Sans', color = "#444444"),
+        panel.background = element_rect(fill = '#444B5A'),
+        panel.grid.minor = element_line(color = '#4d5566'),
+        panel.grid.major = element_line(color = '#586174'),
+        plot.title = element_text(colour = "white", size = 20, hjust = 0.5),
+        axis.title = element_text(colour = "white", size = 12, color = '#555555'),
+        axis.title.y = element_text(colour = "white", vjust = 0.5, angle = 0),
+        # pro osu y nevolíme hjust, ale vjust
+        axis.title.x = element_text(colour = "white", hjust = 0.5),
+        axis.text.y = element_text(colour = "white", size = 12),
+        axis.text.x = element_text(colour = "white", size = 12),
+        axis.line = element_line(colour = "white"),
+        plot.background = element_rect(fill = "#444B5A"))
+```
+
+> Příklad 4
+
+Vytvořte graf procentuálního zastoupení členů a nečlenů klubů deskových her. Na ose y mějte zobrazená procenta.
+
+Výsledný graf by měl dále splňovat tyto podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva sloupců: #D7585E;</li>
+<li>barva pozadí grafu: #444B5A</li>
+<br/>
+<li>nadpis: Zastoupení členů klubů deskových her;</li>
+<li>barva nadpisu: bílá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>názvy os x a y: žádné;</li>
+<li>barva osy x: bílá;</li>
+<br/>
+<li>hodnoty zobrazené na ose x: členové, nečlenové;</li>
+<li>barva písma na ose x: bílá/tučně.</li>
+</ul>
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf32.png)](#bar-charts)</p align="center">
+
+```{r, eval=F, echo=T}
+library(ggplot2)
+library(ggthemes)
+
+Četnost <- table(Katan$Klub)/length(Katan$Klub)
+Tabulka <- as.data.frame(Četnost)
+names(Tabulka) <- c("Klub", "Zastoupení")
+
+ggplot(Tabulka, 
+       aes(x = Klub, y = Zastoupení)) +
+  geom_bar(stat = "identity", fill = "#D7585E") +
+  ggtitle("Zastoupení členů klubů deskových her") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_discrete(labels = (Pohlaví <- c("členové", "nečlenové"))) +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+      colour = "white", size = 20, face = "bold", hjust = 0.5), 
+    axis.text.y = element_text(colour = "white", size = 12),
+    axis.text.x = element_text(colour = "white", face = "bold", size = 12),
+    plot.background = element_rect(fill = "#444B5A"),
+    axis.line = element_line(colour = "white"))
+```
+
+> Příklad 5
+
+Vytvořte sloupcový graf znázorňující počty členů a nečlenů klubů deskových her podle věku. Graf rozdělte do několika dílčích grafů dle věkových skupin (0 až 17 let, 18 až 25 let, 26 až 38 let, 39 až 49 let, 50 a více let), jež budou zobrazeny vedle sebe v jedné řadě. Graf by měl zobrazovat též i samotné počty členů a nečlenů klubů deskových her.
+
+Výsledný graf by měl dále splňovat tyto podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva sloupce: #559AB7 pro člena klubu;</li>
+<li>barva sloupce: #D7585E pro nečlena klubu;</li>
+<br/>
+<li>nadpis: Počty členů klubů deskových her dle pohlaví a věku;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>názvy os x a y: žádné;</li>
+<br/>
+<li>čísla zobrazující počty členů a nečlenů: bílá, velikost písma 4;</li>
+<li>barva pozadí věkových skupin: #559AB7;</li>
+<li>barva písma věkových skupin: bílá/tučně;</li>
+</ul>
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf33.png)](#bar-charts)</p align="center">
+
+```{r, eval=F, echo=T}
+library(ggplot2)
+library(ggthemes)
+
+AgeGroup <- cut(
+  Katan$Věk, 
+  breaks = c(0, 17, 25, 38, 49, 150), 
+  right = TRUE, 
+  labels = c("0 až 17 let","18 až 25 let", "26 až 38 let", 
+             "39 až 49 let", "50 a více let"))
+Katan$AgeGroup <- AgeGroup
+
+ggplot(Katan,
+       aes(x = Pohlaví, fill = Klub)) + 
+facet_grid(~AgeGroup) +
+  geom_bar() +
+  geom_text(stat = "count", position = position_stack(0.5), 
+            aes(label = ..count.., y = ..count..), 
+            size = 4, 
+            colour = "white") +
+  ggtitle("Počty členů klubů deskových her dle pohlaví a věku") +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0,
+      margin = margin(t = 0, r = 0, b = 5, l = 0)),
+    legend.position = "top",
+    legend.title = element_text(color = "black", size = 12, face = "bold"),
+    legend.text = element_text(color = "black"),
+    strip.background = element_rect(fill = "#559AB7"),
+    strip.text = element_text(colour = 'white', face = "bold")) +
+  scale_fill_manual(values = c("#559AB7", "#D7585E"))
+```
+
+> Příklad 6
+
+Vytvořte krabicový graf pro proměnnou Pohlaví. Zkuste vyřešit tento příklad, aniž byste se podívali do řešení.
+
+Řešení tohoto příkladu je jednoduché. Žádné totiž není. Vytvářet krabicový graf pro jinou než numerickou proměnnou nedává smysl. Pevně věřím, že jste se proto nenechali nachytat.
+
+> Příklad 7
+
+Vytvořte krabicový graf pro proměnnou LungCap, která bude zobrazovat zvlášť muže a ženy. Kromě tohoto rozlišení proveďte následně i věkové rozdělení do skupin 0 až 5 let, 6 až 10 let, 11 až 15 let a nakonec 16 až 20 let. Proměnnou LungCap naleznete v databázi <a href=" https://www.rlandio.cz/LungCapData.xlsx " target="_blank">LungCapData</a>.
+
+Graf by měl dále splňovat tyto podmínky:
+
+<ul>
+<li>barva krabic: #009CB8;</li>
+<li>nadpis: Kapacita plic podle věku a pohlaví;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: uprostřed;</li>
+<br/>
+<li>názvy os x a y: Věková skupina, Kapacita plic;</li>
+<li>barva názvů os: černá;</li>
+<li>velikost písma názvů os: 12;</li>
+<li>pozice názvů os: uprostřed;</li>
+<br/>
+<li>názvy grafů rozdělených dle `facet_grid()`: ženy, muži;</li>
+<li>barva pozadí grafu: #EAEAEA.</li>
+</ul>
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf34.png)](#boxplots)</p align="center">
+
+```{r, eval=F, echo=T}
+library(ggplot2)
+
+AgeGroup <- cut(
+  LungCapData$Age, 
+  breaks = c(0, 5, 10, 15, 20), 
+  right = TRUE, 
+  labels = c("0 až 5","6 až 10", "11 až 15", "16 až 20"))
+
+pohlaví <- c("ženy", "muži")
+names(pohlaví) <- c("female", "male")
+
+ggplot(LungCapData, 
+       aes(x = AgeGroup, y = LungCap)) + 
+  geom_boxplot(fill = "#009CB8") +
+  facet_grid(~Gender, labeller = labeller(Gender = pohlaví)) +
+  ggtitle("Kapacita plic podle věku a pohlaví") +
+  labs(x = "Věková skupina", y = "Kapacita plic") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    plot.background = element_rect(fill = "#EAEAEA"))
+```
+
+> Příklad 8
+
+Vytvořte histogram proměnné LungCap, jenž bude rozlišovat kuřáky a nekuřáky. Pro kuřáky zvolte barvu modrou a pro nekuřáky žlutou. Proměnnou LungCap naleznete v databázi <a href=" https://www.rlandio.cz/LungCapData.xlsx " target="_blank">LungCapData</a>.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf36.png)](#histograms)</p align="center">
+
+```{r, eval=F, echo=T}
+ggplot(LungCapData, # histogram proměnné LungCap a Smoke
+       aes(LungCap, fill = Smoke)) + 
+  geom_histogram(binwidth = 1) +
+  scale_fill_manual(values = c("yellow", "blue"))
+```
+
+> Příklad 9
+
+Vytvořte obdobný histogram jako v příkladu 8 s tím rozdílem, že tento bude vytvořen pomocí polygonu četností (`geom_freqpoly()`).
+
+Graf bude splňovat následující podmínky:
+
+<ul>
+<li>šablona: `theme_economist()`;</li>
+<li>barva linie pro nekuřáky: #559AB7;</li>
+<li>barva linie pro kuřáky: #D7585E;</li>
+<li>šířka linií: 2;</li>
+<br/>
+<li>nadpis: Polygon četností kapacity plic;</li>
+<li>barva nadpisu: černá/tučně;</li>
+<li>velikost písma nadpisu: 20;</li>
+<li>pozice nadpisu: vlevo;</li>
+<br/>
+<li>podnadpis: vytvořený v ggplot2;</li>
+<li>barva podnadpisu: černá/kurzíva;</li>
+<li>velikost písma podnadpisu: 16;</li>
+<li>pozice podnadpisu: vlevo;</li>
+<br/>
+<li>názvy os x a y: Kapacita plic, Četnost;</li>
+<li>barva názvů os: černá/tučně;</li> 
+<li>velikost písma názvů os: 12;</li>
+<li>pozice názvu osy y: 10 bodů vpravo od osy;</li>
+<li>pozice názvu osy x: 10 bodů nahoře od osy;</li>
+<li>pozice názvů os: uprostřed;</li>
+<br/>
+<li>pozice legendy: nahoře;</li>
+<li>popisky legendy: nekuřáci a kuřáci;</li>
+<br/>
+<li>název zdroje: Zdroj: databáze LungCapData;</li>
+<li>barva zdroje: černá/kurzíva;</li> 
+<li>velikost písma zdroje: 12;</li>
+<li>pozice zdroje: vpravo dole;</li>
+</ul>
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\5.kapitola\graf35.png)](#histograms)</p align="center">
+
+```{r, eval=F, echo=T}
+library(ggplot2)
+library(ggthemes)
+
+ggplot(LungCapData, # histogram LungCap
+       aes(LungCap, colour = Smoke)) + 
+  geom_freqpoly(binwidth = 1, size = 2) +
+  scale_x_continuous(
+    breaks = seq(from = 0, to = 16, by = 1)) +
+  scale_y_continuous(
+    breaks = seq(from = 0, to = 100, by = 5)) +
+  ggtitle("Polygon četností kapacity plic") +
+  labs(x = "Kapacita plic", y = "Četnost", subtitle = "vytvořený v ggplot2", 
+       caption = "Zdroj: databáze LungCapData") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(
+      colour = "black", size = 20, face = "bold", hjust = 0,
+      margin = margin(t = 0, r = 0, b = 5, l = 0)),
+    plot.subtitle = element_text(
+      colour = "black", size = 16, face = "italic", hjust = 0,
+      margin = margin(t = 0, r = 0, b = 15, l = 0)),
+    plot.caption = element_text(
+      colour = "black", size = 12, face = "italic", hjust = 1),
+    axis.title.x = element_text(colour = "black", size = 12, face = "bold",
+                                margin = margin(t = 10, r = 0, b = 0, l = 0)),
+    axis.title.y = element_text(colour = "black", size = 12, face = "bold",
+                                margin = margin(t = 0, r = 10, b = 0, l = 0)), 
+    legend.title = element_blank(),
+    legend.position = "top") +
+  scale_colour_manual(labels = c("nekuřáci", "kuřáci"), 
+                      values = c("#559AB7", "#D7585E"))
+```  
+  
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------

@@ -1,0 +1,2793 @@
+---
+title: Práce s daty 1
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 3**</p align="center">
+<p align="center">**PRÁCE S DATY 1**</p align="center">
+
+V předchozích dvou kapitolách jsme získali úvodní přehled o práci v R, respektive RStudiu, a proto se nyní můžeme pustit do vlastní analýzy dat.
+
+Projdeme si základní statistické testy, na něž navážeme příkazy table a summarize. Díky nim se naučíte, kterak lze v krátkém čase získat z dat velice hodnotné informace. Načtěte databázi Katan, jdeme si hrát.
+
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 3**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**PRÁCE S DATY 1**</p align="center"></font>
+
+<font color="white">
+V předchozích dvou kapitolách jsme získali úvodní přehled o práci v R, respektive RStudiu, a proto se nyní můžeme pustit do vlastní analýzy dat.
+
+Projdeme si základní statistické testy, na něž navážeme příkazy table a summarize. Díky nim se naučíte, kterak lze v krátkém čase získat z dat velice hodnotné informace. Načtěte databázi Katan, jdeme si hrát.
+</font>
+
+### {.mapa}
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -38.526997, lat = -3.732714, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -75.580032, lat = 6.24822, 
+            '<h6><a href="https://www.rlandio.cz/cesta/3.kapitola.html#statistika-1" target="_blank" style="color:#014B7C">Medellín</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = -38.526997, lat = -3.732714, 
+            '<h6><a href="https://www.rlandio.cz/cesta/3.kapitola.html#funkce" target="_blank" style="color:#014B7C">Fortaleza</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Statistika 1
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Medellín: Statistika 1 {.pozadi}
+Ačkoliv třetí kapitolu začínáme v Medellínu, které se stalo za dob drogového magnáta <a href="https://cs.wikipedia.org/wiki/Pablo_Escobar" target="_blank">Pablo Escobara</a> jedním z nejnebezpečnějších měst v Jižní Americe, není se čeho obávat. Překonejme tedy svůj strach a vrhněme se do útrob této kapitoly.
+
+Popisné statistiky nás budou obdobně jako matematické operace provázet po celou dobu naší práce v R. Pojďme se nyní seznámit s těmi, které jsme na naší cestě prozatím nepotkali. Začněme příkazem `summary()`. S jeho pomocí zjistíme základní statistické údaje (průměr, medián, minimum, maximum, dolní kvartil a horní kvartil) pro numerické proměnné databáze. Přitom nám tato funkce prozradí i datové typy jednotlivých sloupců včetně jejich délky, která je nicméně u data frame vždy stejná (viz předchozí kapitola).
+
+```{r, eval=F, echo=T}
+summary(Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+summary(Katan)
+```
+
+Zvídavé studenty jistě tíží otázka, co se stane v případě, použijeme-li příkaz `summary()` nikoliv pro data frame, ale pro vektor či dílčí proměnnou datové tabulky (např. `summary(Katan$Pohlaví)`)? Na výsledek takového příkazu si ještě chvíli počkejme, jelikož se jím budeme samostatně zabývat v následující lekci.
+
+Dalšími užitečnými příkazy v naší práci s daty bezpochyby budou `min(), max(), range() a quantile()`. Range v angličtině znamená rozmezí, proto nás v tuto chvíli již asi nepřekvapí, co zajímavého tato funkce dovede. Příkaz `quantile()` nám kromě minima a maxima zjistí též dolní kvartil (25. percentil dat), medián a horní kvartil (75. percentil dat) numerické proměnné.
+
+```{r, eval=F, echo=T}
+min(Katan$Věk)	# minimum proměnné Věk v souboru Katan
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+min(Katan$Věk)
+```
+
+```{r, eval=F, echo=T}
+max(Katan$Věk)	# maximum proměnné Věk v souboru Katan
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+max(Katan$Věk)	
+```
+
+```{r, eval=F, echo=T}
+range(Katan$Věk)	# minimum a maximum proměnné Věk v souboru Katan
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+range(Katan$Věk)	
+```
+
+```{r, eval=F, echo=T}
+quantile(Katan$Věk) 
+# minimum, dolní kvartil, medián, horní kvartil a maximum proměnné Věk
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+quantile(Katan$Věk)
+```
+
+Chceme-li zjistit nejenom kvartily, ale například i kvintily, jež rozdělují soubor dat na pětiny, budeme muset využít v rámci příkazu `quantile()` jeho parametr `probs`.
+
+```{r, eval=F, echo=T}
+quantile(
+	Katan$Věk, 
+	probs = c(0, 0.2, 0.4, 0.6, 0.8, 1))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+quantile(
+	Katan$Věk, 
+	probs = c(0, 0.2, 0.4, 0.6, 0.8, 1))
+```
+
+Osadníci z Katanu jsou hrou pro celou rodinu, o čemž svědčí fakt, že nemladšímu osadníkovi je 13 let a nejstaršímu dokonce 75 let. Jaký je však věkový průměr všech respondentů naší databáze? S příkazem `mean()` (průměr) jsme se na rozdíl od příkazu `median()` již setkali. Přesto v jeho zápisu nalezneme něco nového a tím je parametr `na.rm = TRUE`. Bohužel ne vždy budeme obšťastněni absencí chybějících hodnot v datovém souboru, tak jako v databázi Katan. Aby však funkce `mean()` mohla správně pracovat i tehdy, máme-li v proměnné prázdné buňky, je nutné příkazu sdělit, že chybějící hodnoty musí přeskočit. V opačném případě by následoval neúprosný error. Parametr `na.rm = TRUE` využijeme nejenom u průměru či mediánu, ale i u dalších příkazů, na které ještě narazíme. Formát zápisu `na.rm = TRUE` vychází z té podstaty, že chybějící buňky jsou v R pojmenovány jako NA (Not Available), zatímco rm značí příkaz pro mazání. 
+
+```{r, eval=F, echo=T}
+mean(Katan$Věk, na.rm = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+mean(Katan$Věk, na.rm = TRUE)
+```
+
+```{r, eval=F, echo=T}
+median(Katan$Věk, na.rm = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+median(Katan$Věk, na.rm = TRUE)
+```
+
+Když už jsme narazili na téma chybějících dat, podívejme se i na příkaz `complete.cases()`. Ten totiž dokáže vymazat veškeré řádky v data frame, ve kterých nalezne alespoň jednu chybějící hodnotu. Abychom si tento příkaz mohli prakticky vyzkoušet, musíme si nějaké chybějící hodnoty nejdříve vytvořit. K tomu využijeme příkaz `edit()`, se kterým jsme se seznámili v předchozí kapitole.
+
+```{r, eval=F, echo=T}
+DirtyKatan <- edit(Katan)
+```
+
+Máme-li už alespoň několik hodnot v Katanu přetvořených na NA (k NA nepřidávejte žádné uvozovky ani apostrofy), můžeme si vyzkoušet následující dvě varianty příkazu `complete.cases()`. Pomocí první z nich vytvoříme logický vektor TRUE/FALSE a pomocí té druhé získáme data frame s názvem CleanKatan, který bude očištěn od řádků, ve kterých byla nalezena alespoň jedna chybějící hodnota.
+
+```{r, eval=F, echo=T}
+CompleteVectorKatan <- complete.cases(DirtyKatan)
+# Pomocí tohoto příkazu získáme logický vektor ve tvaru 
+# TRUE/FALSE, kde TRUE značí řádky bez chybějících údajů.
+
+CleanKatan <- DirtyKatan[complete.cases(DirtyKatan), ]
+# Zde získáme databázi CleanKatan obsahující pouze úplné řádky.
+# Srovnej předchozí dva příkazy s následujícími příkazy, 
+# se kterými jsme se poprvé setkali v Panamě.
+
+Katan[ , 1] >= 5
+# vs
+Katan[Katan[ , 1] >= 5, ]
+```
+
+Vraťme se zpět k `mean()` a podívejme se, kterak lze zjistit průměr nejenom uvnitř proměnné, ale i mezi sloupci. Pro ilustraci si předveďme následující příklad. Vytvořme si datovou tabulku, jež bude obsahovat známky na vysvědčení z chemie, fyziky a biologie nejmenovaného hypotetického studenta z nejmenovaných let jeho dávného studia. Naším úkolem bude spočítat studijní průměry v jednotlivých pololetích za tyto tři přírodovědné předměty, v nichž náš hypotetický student nikdy příliš neexceloval.
+
+```{r, eval=F, echo=T}
+# vzorový data frame
+známky <- data.frame(
+  chemie = c(2, 3, 3, 3, 2, 3, 2, 3, 3, 4, 4, 3, 3, 4),
+  fyzika = c(2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2),
+  biologie = c(2, 3, 3, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 3))
+
+# výpočet průměru mezi proměnnými
+Průměr <- rowMeans(známky[ ,1:3])	
+```
+```{r}
+známky <- data.frame(
+  chemie = c(2, 3, 3, 3, 2, 3, 2, 3, 3, 4, 4, 3, 3, 4),
+  fyzika = c(2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2),
+  biologie = c(2, 3, 3, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 3))
+Průměr <- rowMeans(známky[ ,1:3])	
+Průměr
+```
+
+Příkaz, se kterým jsme výše uvedený příklad vypočítali, se nazývá `rowMeans()` (máte-li problém s angličtinou, row znamená řádek a column naopak sloupec). Při jeho zápisu si dávejme pozor na velké M a malé s na jeho konci. Skladba tohoto příkazu je taková, že do kulaté závorky uvádíme výběr sloupců, mezi kterými chceme průměr spočítat. Jelikož chceme počítat průměr po řádcích u proměnných z prvního až třetího sloupce, musíme do závorky nejdříve uvést čárku (nezapomínejte na formát zápisu [řádky, sloupce]) a teprve až poté čísla jedna a tři (do zápisu by místo příkazu `1:3` šlo zapsat též i `c(1, 2, 3)`).
+
+Stejně jako průměr, lze i součet jednotlivých proměnných provést v obdobném formátu. Pouze místo Means použijeme analogické Sums.
+
+```{r, eval=F, echo=T}
+Součet <- rowSums(známky[ ,1:3])	
+# příkaz vypočítá součet mezi sloupci po řádcích 
+# pozor na s na konci a velké S oproti sum
+```
+```{r}
+známky <- data.frame(
+  chemie = c(2, 3, 3, 3, 2, 3, 2, 3, 3, 4, 4, 3, 3, 4),
+  fyzika = c(2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2),
+  biologie = c(2, 3, 3, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 3))
+Součet <- rowSums(známky[ ,1:3])	
+Součet
+```
+
+Ne vždy je ale nutné pokoušet se o co nejsofistikovanější styl zápisu, jelikož v jednoduchosti se skrývá síla.
+
+```{r, eval=F, echo=T}
+Součet <- známky$chemie + známky$fyzika + známky$biologie
+```
+```{r}
+známky <- data.frame(
+  chemie = c(2, 3, 3, 3, 2, 3, 2, 3, 3, 4, 4, 3, 3, 4),
+  fyzika = c(2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2),
+  biologie = c(2, 3, 3, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 3))
+Součet <- známky$chemie + známky$fyzika + známky$biologie
+Součet
+```
+
+Znalosti z předchozích kapitol a šesté třídy základní školy by vám měly vystačit i pro výpočet průměru.
+
+```{r, eval=F, echo=T}
+Průměr <- (známky$chemie + známky$fyzika + známky$biologie)/3
+```
+```{r}
+známky <- data.frame(
+  chemie = c(2, 3, 3, 3, 2, 3, 2, 3, 3, 4, 4, 3, 3, 4),
+  fyzika = c(2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2),
+  biologie = c(2, 3, 3, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 3))
+Průměr <- (známky$chemie + známky$fyzika + známky$biologie)/3
+Průměr
+```
+
+V rámci statistického zpracování dat se budeme často potýkat nejenom s obyčejným průměrem, ale i rozptylem, směrodatnou odchylkou či korelací. Zatímco však na rozptyl a směrodatnou odchylku, nejste-li statistici, můžete v klidu zapomenout, korelaci byste v této lekci přeskakovat neměli.
+
+```{r, eval=F, echo=T}
+var(Katan$Věk) # příkaz vypočítá rozptyl proměnné Věk
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+var(Katan$Věk)
+```
+
+```{r, eval=F, echo=T}
+sd(Katan$Věk) # příkaz vypočítá směrodatnou odchylku proměnné Věk
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+sd(Katan$Věk)
+```
+
+```{r, eval=F, echo=T}
+cor(Katan$Věk, 
+    Katan$Partie) # příkaz vypočítá korelaci mezi proměnnými Věk a Partie
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+cor(Katan$Věk, 
+    Katan$Partie) 
+```
+
+Korelace označuje sílu vazby mezi dvěma proměnnými, která je charakterizována číslem od nuly do jedné (plusové znaménko značí pozitivní vazbu, negativní zápornou). Pokud se tedy jedna z proměnných pohybuje jedním či druhým směrem, mění se dle síly vazby i ta druhá a naopak. Dávejte si však pozor na to, že z korelace nelze určit kauzalitu, tj. nepoznáme z ní, kdo koho ve skutečnosti ovlivňuje. Dále není možné zapomenout, že přímá vazba mezi proměnnými může být pouze zdánlivá, jelikož zde může působit třetí zprostředkující proměnná.
+
+Podobně jako u funkce `mean()`, bohužel i u korelace nás budou často obtěžovat chybějící hodnoty. V takovém případě však nebude možné využít parametr `na.rm = TRUE`, nýbrž `use = "complete.obs"`. U korelace totiž nepracujeme s jednou, ale dvěma proměnnými.
+
+```{r, eval=F, echo=T}
+cor(
+  Katan$Věk, 
+  Katan$Partie, 
+  use = "complete.obs") 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+cor(
+  Katan$Věk, 
+  Katan$Partie, 
+  use = "complete.obs") 
+```
+
+S obyčejnou korelací velmi těsně souvisí i jeho neparametrická varianta, jež se nazývá Spearmanův korelační koeficient. Ten vypočítáme pomocí následujícího příkazu.
+
+```{r, eval=F, echo=T}
+cor(
+  Katan$Věk, 
+  Katan$Partie, 
+  method = "spearman", 
+  use = "complete.obs")
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+cor(
+  Katan$Věk, 
+  Katan$Partie, 
+  method = "spearman", 
+  use = "complete.obs")
+```
+
+Setkáváte se se Spearmanovým koeficientem poprvé? Spearman nevychází ze samotných hodnot jako běžná korelace, ale z jejich pořadí. Představte si například soutěž v krasobruslení, ve které rozhodují dva rozhodčí, kteří rozdělí dvacet závodnic podle jejich výkonu od nejlepší po nejhorší krasobruslařku. Naším úkolem následně bude zjistit, jak moc byli tito dva rozhodčí ve svém posuzování rozdílní. Nebude nás proto zajímat samotná velikost známky, kterou daná krasobruslařka získala, nýbrž její pořadí mezi ostatními sportovkyněmi. Spearmanův koeficient nicméně stejně jako běžná korelace nabývá hodnot od nuly do jedné (respektive od mínus jedné do jedné, abychom byli naprosto přesní).
+
+```{r, eval=F, echo=T}
+Body <- data.frame(
+  Rozhodčí_Karel = c(1, 5, 3, 2, 12, 15, 4, 7, 8, 11, 
+                     9, 13, 20, 19, 6, 10, 14, 16, 17, 18),
+  Rozhodčí_Jarda = c(1, 4, 3, 5, 11, 15, 2, 8, 13, 12, 
+                     9, 7, 20, 19, 14, 10, 6, 18, 16, 17),
+  Krasobruslařky = c("Barunka", "Karlička", "Zuzanka", "Alžbětka", 
+                     "Petruška", "Jája", "Pája", "Pavlínka", 
+                     "Věruška", "Helča", "Maruška", "Anička", 
+                     "Anežka", "Esterka", "Mariánka", "Verunka", 
+                     "Marfuška", "Boženka", "Jiřinka", "Pepička"))
+# proměnné Rozhodčí obsahují pořadí krasobruslařek dle rozhodčích
+
+cor(
+  Body$Rozhodčí_Karel, 
+  Body$Rozhodčí_Jarda, 
+  method = "spearman", 
+  use = "complete.obs")
+```
+```{r}
+Body <- data.frame(
+  Rozhodčí_Karel = c(1, 5, 3, 2, 12, 15, 4, 7, 8, 11, 
+                     9, 13, 20, 19, 6, 10, 14, 16, 17, 18),
+  Rozhodčí_Jarda = c(1, 4, 3, 5, 11, 15, 2, 8, 13, 12, 
+                     9, 7, 20, 19, 14, 10, 6, 18, 16, 17),
+  Krasobruslařky = c("Barunka", "Karlička", "Zuzanka", "Alžbětka", 
+                     "Petruška", "Jája", "Pája", "Pavlínka", 
+                     "Věruška", "Helča", "Maruška", "Anička", 
+                     "Anežka", "Esterka", "Mariánka", "Verunka", 
+                     "Marfuška", "Boženka", "Jiřinka", "Pepička"))
+cor(
+  Body$Rozhodčí_Karel, 
+  Body$Rozhodčí_Jarda, 
+  method = "spearman", 
+  use = "complete.obs")
+```
+
+Spearmanův korelační koeficient činí 0.84, což značí velice silnou závislost (viz následující tabulka). Jarda s Karlem si proto mohou v klidu podat ruce, jelikož jejich hodnocení krasobruslařek není příliš rozdílné.
+
+```{r, eval=F, echo=T}
+Absolutní    |
+hodnota      | Interpretace
+korelace     | 
+--------------------------------------------
+0.01 – 0.09  | triviální nebo žádná korelace    
+0.10 – 0.29  | nízká korelace
+0.30 – 0.49  | střední korelace
+0.50 – 0.69  | podstatná korelace
+0.70 – 0.89  | velmi silná korelace
+0.90 – 1.00  | téměř perfektní korelace
+```
+
+Pro kontrolu předchozího výpočtu si vypočítejme ještě běžný korelační koeficient. Je-li totiž výše uvedený výsledek správný, měla by hodnota korelačního koeficientu nabývat stejné hodnoty jako u Spearmana. Proč? V příkladu s krasobruslařkami jsme totiž vytvořili data frame, který již obsahoval pořadí závodnic, a nikoliv jejich známky získané od rozhodčích, od nichž by se pořadí teprve odvíjelo.
+
+```{r, eval=F, echo=T}
+cor(
+  Body$Rozhodčí_Karel, 
+  Body$Rozhodčí_Jarda)
+```
+```{r}
+Body <- data.frame(
+  Rozhodčí_Karel = c(1, 5, 3, 2, 12, 15, 4, 7, 8, 11, 
+                     9, 13, 20, 19, 6, 10, 14, 16, 17, 18),
+  Rozhodčí_Jarda = c(1, 4, 3, 5, 11, 15, 2, 8, 13, 12, 
+                     9, 7, 20, 19, 14, 10, 6, 18, 16, 17),
+  Krasobruslařky = c("Alžbětka", "Karlička", "Zuzanka", "Ivonka", 
+                     "Petruška", "Jája", "Pája", "Pavlínka", 
+                     "Verča", "Helča", "Maruška", "Anička", 
+                     "Anežka", "Esterka", "Mariánka", "Věruška", 
+                     "Marfuška", "Boženka", "Jiřinka", "Pepička"))
+cor(
+  Body$Rozhodčí_Karel, 
+  Body$Rozhodčí_Jarda)
+```
+
+Výsledek je stejný, přejděme tedy s klidným srdcem k četnostním tabulkám (table a summary). Před tím se nicméně nezapomeňte podívat na příklady k procvičení. Na závěr ještě zmíním, že statistickým testům bude věnována jedna kompletní lekce v osmé kapitole (Dillí). Máte se věru na co těšit.
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Vypočítejte průměr proměnné Partie z databáze Katan. Uvažujte případ, že máte v databázi chybějící údaje.
+
+> Příklad 2
+
+Vypočítejte minimum a maximum proměnné Partie.
+
+> Příklad 3
+
+Vypočítejte korelační koeficient mezi proměnnými Věk a Děti.
+
+> Příklad 4
+
+Vypočítejte body mass index (hmotnost v kg/výška v m umocněná na druhou) pro následující databázi BMI. Výsledný vektor připojte ke stávající databázi BMI.
+
+```{r, eval=F, echo=T}
+BMI <- data.frame(
+  Hmotnost = c(60, 50, 49, 80, 90, 48, 
+               63, 53, 75, 81),
+  Výška = c(170, 166, 155, 190, 178, 
+            158, 168, 163, 170, 185))
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -75.580032, lat = 6.24822, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -75.580032, lat = 6.24822, 
+            '<h6><a href="https://www.euro.cz/light/zapomente-na-escobara-1450703" target="_blank" style="color:#014B7C">Medellín</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Table a summary
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Lima: Table a summary {.pozadi}
+
+Četnostní tabulky jsou v rámci statistiky zcela nepostradatelnou záležitost. Představte si například, že pracujete s databází, jež obsahuje desetitisíce hodnot o zemědělcích a vy si přejete vědět, kolik jedinců z nich tvoří chovatelé lam (jsme v Peru). Jak na to? Tužka a papír? To jistě ne. Mnohem rychlejší bude využít příkaz `summary()` nebo `table()`. My sice desetitisíce hodnot v naší databázi Katan nemáme, přesto nám `summary()` a `table()`ušetří spoustu času. Podívejme se nejdříve na formát zápisu u `summary()`. V něm však nebudeme řešit lamy, ale muže a ženy.
+
+```{r, eval=F, echo=T}
+summary(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví <- as.factor(Katan$Pohlaví)
+summary(Katan$Pohlaví)
+```
+
+Jak je vidět, Osadníci z Katanu přitahují více osadníků nežli osadnic. Některým z Vás ale výše uvedený příkaz fungovat nebude. V případě, že je totiž proměnná Pohlaví datového typu character a nikoliv faktor, uzříte na svém monitoru následující výstup z konzole.
+
+```{r, eval=F, echo=T}
+summary(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+summary(Katan$Pohlaví)
+```
+
+V rámci příkazu `table()` datový typ proměnné řešit nemusíme. Bude tak pro většinu z nás jistě mnohem přitažlivější.
+
+```{r, eval=F, echo=T}
+table(Katan$Pohlaví) 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Pohlaví)
+```
+
+Jaký výstup nás ale bude očekávat v případě chybějících hodnot v databázi? Podívejme se na rozdíl mezi `summary()` a `table()`.
+
+```{r, eval=F, echo=T}
+# Nejdříve si vytvoříme chybějící hodnoty, a teprve až poté 
+# využijeme summary().
+Katan$Pohlaví[1] <- NA
+summary(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví[1] <- NA
+Katan$Pohlaví <- as.factor(Katan$Pohlaví)
+summary(Katan$Pohlaví)
+```
+
+```{r, eval=F, echo=T}
+Katan$Pohlaví[1] <- NA
+table(Katan$Pohlaví) 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví[1] <- NA
+table(Katan$Pohlaví)
+```
+
+Příkaz `summary()` nám na rozdíl od `table()` ukáže nejenom četnost mužů a žen, ale i počet chybějících hodnot. `Table()` chybějící hodnoty automaticky přeskočí. Ačkoliv je tato skutečnost obecně spíše výhodná, nesmíme na ni zapomenout. Za krátkou chvíli si ukážeme příklad takové situaci, ve které by její opomenutí mohlo způsobit potíže. Prozatím ale pokračujme dál a ukažme si, jak pracuje `table()` u numerických proměnných.
+
+Chceme-li například zjistit počty hráčů Osadníků podle množství sehraných partií, stačí zapsat následující příkaz. Díky němu poznáme, že necelá polovina respondentů naší databáze odehraje za měsíc maximálně dvě partie této úžasné deskové hry.
+
+```{r, eval=F, echo=T}
+table(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Partie)
+```
+
+V případě, že bychom u numerické proměnné použili příkaz `summary()`, získali bychom přehled o základních statistických údajích, tj. průměru, mediánu či jednotlivých kvantilech proměnné (srovnej s předchozí lekcí a příkazem `summary(Katan)`).
+
+```{r, eval=F, echo=T}
+summary(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+summary(Katan$Partie)
+```
+
+Vraťme se však zpět k pohlaví hráčů a hráček Osadníků a pokusme se zjistit jejich jednotlivé podíly v databázi. Kolik procent hráčů tvoří něžné pohlaví? Tak na tuto otázku nám odpoví následující skript.
+
+```{r, eval=F, echo=T}
+table(Katan$Pohlaví)/length(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Pohlaví)/length(Katan$Pohlaví)
+```
+
+Naše genderově nevyvážená databáze obsahuje bohužel pouze 29 % osadnic. Ženy, kde jste?
+
+Stejný formát zápisu lze samozřejmě použít i pro numerickou proměnnou.
+
+```{r, eval=F, echo=T}
+table(Katan$Partie)/length(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Partie)/length(Katan$Partie)
+```
+
+Na scénu opět přichází hypotetická otázka od zvídavého studenta. Je možné výše uvedený příkaz použít i tehdy, máme-li v databázi chybějící hodnoty? Odpověď je jednoduchá, není. Důvod je prostý. Příkaz `table()`, jak již víme, nezapočítává chybějící hodnoty. Příkaz `length()` nicméně tyto hodnoty do délky proměnné započítá. Musíme je tudíž od něj odečíst a to například pomocí příkazu `sum()` či samotného `length()`. Ukažme si vše na proměnné Pohlaví.
+
+```{r, eval=F, echo=T}
+Katan$Pohlaví[1] <- NA
+
+# nejdříve s využitím příkazu length()
+table(Katan$Pohlaví)/length(Katan$Pohlaví[!is.na(Katan$Pohlaví)])
+# Pozor: nelze použít následující příkaz!
+# length(!is.na(Katan$Pohlaví))
+
+# nyní s pomocí sum()
+table(Katan$Pohlaví)/(length(Katan$Pohlaví)-sum(is.na(Katan$Pohlaví)))
+
+# anebo ještě třeba takto, možností je mnoho
+table(Katan$Pohlaví)/sum(!is.na(Katan$Pohlaví))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví[1] <- NA
+table(Katan$Pohlaví)/length(Katan$Pohlaví[!is.na(Katan$Pohlaví)])
+```
+
+V příkazech jste si jistě všimli označení `!is.na` (respektive `is.na`), co znamená? Jedná se o funkci, která dokáže detekovat chybějící hodnoty (respektive nechybějící hodnoty). V případě, že námi zkoumaná proměnná chybějící hodnoty obsahuje a naším cílem je zjistit počet těchto hodnot, využijeme tuto funkci a vložíme ji do příkazu `lenght()` či `sum()`. S funkcí `is.na` se v této lekci ještě potkáme, a to v rámci tzv. logických operátorů.
+
+A jaká je vlastně myšlenka příkazu `length(Katan$Pohlaví[!is.na(Katan$Pohlaví)])`? Příkaz `length(Katan$Pohlaví)` jistě není třeba blíže vysvětlovat. Ten však nelze použít, jelikož by spočítal počet všech hodnot v proměnné Pohlaví, což není naším cílem, protože v této proměnné existují chybějící hodnoty. Z tohoto důvodu bude naším úkolem vymyslet takový zápis, který pro `length()` použije pouze hodnoty rozdílné od NA. S výběrem hodnot jsou spojené hranaté závorky. Pokud bychom například chtěli vybrat první hodnotu z proměnné Pohlaví, zapsali bychom do R `Katan$Pohlaví[1]` (obdobně jako u vektorů). Čísla uvnitř hranatých závorek nám ale pro výběr hodnot rozdílných od NA nepomohou, proto musíme povolat do služby logický vektor, který rozhodne, která z hodnot ve sloupci Pohlaví nabývá NA, a která naopak obsahuje skutečné pozorování. K tomu nám nejlépe poslouží příkaz `!is.na(Katan$Pohlaví)`. Ten následně vložíme do hranatých závorek, z čehož vznikne příkaz `Katan$Pohlaví[!is.na(Katan$Pohlaví)]`.
+
+```{r, eval=F, echo=T}
+!is.na(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví[1] <- NA
+!is.na(Katan$Pohlaví)
+```
+
+```{r, eval=F, echo=T}
+Katan$Pohlaví[!is.na(Katan$Pohlaví)]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví[1] <- NA
+Katan$Pohlaví[!is.na(Katan$Pohlaví)]
+```
+
+Poté už jen stačí tento zápis vložit do `length()` a výsledkem se stává `length(Katan$Pohlaví[!is.na(Katan$Pohlaví)])`. Z tohoto důvodu je vám doufám nyní již jasné, proč nelze použít například funkci `length(!is.na(Katan$Pohlaví))`. S ní si užijete pouze error.
+
+```{r, eval=F, echo=T}
+length(Katan$Pohlaví[!is.na(Katan$Pohlaví)])
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví[1] <- NA
+length(Katan$Pohlaví[!is.na(Katan$Pohlaví)])
+```
+
+Při tvorbě četnostních tabulek, pracujeme-li s numerickými proměnnými, může být výhodné takovouto proměnnou rozdělit do intervalů, čímž vytvoříme faktor. K tomu nám dobře poslouží příkaz `cut()`. Představte si například, že chceme rozdělit hráče podle následujících věkových kategorií (teenager do 18 let, dospělý od 18 do 26 let, dospělý od 26 do 65 let, důchodce od 65 let) a následně zjistit procentuální podíly těchto skupin.
+
+```{r, eval=F, echo=T}
+AgeGroup <- cut(
+	Katan$Věk, 
+	breaks = c(0, 18, 26, 65, 150), 
+	right = FALSE,
+	labels = c("teenager do 18 let", "dospělý od 18 do 26 let", 
+	           "dospělý od 26 do 65 let", "důchodce od 65 let"))
+# right = FALSE znamená, že v případě c(0, 18, 26, 65, 150) 
+# intervaly nabývají hodnot <0, 18);  <18, 26); atd.
+
+# right = TRUE znamená, že v případě c(0, 18, 26, 65, 150) 
+# intervaly nabývají hodnot (0, 18>; (18, 26>; atd.
+                                   
+table(AgeGroup)/length(AgeGroup)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+AgeGroup <- cut(
+	Katan$Věk, 
+	breaks = c(0, 18, 26, 65, 150), 
+	right = FALSE,
+	labels = c("teenager do 18 let", "dospělý od 18 do 26 let", 
+	           "dospělý od 26 do 65 let", "důchodce od 65 let"))
+
+table(AgeGroup)/length(AgeGroup)
+```
+
+Osadníci z Katanu jsou vysoce populární zejména v nejmladší věkové kategorii. O tom svědčí ta skutečnost, že 55,5 % jedinců z naší databáze je mladší 26 let. Na druhou stranu je možné se setkat i s lidmi v důchodovém věku, kteří Osadníkům též propadli.
+
+V příkazech `summary()` a `table()` nezůstanou stranou ani podmínky. Co takhle kupříkladu zjistit, kolik žen nad 25 let naše databáze Katan obsahuje?
+
+```{r, eval=F, echo=T}
+summary(
+	Katan$Pohlaví == "žena" & 
+    Katan$věk > 25)	
+# příkaz shrne výsledky do podoby TRUE a FALSE
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+summary(
+	Katan$Pohlaví == "žena" & 
+  Katan$Věk > 25)
+```
+
+Žen nalezneme v této kategorii pouze deset, na rozdíl od mužů, kterých tu je 79. Srovnáme-li tento výsledek s celkovými počty mužů a žen zvlášť, můžeme usoudit, že ženy po dosažení 26 let ztrácejí o Osadníky zájem. Zatímco muži nad 25 let tvoří přibližně 55 % veškerých mužských hráčů, mezi ženami je to pouhých 17 %.
+
+Podmínky v R tvoříme za pomoci tzv. logických operátorů. Jedním z nich mohou být například dvě rovnítka. Ty použijeme tehdy, chceme-li R sdělit, že z určité proměnné chceme vybrat pouze určité hodnoty, v našem případě pouze ženy. Ampersand, další logický operátor (&), značí to, že se podmínka skládá z více částí, jež musí být současně splněny. Shrnutí logických operátorů můžete vidět v tabulce níže.
+
+```{r, eval=F, echo=T}
+Znak         | Význam
+--------------------------------
+<            | méně než       
+<=           | méně nebo rovno
+>            | větší než
+>=           | větší nebo rovno
+==           | rovno
+!=           | nerovno  
+!x           | ne x
+x & y        | x a y
+x | y        | x nebo y
+```
+
+Stejného výsledku jako v předchozím skriptu můžeme opět dosáhnout i s pomocí příkazu `table()`.
+
+```{r, eval=F, echo=T}
+table(
+	Katan$Pohlaví == "žena" & 
+    Katan$Věk > 25)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk > 25)
+```
+
+Abychom si vyzkoušeli další logické operátory, pokusme se nyní zjistit, kolik mužů v naší databázi pracuje a současně nemá žádné vysokoškolské vzdělání. Bude procento takovýchto jedinců vyšší než u vysokoškoláků?
+
+```{r, eval=F, echo=T}
+table(
+	Katan$Pohlaví == "muž" & 
+    Katan$Práce == "pracuje" &
+    (Katan$Vzdělání == "ZŠ" | Katan$Vzdělání == "SŠ"))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+	Katan$Pohlaví == "muž" & 
+  Katan$Práce == "pracuje" &
+  (Katan$Vzdělání == "ZŠ" | Katan$Vzdělání == "SŠ"))
+```
+
+```{r, eval=F, echo=T}
+table(
+	Katan$Pohlaví == "muž" & 
+    Katan$Práce == "pracuje" &
+    (Katan$Vzdělání == "Bc - VŠ" | Katan$Vzdělání == "VŠ"))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+	Katan$Pohlaví == "muž" & 
+  Katan$Práce == "pracuje" &
+  (Katan$Vzdělání == "Bc - VŠ" | Katan$Vzdělání == "VŠ"))
+```
+
+Bude. Dohromady se v naší databázi objevuje 85 pracujících mužů, z nichž necelých 52 % nemá vysokoškolské vzdělání. Osadníci z Katanu se proto u mužů těší stejné oblibě bez ohledu na vzdělání. A jak to vypadá u žen?
+
+```{r, eval=F, echo=T}
+table(
+	Katan$Pohlaví == "žena" & 
+    Katan$Práce == "pracuje" &
+    (Katan$Vzdělání == "ZŠ" | Katan$Vzdělání == "SŠ"))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+	Katan$Pohlaví == "žena" & 
+  Katan$Práce == "pracuje" &
+  (Katan$Vzdělání == "ZŠ" | Katan$Vzdělání == "SŠ"))
+```
+
+```{r, eval=F, echo=T}
+table(
+	Katan$Pohlaví == "žena" & 
+    Katan$Práce == "pracuje" &
+    (Katan$Vzdělání == "Bc - VŠ" | Katan$Vzdělání == "VŠ"))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+	Katan$Pohlaví == "žena" & 
+  Katan$Práce == "pracuje" &
+  (Katan$Vzdělání == "Bc - VŠ" | Katan$Vzdělání == "VŠ"))
+```
+
+U těch je situace odlišná. Pracujících žen tu máme celkem 22, z nichž pouze 4 nemají žádné vysokoškolské vzdělání. 
+
+Posledním logickým operátorem, který si zde ukážeme, se stane nerovno. S ním už jsme se ale částečně seznámili v rámci příkazu `Katan$Pohlaví[!is.na(Katan$Pohlaví)]`. Máte ve svém RStudiu stále nahraný soubor DirtyKatan s chybějícími hodnotami z předchozí lekce? Pokud ano, podívejme se na další příkaz. V něm budeme chtít zjistit, kolik máme v databázi žen, které vychovávají alespoň jedno dítě a nechybí jim hodnota v rámci proměnné Partie. Jak uvidíte, příliš mnoho jich tu mít nebudeme. Tyto ženy totiž povětšinou na Osadníky z Katanu čas nemají, a proto se také příliš neobjevují v naší databázi. Nevíte někdo, proč tomu tak je?
+
+```{r, eval=F, echo=T}
+table(
+	Katan$Pohlaví == "žena" & 
+    Katan$Děti != 0 &
+    !is.na(Katan$Partie))	
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+	Katan$Pohlaví == "žena" & 
+  Katan$Děti != 0 &
+  !is.na(Katan$Partie))	
+```
+
+Výsledky z příkazu `table()` můžeme následně jednoduše uložit do nově vzniklé proměnné. U příkazu `summary()` můžeme výsledek též uložit, na rozdíl od příkazu `table()` nám nicméně jeho formát neumožní následnou práci s takto vzniklou databází, proto se ve zbytku lekce zaměříme výhradně na `table()`.
+
+```{r, eval=F, echo=T}
+Tabulka <- table(
+    Katan$Pohlaví == "žena" & 
+    Katan$Děti != 0 &
+    !is.na(Katan$Partie))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Tabulka <- table(
+	Katan$Pohlaví == "žena" & 
+  Katan$Děti != 0 &
+  !is.na(Katan$Partie))
+Tabulka
+```
+
+Vyzkoušejme si nyní další variantu příkazu `table()`. V ní budeme chtít zjistit počty mužů a žen, kteří pracují a kteří nikoliv. Současně tak budeme vytvářet četnostní tabulku s celkově čtyřmi údaji.
+
+```{r, eval=F, echo=T}
+Tabulka <- table(
+	Katan$Práce, 
+	Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Tabulka <- table(
+	Katan$Práce, 
+	Katan$Pohlaví)
+Tabulka
+```
+
+Co se však stane, použijeme-li v tuto chvíli příkaz `View(Tabulka)`? Uvidíme to samé jako v konzoli?
+
+```{r, eval=F, echo=T}
+View(Tabulka)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\3.kapitola\TABULKA.png)](#table-a-summary)</p align="center">
+
+Formát tabulky vypadá jinak než v konzoli, což v tomto případě nemusí být vždy úplně vhodné (ačkoliv ve většině případů bude, viz osmá kapitola Kalkata: Tidyr). Co v takovém případě dělat? Bude nutné využít následující příkaz `as.data.frame.matrix()`.
+
+```{r, eval=F, echo=T}
+Tabulka <- 
+     as.data.frame.matrix(Tabulka)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Tabulka <- table(
+	Katan$Práce, 
+	Katan$Pohlaví)
+Tabulka <- 
+     as.data.frame.matrix(Tabulka)
+Tabulka
+```
+
+Nyní je již vše v pořádku. Přesvědčme se však.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\3.kapitola\TABULKA2.png)](#table-a-summary)</p align="center">
+
+<div id="demobox">
+
+<h2>Box: Boxplot</h2>
+
+Ačkoliv bude grafům v R vyhrazena více než celá jedna kapitola, již nyní se podíváme, jak vytvořit zcela jednoduchý krabicový graf, ve kterém využijeme výše diskutovaný příkaz `as.data.frame.matrix()`. 
+
+Náš úkol zní. **V jaké věkové skupině (0 až 17, 18 až 40, 41 až 64, 65 a více) v rámci databáze Katan tvoří kuřáci největší podíl? Graficky znázorni.**
+
+Nejdříve musíme vytvořit novou proměnnou s názvem AgeGroup, která rozdělí osadníky a osadnice do čtyř věkových skupin.
+
+```{r, eval=F, echo=T}
+AgeGroup <- cut(
+	Katan$Věk, breaks = c(0, 17, 40, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17", "18 až 40", "41 až 64", "65 a více"))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+AgeGroup <- cut(
+	Katan$Věk, breaks = c(0, 17, 40, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17", "18 až 40", "41 až 64", "65 a více"))
+head(AgeGroup)
+```
+
+Poté vytvoříme nový soubor MoreData, který bude obsahovat i nově vytvořenou proměnnou AgeGroup. K tomu využijeme příkaz `cbind()`, který prozatím ještě neznáte a jež si blíže představíme v přespříští lekci.
+
+```{r, eval=F, echo=T}
+MoreData <- cbind(Katan, AgeGroup)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+AgeGroup <- cut(
+	Katan$Věk, breaks = c(0, 17, 40, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17", "18 až 40", "41 až 64", "65 a více"))
+
+MoreData <- cbind(Katan, AgeGroup)
+
+head(MoreData)
+```
+
+Následně stvoříme proměnnou Table, která zobrazí počty kuřáků a nekuřáků v dané věkové kategorii.
+
+```{r, eval=F, echo=T}
+Table <- table(MoreData$AgeGroup, MoreData$Kouření)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\3.kapitola\TABULKA4.png)](#table-a-summary)</p align="center">
+
+V této chvíli máme data připravena na příkaz `as.data.frame.matrix()`. Za ním bude následovat kód, pomocí kterého vytvoříme finální datovou tabulku s procenty (FinalData). 
+
+```{r, eval=F, echo=T}
+Table <- as.data.frame.matrix(Table)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\3.kapitola\TABULKA5.png)](#table-a-summary)</p align="center">
+
+```{r, eval=F, echo=T}
+FinalData <- cbind(
+  Table$nekouří/(Table$nekouří + Table$kouří)*100,
+  Table$kouří/(Table$nekouří + Table$kouří)*100)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+AgeGroup <- cut(
+	Katan$Věk, breaks = c(0, 17, 40, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17", "18 až 40", "41 až 64", "65 a více"))
+
+MoreData <- cbind(Katan, AgeGroup)
+
+Table <- table(MoreData$AgeGroup, MoreData$Kouření)
+
+Table <- as.data.frame.matrix(Table)
+
+FinalData <- cbind(
+  Table$nekouří/(Table$nekouří + Table$kouří)*100,
+  Table$kouří/(Table$nekouří + Table$kouří)*100)
+
+FinalData
+```
+
+
+V této chvíli již máme vytvořenou závěrečnou tabulku, ze které bude vycházet náš sloupcový graf. Před tím nicméně bude nutné tabulku ještě transponovat, jelikož chceme mít vždy jeden sloupec pro danou věkovou kategorii.
+
+```{r, eval=F, echo=T}
+FinalData <- t(FinalData)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+AgeGroup <- cut(
+	Katan$Věk, breaks = c(0, 17, 40, 64, 100), 
+	right = TRUE, 
+	labels = c("0 až 17", "18 až 40", "41 až 64", "65 a více"))
+
+MoreData <- cbind(Katan, AgeGroup)
+
+Table <- table(MoreData$AgeGroup, MoreData$Kouření)
+
+Table <- as.data.frame.matrix(Table)
+FinalData <- cbind(
+  Table$nekouří/(Table$nekouří + Table$kouří)*100,
+  Table$kouří/(Table$nekouří + Table$kouří)*100)
+
+FinalData <- t(FinalData)
+
+FinalData
+```
+
+Na úplný závěr vytvoříme samotný graf.
+
+```{r, eval=F, echo=T}
+barplot(FinalData, 
+# parametr col určuje barvy ve sloupcích, ty udáváme ve formátu HEX
+        col = c("#323A85","#FFD900"), 
+# names.arg určí popisky na x-ové ose
+        names.arg = c("0 až 17 let", "18 až 40 let", 
+                      "41 až 64 let", "65 let a více"), 
+# las = 1 určí horizontální směr popisků na osách
+        las = 1)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\3.kapitola\graf_kuraci.png)](#table-a-summary)</p align="center">
+
+A takto vypadá pro rekapitulaci celý skript dohromady. 
+
+```{r, eval=F, echo=T}
+AgeGroup <- cut(
+  Katan$Věk, breaks = c(0, 17, 40, 64, 100), 
+  right = TRUE, 
+  labels = c("0 až 17", "18 až 40", "41 až 64", "65 a více"))
+MoreData <- cbind(Katan, AgeGroup)
+Table <- table(MoreData$AgeGroup, MoreData$Kouření)
+Table <- as.data.frame.matrix(Table)
+FinalData <- cbind(
+  Table$nekouří/(Table$nekouří + Table$kouří)*100,
+  Table$kouří/(Table$nekouří + Table$kouří)*100)
+FinalData <- t(FinalData)
+barplot(FinalData, 
+        col = c("#323A85","#FFD900"), 
+        names.arg = c("0 až 17 let", "18 až 40 let", 
+                      "41 až 64 let", "65 let a více"), 
+        las = 1)
+```
+
+</div>
+
+Pokračujme dalším příkazem funkce `table()`. V něm budeme chtít zjistit počty pracujících podle pohlaví, a to vše podle vzdělání. Oproti předchozímu příkazu tudíž vytvoříme četnostní tabulku rozdělenou podle hodnot ze tří proměnných.
+
+```{r, eval=F, echo=T}
+Tabulka <- table(
+	Katan$Práce, 
+	Katan$Pohlaví, 
+	Katan$Vzdělání)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Tabulka <- table(
+	Katan$Práce, 
+	Katan$Pohlaví, 
+	Katan$Vzdělání)
+Tabulka
+```
+
+Ačkoliv v konzoli vypadá formát souboru Tabulka jako array (pole), přesto zjistíme, že tu stále pracujeme s datovou tabulkou, o čemž svědčí nejenom příkaz `class()`, ale i `View()`.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\3.kapitola\TABULKA3.png)](#table-a-summary)</p align="center">
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 5
+
+Zjistěte procento kuřáků a nekuřáků v databázi Katan.
+
+> Příklad 6
+
+Zjistěte počet žen, které bydlí na koleji a mají děti.
+
+> Příklad 7
+
+Zjistěte počet mužů a žen, kteří bydlí na koleji a kteří nikoliv.
+
+> Příklad 8
+
+Zjistěte, zdali muži chodí procentuálně více do práce než ženy. Vytvořte přehlednou tabulku, která bude zobrazovat tyto sloupce: 
+
+1. nepracuje (počet nepracujících mužů a žen); 
+2. pracuje (počet pracujících mužů a žen); 
+3. celkový počet (počet všech mužů a žen); 
+4. nepracuje_procento (podíl nepracujících mužů a žen);
+5. pracuje_procento (podíl pracujících mužů a žen). 
+
+První řádek by měl charakterizovat muže, druhý ženy.
+
+> Příklad 9
+
+Vytvořte četnostní tabulku mužů a žen podle jejich vzdělání a kouření. 
+
+> Příklad 10
+
+Vytvořte v rámci databáze Katan faktorovou proměnnou Rodič, která bude rozdělovat jedince do čtyř skupin podle proměnné Děti na bezdětný, rodič začátečník (jedno dítě), pokročilý rodič (dvě děti) a zasloužilý rodič (tři a více dětí). Následně zjistěte procentuální zastoupení těchto čtyř skupin.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -77.042755, lat = -12.046373, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -77.042755, lat = -12.046373, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Lima" target="_blank" style="color:#014B7C">Lima</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Filtrace dat
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### La Paz: Filtrace dat {.pozadi}
+
+> Filtrace dat
+
+Práce s daty obsahuje neustálou potřebu údaje různě třídit a filtrovat. Při tom dochází k tvorbě nejenom nových proměnných, ale i celých databází. Pojďme se proto podívat jak na ně. Začneme tím, že se seznámíme s tvorbu logických vektorů ve tvaru TRUE a FALSE.
+
+Následující skript si klade za cíl vytvořit v konzoli vektor (bez vytvoření proměnné), který bude obsahovat tolik hodnot TRUE a FALSE jako databáze Katan. TRUE nastane pouze v případě, bude-li daný řádek databáze Katan obsahovat ženu od 15 do 20 let (včetně), u níž nechybí hodnota pro proměnnou Partie. 
+
+```{r, eval=F, echo=T}
+Katan$Pohlaví == "žena" & 
+Katan$Věk >= 15 & 
+Katan$Věk <= 20 &
+!is.na(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví == "žena" & 
+Katan$Věk >= 15 & 
+Katan$Věk <= 20 &
+!is.na(Katan$Partie)
+```
+
+Chceme-li předchozí vektor uložit, není nic jednoduššího než výsledek přiřadit proměnné s novým jménem, v našem případě FemData.
+
+```{r, eval=F, echo=T}
+FemData <-  
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk >= 15 &
+  Katan$Věk <= 20
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+FemData <-  
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk >= 15 &
+  Katan$Věk <= 20
+FemData
+```
+
+Je-li však naším cílem vytvořit novou databázi, která bude obsahovat pouze ty řádky, jež splňují výše uvedené parametry, bude nutné povolat do služby hranaté závorky. V následujícím příkazu si prosím všimněte čárky uvnitř závorky. Vzhledem k tomu, že budeme postupovat v naší selekci po řádcích, a nikoliv po sloupcích, budou podmínky uvedeny hned za závorkou a teprve až po nich bude následovat čárka. V případě, že za čárkou bude následovat konec závorky, znamená to, že v nové databázi FemData budeme chtít zachovat všechny sloupce z databáze Katan. 
+
+```{r, eval=F, echo=T}
+FemData2<- Katan[
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk > 15 &
+  Katan$Věk <= 20, ]  
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+FemData2<- Katan[
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk > 15 &
+  Katan$Věk <= 20, ]
+FemData2
+```
+
+Pokud bychom nicméně chtěli zachovat pouze první sloupec (proměnnou Partie) a ostatní už nikoliv, vypadal by příkaz následovně.
+
+```{r, eval=F, echo=T}
+FemData2<- Katan[
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk > 15 &
+  Katan$Věk <= 20, 1]  
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+FemData2<- Katan[
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk > 15 &
+  Katan$Věk <= 20, 1]  
+FemData2
+```
+
+Výše uvedený příkaz by bylo možné napsat ještě jedním způsobem. V něm už čárku uvnitř hranaté závorky nenalezneme, jelikož vybíráme pouze z jedné konkrétní proměnné (jednoho sloupce) a nikoliv z celé databáze.
+
+```{r, eval=F, echo=T}
+FemData2 <-
+	Katan$Partie[
+  	Katan$Pohlaví == "žena" & 
+  	Katan$Věk >= 15 &
+  	Katan$Věk <= 20]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+FemData2 <-
+	Katan$Partie[
+  	Katan$Pohlaví == "žena" & 
+  	Katan$Věk >= 15 &
+  	Katan$Věk <= 20]
+FemData2
+```
+
+Filtrovat data samozřejmě nemusíme pouze kvůli tomu, abychom vytvořili novou proměnnou či databázi, ale třeba i za tím účelem, abychom například zjistili věkový průměr dívek, které pracují a mají přitom vysokoškolské vzdělání.
+
+```{r, eval=F, echo=T}
+mean(Katan$Věk[
+	Katan$Pohlaví == "žena" & 
+	Katan$Práce == "pracuje" & 
+	Katan$Vzdělání == "Bc-VŠ" | Katan$Vzdělání == "VŠ"])
+
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+mean(Katan$Věk[
+	Katan$Pohlaví == "žena" & 
+	Katan$Práce == "pracuje" & 
+	Katan$Vzdělání == "Bc-VŠ" | Katan$Vzdělání == "VŠ"])
+```
+ 
+A co muži? Jaký je jejich věkový průměr ve stejné kategorii?
+
+```{r, eval=F, echo=T}
+mean(Katan$Věk[
+	Katan$Pohlaví == "muž" & 
+	Katan$Práce == "pracuje" & 
+	Katan$Vzdělání == "Bc-VŠ" | Katan$Vzdělání == "VŠ"])
+
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+mean(Katan$Věk[
+	Katan$Pohlaví == "muž" & 
+	Katan$Práce == "pracuje" & 
+	Katan$Vzdělání == "Bc-VŠ" | Katan$Vzdělání == "VŠ"])
+```
+
+Vypadá to možná až neuvěřitelně, ale jejich věkový průměr je naprosto totožný jako u žen.
+
+> Třídění dat
+
+Máte rádi, když jsou data v databázi hezky seřazena podle velikosti? Ukažme si nyní, jak lze seřadit naši databázi Katan podle proměnné Partie, následně dle Věku a v závěru podle Pohlaví od nejmenší po největší hodnoty (respektive dle abecedy).
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan[order(Katan$Partie, Katan$Věk, Katan$Pohlaví), ]
+# pokud chceme od největší po nejmenší, použijeme parametr decreasing = TRUE
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- Katan[order(Katan$Partie, Katan$Věk, Katan$Pohlaví), ]
+Katan2
+```
+
+Příkaz `order()` nicméně dokáže mnohem víc. Následující kód nám proto ukáže, kterak lze vytvořit vektor, který bude obsahovat jednotlivá pořadí (nikoliv samotné hodnoty) určité proměnné od nejmenší hodnoty po tu největší. Pro bližší názornost, první číslo ve vektoru Order nabývá hodnoty 90, protože v databázi Katan nalezneme nejnižší hodnotu proměnné Partie právě na 90. místě. V případě, že je stejných hodnot více, dostane přednost vždy ta nejdřívější.
+
+```{r, eval=F, echo=T}
+Order <- order(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Order <- order(Katan$Partie)
+Order
+```
+
+Poslední příkaz, který si tu v této lekci ukážeme, se nazývá `sort()`. Ten na rozdíl od `order()` vytvoří vektor se samotnými hodnotami seřazenými od těch nejmenších po největší.
+
+```{r, eval=F, echo=T}
+Sort <- sort(Katan$Partie)
+# pokud chceme hodnoty v opačném pořadí, použijeme funkci decreasing = TRUE
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Sort <- sort(Katan$Partie)
+Sort
+```
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 11
+
+Vytvořte logický vektor, kde TRUE značí muže do 25 let, který odehraje za měsíc alespoň 5 partií deskové hry Osadníci z Katanu.
+
+> Příklad 12
+
+Vytvořte novou databázi Katan2, která bude obsahovat pouze ženy do 25 let, které kouří a odehrají alespoň 3 partie deskové hry Osadníci z Katanu. Výslednou databázi seřaďte podle Věku od nejstarší slečny po nejmladší.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -68.119293, lat = -16.489689, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -68.119293, lat = -16.489689, 
+            '<h6><a href="https://en.wikipedia.org/wiki/La_Paz" target="_blank" style="color:#014B7C">La Paz</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Kombinace dat
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Buenos Aires: Kombinace dat {.pozadi}
+V rámci R se budeme nezřídka kdy setkávat s potřebou propojování (a odstraňování) proměnných v data frame. Jak na to se naučíme právě nyní v Buenos Aires. Začneme tím, že si vytvoříme logický vektor, který bude obsahovat TRUE pro muže, kteří chodí do práce. Naším následujícím úkolem bude tento vektor připojit ke stávající databázi Katan. K tomu využijeme příkaz `cbind()` (c označuje sloupec - column).
+
+```{r, eval=F, echo=T}
+MenWork <-  
+  Katan$Pohlaví == "muž" & 
+  Katan$Práce == "pracuje"
+  MoreData <- cbind(Katan, MenWork)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+MenWork <-  
+  Katan$Pohlaví == "muž" & 
+  Katan$Práce == "pracuje"
+  MoreData <- cbind(Katan, MenWork)
+  MoreData[1:6,]
+```
+
+Výše uvedené dva příkazy (tvorbu vektoru a následné použití příkazu `cbind()`) lze provést dokonce i dohromady.
+
+```{r, eval=F, echo=T}
+MoreData2 <- cbind(
+  Katan,
+	MenWork =  
+    Katan$Pohlaví == "muž" & 
+    Katan$Práce == "pracuje")
+```
+
+Na druhou stranu zde existuje ještě jeden mnohem triviálnější příkaz než `cbind()`. Vezměme si do úvahy opět vektor MenWork, který stojí mimo databázi Katan. Pro jeho přidání ke Katanu lze využít i následující styl zápisu.
+
+```{r, eval=F, echo=T}
+Katan$MenWork <- MenWork
+```
+
+Takovýto formát velice elegantně přidá vektor MenWork jako další proměnnou databáze Katan (na pozici posledního sloupce).
+ 
+Kromě příkazu `cbind()` nesmíme zapomenout ani na `paste()`. Ten na rozdíl od `cbind()` spojuje stávající vektory či sloupce data frame přímo do sebe, a vytváří tak zcela nový vektor hodnot.
+
+```{r, eval=F, echo=T}
+AgeGender <- paste(
+	Katan$Věk, 
+	Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+AgeGender <- paste(
+	Katan$Věk, 
+	Katan$Pohlaví)
+head(AgeGender)
+```
+
+Chceme-li mezi proměnné vložit určitý znak, např. podtržítko, využijeme parametr s názvem `sep`.
+
+```{r, eval=F, echo=T}
+AgeGender <- paste(
+	Katan$Věk, 
+	Katan$Pohlaví,
+	sep = "_")
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+AgeGender <- paste(
+	Katan$Věk, 
+	Katan$Pohlaví,
+	sep = "_")
+head(AgeGender)
+```
+
+Příkazy `paste()` a `cbind()` lze opět zkombinovat v jeden příkaz.
+
+```{r, eval=F, echo=T}
+Katan2 <- cbind(
+	Katan,
+	AgeGender = paste(
+		Katan$Věk, 
+		Katan$Pohlaví))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- cbind(
+	Katan,
+	AgeGender = paste(
+		Katan$Věk, 
+		Katan$Pohlaví))
+head(Katan2)
+```
+
+Bratrem příkazu `cbind()` je `rbind()`, který spojuje databáze po řádcích. Jeho praktické využití může být například v tom, máme-li za cíl připojit ke stávající databázi nové řádky, například nově získaná data od dalších respondentů. Vytvořme si proto novou databázi KatanNEW, která bude obsahovat dvě pozorování pro všech devět proměnných databáze Katan. Tu následně připojíme ke stávající databázi Katan.
+
+```{r, eval=F, echo=T}
+KatanNEW <- data.frame(
+  Partie = c(2, 3),
+  Věk = c(20, 30),
+  Pohlaví = c("muž", "muž"),
+  Vzdělání = c("SŠ", "SŠ"),
+  Kolej = c("ne", "ne"),
+  Práce = c("pracuje", "pracuje"),
+  Děti = c(0, 1),
+  Kouření = c("nekouří", "nekouří"),
+  Klub = c("nečlen", "nečlen"))
+
+Katan <- rbind(Katan, KatanNEW)
+tail(Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- data.frame(
+  Partie = c(2, 3),
+  Věk = c(20, 30),
+  Pohlaví = c("muž", "muž"),
+  Vzdělání = c("SŠ", "SŠ"),
+  Kolej = c("ne", "ne"),
+  Práce = c("pracuje", "pracuje"),
+  Děti = c(0, 1),
+  Kouření = c("nekouří", "nekouří"),
+  Klub = c("nečlen", "nečlen"))
+Katan <- rbind(Katan, Katan2)
+tail(Katan)
+```
+
+Použili jste někdy v Excelu příkaz svyhledat? Představte si, že máte dvě databáze, které chcete vzájemně propojit. První tabulka například obsahuje jméno, příjmení studenta a jeho identifikační číslo UČO. Ta druhá zahrnuje známky z matematiky, dějepisu a též UČO, které je pojítkem obou databází. Vaším cílem je spojit tyto databáze do jedné, jež bude obsahovat celkem pět sloupců (jméno, příjmení, UČO, matematika a dějepis).
+
+```{r, eval=F, echo=T}
+data1 <- 
+  data.frame(
+    UČO = c(39, 45, 50, 60, 70, 
+            89, 40, 65, 44, 77),
+    jméno = c("Petr", "Ondřej", "Jana", "Eva", "David", 
+              "Alois", "Filip", "Magda", "Bára", "Jakub"),
+    příjmení = c("Novák", "Dvořák", "Nováková", "Dvořáková", "Svoboda", 
+                 "Novotný", "Černý", "Svobodová", "Procházková", "Kučera")) 
+
+data2 <- 
+  data.frame(
+    UČO = c(45, 39, 77, 60, 70, 
+            89, 65, 40, 44, 50),
+    matematika = c(1, 2, 2, 3, 4, 
+                   5, 3, 1, 2, 2),
+    dějepis = c(2, 1, 2, 4, 1, 
+                5, 1, 1, 3, 1)) 
+
+MergeData <-
+  merge(data1, data2[ , c("UČO", "matematika", "dějepis")], by = "UČO")
+```
+```{r}
+data1 <- 
+  data.frame(
+    UČO = c(39, 45, 50, 60, 70, 
+            89, 40, 65, 44, 77),
+    jméno = c("Petr", "Ondřej", "Jana", "Eva", "David", 
+              "Alois", "Filip", "Magda", "Bára", "Jakub"),
+    příjmení = c("Novák", "Dvořák", "Nováková", "Dvořáková", "Svoboda", 
+                 "Novotný", "Černý", "Svobodová", "Procházková", "Kučera")) 
+data1
+
+data2 <- 
+  data.frame(
+    UČO = c(45, 39, 77, 60, 70, 
+            89, 65, 40, 44, 50),
+    matematika = c(1, 2, 2, 3, 4, 
+                   5, 3, 1, 2, 2),
+    dějepis = c(2, 1, 2, 4, 1, 
+                5, 1, 1, 3, 1)) 
+data2
+
+MergeData <-
+  merge(data1, data2[ , c("UČO", "matematika", "dějepis")], by = "UČO")
+MergeData
+```
+
+K souboru data1, který obsahuje údaje o jméně, příjmení a UČu, byla přiřazena databáze data2 se sloupci matematika a dějepis. Sloupec UČO znovu přiřazen nebude a zůstane v nové databázi MergeData pouze jednou. Pozor však na to, aby v obou souborech byl název proměnné, vzhledem ke které dojde ke spojení, stejný, a to včetně velikosti písmen. 
+
+Přidávat nové proměnné do data frame umíme. Co ale opačný případ? Vzpomenete si na jednu z možností odebrání proměnné, se kterou jsme se seznámili již v předchozí kapitole?
+
+```{r, eval=F, echo=T}
+LessData <- Katan[ ,-(6)]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+LessData <- Katan[ ,-(6)]
+head(LessData)
+```
+
+Následující příkaz už ale jistě neznáte. V něm totiž nebudeme využívat pořadí proměnné v databázi, ale jejího názvu.
+
+```{r, eval=F, echo=T}
+Katan$Práce <- NULL
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Práce <- NULL
+head(Katan)
+```
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 13
+
+Vytvořte proměnnou s názvem Pohlaví_Vzdělání, která v sobě bude obsahovat údaje z obou těchto proměnných. Tuto proměnnou následně připojte k databázi Katan.
+
+> Příklad 14
+
+Výše uvedenou proměnnou Pohlaví_Vzdělání odstraňte z databáze Katan2.
+
+> Příklad 15
+
+Vytvořte Databázi A, která obsahuje dvě proměnné. Tou první bude proměnná ID, jež obsahuje čísla od jedné do 30 (náhodně uspořádaná, na příkaz 1:30 tudíž zapomeňte). Tou druhou proměnnou bude zeměpis, která obsahuje náhodný vektor známek z písemky. Následně vytvořte obdobnou Databázi B, která bude naopak obsahovat známky z matematiky. Vaším úkolem bude tyto dvě databáze spojit podle proměnné ID. A aby to nebylo tak jednoduché, známky z jednotlivých předmětů se budou vyskytovat s následující pravděpodobností (1: 30 %; 2: 50 %; 3: 10 %; 4: 5 %; 5: 5 %). Jak je vidět, pan učitel byl velice mírný.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -58.381592, lat = -34.603722, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -58.381592, lat = -34.603722, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Buenos_Aires" target="_blank" style="color:#014B7C">Buenos Aires</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Rodina apply
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Rio de Janeiro: Rodina apply {.pozadi}
+Společnou vlastností příkazů `apply()` a `tapply()` je schopnost aplikovat funkci na vybrané části datového souboru bez použití cyklu, což má výhody v přehlednosti i rychlosti výpočtu. Co se však za touto tajuplnou větou skrývá? Odpověď nenalezneme v temných zákoutích Ria, ale v této lekci. Stejně jako v těch předchozích, i nyní bude nejrychlejší si vše ukázat na konkrétních příkladech. Nejdříve si však vytvořme vzorovou matici, kterou použijeme na ukázku příkazu `apply()`, který se pojí právě s maticemi.
+
+```{r, eval=F, echo=T}
+# vzorová matice
+matice <- matrix(c(1:9), nrow = 3, byrow = TRUE)
+```
+```{r}
+matice <- matrix(c(1:9), nrow = 3, byrow = TRUE)
+matice
+```
+
+Naším prvním úkolem bude vypočítat průměry ve všech sloupcích matice s názvem matice.
+
+```{r, eval=F, echo=T}
+apply(matice, MARGIN = 2, FUN = mean)	
+# margin = 1 znamená počítání po řádcích
+# příkaz lze zapsat i jako apply(matice, 2, mean)
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+apply(matice, MARGIN = 2, FUN = mean)
+```
+
+Nechceme-li počítat průměry ve všech sloupcích, ale třeba pouze v prvních dvou, použijeme staré dobré hranaté závorky.
+
+```{r, eval=F, echo=T}
+apply(matice[ ,1:2], MARGIN = 2, FUN = mean) 	
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+apply(matice[ ,1:2], 2, mean) 	
+```
+
+I v matici se nám občas může stát, že nám budou chybět některá data. Pro takový případ tu máme připraven parametr `na.rm = TRUE`, se kterým jsme se již v této kapitole seznámili (viz Statistika 0).
+
+```{r, eval=F, echo=T}
+apply(matice, MARGIN = 2, FUN = mean, na.rm = TRUE)	
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+apply(matice, 2, mean, na.rm = TRUE)	
+```
+
+V rodině funkcí `apply()` nalezneme i další sourozence. Jedná se například o funkce `sapply(), vapply(), lapply() či mapply()`. My se však seznámíme pouze s `tapply()`, který na rozdíl od předchozích příkazů bude mít nejpraktičtější využití, jelikož ho využijeme v rámci data frame. Představte si například, že chcete vypočítat průměr u proměnné Věk. Žádný problém. Co když ale následně budete chtít vypočítat průměr zvlášť u mužů a žen? A co když budete chtít zajít ještě dál a vaším cílem bude zjistit věkový průměr nejenom podle pohlaví, ale i podle toho, zdali jedinci chodí do práce či nikoliv? Bude se vám chtít neustále vypisovat nové a nové řádky skriptu pro `mean()` nebo byste raději napsali jeden jednoduchý příkaz? V případě, že preferujete druhou možnost, je funkce `tapply()` pro vás jako stvořena. Podívejme se, jak lze výše diskutovaný příklad jednoduše vyřešit. Začneme tím, že vypočítáme věkové průměry podle pohlaví.
+
+```{r, eval=F, echo=T}
+tapply(
+	Katan$Věk, 
+	Katan$Pohlaví, 
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)	
+# příkaz simplify zjednoduší formát zobrazení výsledku
+# na.rm = TRUE využijeme tehdy, pokud máme v datech chybějící hodnoty 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+tapply(
+	Katan$Věk, 
+	Katan$Pohlaví, 
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)	
+```
+
+Průměrný věk mužů v našem souboru dat je o více než sedm let vyšší než u žen. To je dáno zejména tím, že muži na rozdíl od žen nepřestávají hrát Osadníky z Katanu ani po dosažení 26 let (viz table a summary). Zkusme nyní tento výrok dokázat pomocí `tapply()`. K tomu budeme potřebovat napsat skript, který nám vypočítá průměrný věk podle pohlaví pro jedince, kteří ještě nedosáhli 26 let.
+
+```{r, eval=F, echo=T}
+# Nejdříve vytvoříme vyfiltrovanou databázi Katan25 a poté 
+# použijeme samotný příkaz tapply().
+Katan25 <- Katan[Katan$Věk < 26, ]  
+tapply(
+	Katan25$Věk, 
+	Katan25$Pohlaví,
+	FUN = mean, 
+	simplify = TRUE)
+
+# podmínku lze vtělit i přímo do tapply() (viz další text)
+tapply(
+  Katan$Věk,
+  list(Katan$Pohlaví, 
+       Katan$Věk < 26),
+  FUN = mean, 
+  simplify = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan25 <- Katan[Katan$Věk < 26, ]  
+tapply(
+	Katan25$Věk, 
+	Katan25$Pohlaví,
+	FUN = mean, 
+	simplify = TRUE)
+
+tapply(
+  Katan$Věk,
+  list(Katan$Pohlaví, 
+       Katan$Věk < 26),
+  FUN = mean, 
+  simplify = TRUE)
+```
+
+Zde naopak vidíme, že ve věkové skupině do 26 let je průměrný věk žen dokonce o několik měsíců vyšší. Předchozí výrok byl tudíž pravdivý.
+
+V případě, že chceme výsledky rozdělit nejenom podle jedné, ale i více proměnných (nyní podle proměnné Pohlaví a Práce), použijeme datovou strukturu list. V rámci takového listu lze využít i podmínek (viz předchozí skript).
+
+```{r, eval=F, echo=T}
+tapply(
+	Katan$Věk,
+	list(Katan$Pohlaví, 
+	     Katan$Práce),
+	FUN = mean, 
+	simplify = TRUE)
+```
+```{r}
+tapply(
+	Katan$Věk,
+	list(Katan$Pohlaví, 
+	Katan$Práce),
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+
+Výsledky výše uvedeného příkazu opět potvrzují naše dřívější zjištění. Ženy na rozdíl od mužů nemají na Osadníky z Katanu čas. 
+
+Nevlastním bratrem příkazu `tapply()` je funkce `aggregate()`. Ta je navržena tak, aby pracovala na více sloupcích s jednou funkcí a vrátila nám data frame s jedním řádkem pro každou kategorii. Zatímco funkce `tapply()` je navržena tím způsobem, aby fungovala na jediném vektoru s výsledky vrácenými jako matice nebo pole. 
+
+Takto bych to též nepochopil (dovolil jsem si použít větu z nejmenované učebnice), proto nezoufejme a podívejme se na následující příkazy. V prvním z nich se podobně jako u `tapply()` podíváme na to, jaké jsou věkové průměry našich osadníků podle pohlaví, kouření a jejich pracovního nasazení.
+
+```{r, eval=F, echo=T}
+aggregate(Katan$Věk,
+	list(Katan$Pohlaví,
+	     Katan$Kouření,
+	     Katan$Práce),
+	FUN = mean, 
+	simplify = TRUE,
+	na.rm = TRUE)
+# Příkaz funguje obdobně jako funkce tapply(), pouze vše 
+# agreguje do přehledné tabulky data frame (na rozdíl 
+# od tapply()). Výhodné zvlášť v případě, pokud máme v 
+# příkazu více položek, podle kterých se objekt (Věk) 
+# třídí (Pohlaví, Kouření, Práce).
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+aggregate(Katan$Věk,
+	list(Katan$Pohlaví,
+	  Katan$Kouření,
+	  Katan$Práce),
+	FUN = mean, 	
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+
+V příkazu `aggregate()` lze využít podmínek stejně jako u `tapply()`. Oproti předchozímu skriptu však budeme chtít, aby naše věkové průměry byly roztříděny i podle toho, zdali je náš osadník z databáze Katan hrdým otcem či matkou (a je mu zákonných 18 let!).
+
+```{r, eval=F, echo=T}
+aggregate(
+	Katan$Věk,
+	list(Katan$Pohlaví, 
+	  Katan$Kouření, 
+	  Katan$Práce, 
+	  Katan$Věk >= 18 &
+	    Katan$Děti >= 1),
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+aggregate(
+	Katan$Věk,
+	list(Katan$Pohlaví, 
+	Katan$Kouření, 
+	Katan$Práce, 
+	Katan$Věk >= 18 &
+	  Katan$Děti >= 1),
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+
+Nejstaršího věkového průměru dosahují pracující muži kuřáci a otcové od rodin, zatímco nejmladší jsou bezdětné nepracující ženy nekuřačky. Pro většinu z nás nejspíš žádné významné překvapení.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 16
+
+Vypočítejte průměr proměnné Partie podle pohlaví a vzdělání.
+
+> Příklad 17
+
+Vypočítejte medián proměnné Věk podle pohlaví a kouření.
+
+> Příklad 18
+
+Vypočítejte průměr proměnné Partie podle pohlaví a vzdělání u jedinců, kteří mají alespoň jedno dítě.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.5.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -43.172897, lat = -22.906847, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -43.172897, lat = -22.906847, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Rio_de_Janeiro" target="_blank" style="color:#014B7C">Rio de Janeiro</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Funkce
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Fortaleza: Funkce {.pozadi}
+Nenašli jste prozatím funkci, kterou jste hledali? Napište si ji sami. Stačí si prostudovat několik následujících odstavců, které tu jsou pro vás připraveny ve Fortaleze, o níž jste nejspíš nikdy neslyšeli, navzdory tomu, že patří mezi sto největších měst na světě.
+
+Pamatujete si ze školy, jak se počítá obsah a obvod kruhu? Určitě, i když nezastírejte, že jste chvíli museli přemýšlet nebo v horším případě googlit. A pokud už jste v tom, podívejte na následující <a href="https://www.youtube.com/watch?v=hWRIKYwtC18&t=22s" target="_blank">video</a>, v němž možná konečně pochopíte, kde se tu ty vzorečky vlastně vzaly. My však přemýšlení nemáme příliš v oblibě, proto si napíšeme následující skript, který bude po zadání poloměru vše počítat za nás.
+
+```{r, eval=F, echo=T}
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+	return(c("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+kruh(4) 
+```
+```{r}
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+	return(c("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+kruh(4) 
+```
+
+Naše funkce se jmenuje zcela stylově kruh. Jelikož se ale jedná o funkci novou, kterou R prozatím nezná, musíme uvést příkaz `function()` a do závorky jeho parametr, jenž v našem případě bude značit poloměr r. Následuje složená závorka, do které zapíšeme samotné příkazy nové funkce kruh. Tím prvním bude vzoreček pro výpočet obsahu a tím druhým pro výpočet obvodu. Každá funkce musí mít svůj výstup, proto ještě do složené závorky nezapomeneme zapsat příkaz `return()` podle výše uvedeného vzoru. Závorku uzavřeme a příkaz vyzkoušíme. Funguje. Ale co když nechceme vypočítat obvod a obsah pouze pro jeden údaj poloměru, ale třeba pro celý dlouhý vektor poloměrů? Vyzkoušejme.
+
+```{r, eval=F, echo=T}
+x <- 1:4 	# vektor poloměrů
+kruh(x)
+```
+```{r}
+x <- 1:4 	
+kruh(x)
+```
+
+Výsledek tu sice máme, výstup nicméně nevypadá příliš reprezentativně. Co s tím? Místo příkazu `c()` zkusíme do příkazu `return(c(Obvod = obvod, Obsah = obsah))` vepsat list či ještě lépe data.frame.
+
+```{r, eval=F, echo=T}
+# list
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+	return(list("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+x <- 1:4
+kruh(x)
+
+# data.frame
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+	return(data.frame("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+x <- 1:4
+kruh(x)
+```
+```{r}
+print('List')
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+	return(list("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+x <- 1:4
+kruh(x) 
+
+print('Data frame')
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+	return(data.frame("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+x <- 1:4
+kruh(x)
+```
+
+Tento výstup vypadá již o poznání lépe. Nezapomeňme ho proto uložit do naší nové proměnné KRUH. A aby bylo vše tak jak má být, doplníme datovou tabulku o sloupec s hodnotami poloměrů a ten přesuneme na první pozici.
+
+```{r, eval=F, echo=T}
+KRUH <- kruh(x)
+KRUH <- cbind(KRUH, x)
+# nyní ještě přejmenujeme proměnnou x na Poloměr
+colnames(KRUH)[3] <- "Poloměr"
+# a tu přesuneme na první místo v data frame
+KRUH <- KRUH[ , c(3, 1, 2)]
+```
+```{r}
+kruh <- function(r) {
+	obvod <- 2*pi*r
+	obsah <- pi*r^2
+return(data.frame("Obvod kruhu" = obvod, "Obsah kruhu" = obsah))
+}
+x <- 1:4
+KRUH <- kruh(x)
+KRUH <- cbind(KRUH, x)
+colnames(KRUH)[3] <- "Poloměr"
+KRUH <- KRUH[ , c(3, 1, 2)]
+KRUH
+```
+
+Na závěr se ještě podívejme do pravého horního panelu, kde nám k sekci values a data nově přibyla sekce functions s naší nově vytvořenou funkcí kruh. Z toho nepřímo vyplývá, že naše funkce bude v R fungovat pouze v rámci právě otevřené relace RStudia. Po jejím ukončení funkce z R zmizí. Uložit ji nicméně lze velice jednoduše jako skript.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 19
+
+Vytáhněte si rukávy, je tu pro vás připraven jeden docela komplikovaný příklad. Vaším úkolem bude vytvořit funkci s názvem mzdová_kalkulačka. Ta po udání hrubé mzdy vypočítá náklady zaměstnance na sociální pojištění, zdravotní pojištění a daň z příjmů fyzických osob. 
+
+Následně vytvořte tři náhodné vektory o sto položkách hodnot, které budou obsahovat údaje o hrubé mzdě, počtu dětí a manželce (nebo manželovi), jejíž (jehož) příjem je nižší než 68 000 Kč za rok (1: ano, 0: ne). Poté pomocí funkce mzdová_kalkulačka vypočítejte výše uvedená pojištění a daň z příjmů. Závěrem vytvořte data frame, který bude obsahovat sedm sloupců: hrubá mzda, čistá mzda, počet dětí, manžel(ka), sociální pojištění, zdravotní pojištění a daň z příjmů.
+
+Pozn. sociální pojištění: 6,5 % z hrubé mzdy; zdravotní pojištění: 4,5 % z hrubé mzdy; daň z příjmů: 15 % ze **superhrubé mzdy**; superhrubá mzda: hrubá mzda * 1,34; daňová sleva na každého poplatníka: 2 070 Kč; daňová sleva na manžela(ku): 2 070 Kč; daňová sleva na dítě: 1. dítě = 1 267 Kč měsíčně, 2. dítě = 1 617 Kč, 3. a každé další dítě = 2 017 Kč. 
+
+Pro zjednodušení uvažujte, že sleva na dítě činí 1 500 Kč na všechny děti. Dosud jsme totiž neprobírali podmínku IF, bez jejíž pomoci byste tento problém nemohli vyřešit. Ta se stane předmětem našeho zájmu v příští kapitole.
+
+V příkladu se nezapomeňte vypořádat s tím, že sleva na poplatníka a manželku může snížit daň maximálně na nulu, zatímco slevy na dítě se mohou přetvořit v tzv. daňový bonus, tj. daň může být záporná. Uveďme si příklad. Daň z příjmů byla u jedince, jenž má nárok na slevu na manželku, vypočítána na hodnotu 3 000 Kč. Sleva na poplatníka a manželku činí dohromady 4 140 Kč. Daň však nemůže jít do záporných hodnot, proto bude činit nula. V případě, že ale takový člověk měl například dvě děti, bude mu vypočítán daňový bonus ve výši 2 884 Kč (respektive v našem příkladu 3 000 Kč).
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/3.kapitola/3.6.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -38.526997, lat = -3.732714, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -38.526997, lat = -3.732714, 
+            '<h6><a href="https://en.wikipedia.org/wiki/Fortaleza" target="_blank" style="color:#014B7C">Fortaleza</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+Vypočítejte průměr proměnné Partie z databáze Katan. Uvažujte případ, že máte v databázi chybějící údaje.
+
+```{r, eval=F, echo=T}
+mean(Katan$Partie, na.rm = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+mean(Katan$Partie, na.rm = TRUE)
+```
+
+> Příklad 2
+
+Vypočítejte minimum a maximum proměnné Partie.
+
+```{r, eval=F, echo=T}
+range(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+range(Katan$Partie)
+```
+
+> Příklad 3
+
+Vypočítejte korelační koeficient mezi proměnnými Věk a Děti.
+
+```{r, eval=F, echo=T}
+cor(
+  Katan$Věk, 
+  Katan$Děti, 
+  use = "complete.obs") 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+cor(
+  Katan$Věk, 
+  Katan$Děti, 
+  use = "complete.obs") 
+```
+
+> Příklad 4
+
+Vypočítejte body mass index (hmotnost v kg/výška v m umocněná na druhou) pro následující databázi BMI. Výsledný vektor připojte ke stávající databázi BMI.
+
+```{r, eval=F, echo=T}
+BMI <- data.frame(
+  Hmotnost = c(60, 50, 49, 80, 90, 48, 63, 53, 75, 81),
+  Výška = c(170, 166, 155, 190, 178, 158, 168, 163, 170, 185))
+```
+
+
+```{r, eval=F, echo=T}
+bmi <- BMI$Hmotnost/((BMI$Výška/100)^2)
+BMI$bmi <- BMI 
+```
+```{r}
+BMI <- data.frame(
+  Hmotnost = c(60, 50, 49, 80, 90, 48, 63, 53, 75, 81),
+  Výška = c(170, 166, 155, 190, 178, 158, 168, 163, 170, 185))
+bmi <- BMI$Hmotnost/((BMI$Výška/100)^2)
+BMI$bmi <- bmi
+BMI
+```
+
+> Příklad 5
+
+Zjistěte procento kuřáků a nekuřáků v databázi Katan.
+
+```{r, eval=F, echo=T}
+table(Katan$Smoke)/length(Katan$Smoke)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Kouření)/length(Katan$Kouření)
+```
+
+> Příklad 6
+
+Zjistěte počet žen, které bydlí na koleji a mají děti.
+
+```{r, eval=F, echo=T}
+table(
+  Katan$Pohlaví == "žena" &
+  Katan$Kolej == "ano" &
+  Katan$Děti != 0)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(
+  Katan$Pohlaví == "žena" &
+  Katan$Kolej == "ano" &
+  Katan$Děti != 0)
+```
+
+> Příklad 7
+
+Zjistěte počet mužů a žen, kteří bydlí na koleji a kteří nikoliv.
+
+```{r, eval=F, echo=T}
+table(Katan$Pohlaví, Katan$Kolej)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Pohlaví, Katan$Kolej)
+```
+
+> Příklad 8
+
+Zjistěte, zdali muži chodí procentuálně více do práce než ženy. Vytvořte přehlednou tabulku, která bude zobrazovat tyto sloupce: 
+
+1. nepracuje (počet nepracujících mužů a žen); 
+2. pracuje (počet pracujících mužů a žen); 
+3. celkový počet (počet všech mužů a žen); 
+4. nepracuje_procento (podíl nepracujících mužů a žen);
+5. pracuje_procento (podíl pracujících mužů a žen). 
+
+První řádek by měl charakterizovat muže, druhý ženy.
+
+```{r, eval=F, echo=T}
+TABULKA <- as.data.frame.matrix(table(Katan$Pohlaví, Katan$Práce))
+TABULKA$počet <- TABULKA$pracuje + TABULKA$nepracuje
+TABULKA$nepracuje_procento <- round((TABULKA$nepracuje/TABULKA$počet)*100)
+TABULKA$pracuje_procento <- round((TABULKA$pracuje/TABULKA$počet)*100)
+```
+```{r}
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+TABULKA <- as.data.frame.matrix(table(Katan$Pohlaví, Katan$Práce))
+TABULKA$počet <- TABULKA$pracuje + TABULKA$nepracuje
+TABULKA$nepracuje_procento <- round((TABULKA$nepracuje/TABULKA$počet)*100)
+TABULKA$pracuje_procento <- round((TABULKA$pracuje/TABULKA$počet)*100)
+TABULKA
+```
+
+> Příklad 9
+
+Vytvořte četnostní tabulku mužů a žen podle jejich vzdělání a kouření.
+
+```{r, eval=F, echo=T}
+TABULKA <- table(
+    Katan$Pohlaví, 
+    Katan$Vzdělání, 
+    Katan$Kouření)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+TABULKA <- table(
+    Katan$Pohlaví, 
+    Katan$Vzdělání, 
+    Katan$Kouření)
+TABULKA
+```
+
+> Příklad 10
+
+Vytvořte v rámci databáze Katan faktorovou proměnnou Rodič, která bude rozdělovat jedince do čtyř skupin podle proměnné Děti na bezdětný, rodič začátečník (jedno dítě), pokročilý rodič (dvě děti) a zasloužilý rodič (tři a více dětí). Následně zjistěte procentuální zastoupení těchto čtyř skupin.
+
+```{r, eval=F, echo=T}
+Rodič <- cut(
+	Katan$Děti, 
+	breaks = c(0, 1, 2, 10), 
+	right = FALSE,
+	labels = c("bezdětný", "rodič začátečník", 
+	           "pokročilý rodič", "zasloužilý rodič"))
+
+table(Rodič)/length(Rodič)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Rodič <- cut(
+	Katan$Děti, 
+	breaks = c(0, 1, 2, 3, 10), 
+	right = FALSE,
+	labels = c("bezdětný", "rodič začátečník", 
+	           "pokročilý rodič", "zasloužilý rodič"))
+
+table(Rodič)/length(Rodič)
+```
+
+> Příklad 11
+
+Vytvořte logický vektor, kde TRUE značí muže do 25 let (včetně), který odehraje za měsíc alespoň 5 partií deskové hry Osadníci z Katanu.
+
+```{r, eval=F, echo=T}
+muži <-  
+  Katan$Pohlaví == "muž" & 
+  Katan$Věk <= 25 &
+  Katan$Partie >= 5
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+muži <-  
+  Katan$Pohlaví == "muž" & 
+  Katan$Věk <= 25 &
+  Katan$Partie >= 5
+muži
+```
+
+> Příklad 12
+
+Vytvořte novou databázi Katan2, která bude obsahovat pouze ženy do 25 let, které kouří a odehrají alespoň 3 partie deskové hry Osadníci z Katanu. Výslednou databázi seřaďte podle Věku od nejstarší slečny po nejmladší.
+
+```{r, eval=F, echo=T}
+Katan2<- Katan[
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk <= 25 &
+  Katan$Kouření == "ano" &
+  Katan$Partie >= 3, ]
+Katan2 <- Katan2[order(Katan$Věk, decreasing=TRUE), ]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2<- Katan[
+  Katan$Pohlaví == "žena" & 
+  Katan$Věk <= 25 &
+  Katan$Kouření == "kouří" &
+  Katan$Partie >= 3, ]
+Katan2 <- Katan2[order(Katan2$Věk, decreasing=TRUE), ]
+Katan2
+```
+
+> Příklad 13
+
+Vytvořte proměnnou s názvem Pohlaví_Vzdělání, která v sobě bude obsahovat údaje z obou těchto proměnných. Tuto proměnnou následně připojte k databázi Katan.
+
+```{r, eval=F, echo=T}
+Pohlaví_Vzdělání <- paste(
+    Katan$Pohlaví, 
+    Katan$Vzdělání)
+
+Katan$Pohlaví_Vzdělání <- Pohlaví_Vzdělání
+Katan[, c(1:6, 10)]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Pohlaví_Vzdělání <- paste(
+    Katan$Pohlaví, 
+    Katan$Vzdělání)
+Katan$Pohlaví_Vzdělání <- Pohlaví_Vzdělání
+Katan[, c(1:6, 10)]
+```
+
+> Příklad 14
+
+Výše uvedenou proměnnou Pohlaví_Vzdělání odstraňte z databáze Katan2.
+
+```{r, eval=F, echo=T}
+Katan$Pohlaví_Vzdělání <- NULL
+```
+
+> Příklad 15
+
+Vytvořte Databázi A, která obsahuje dvě proměnné. Tou první bude proměnná ID, jež obsahuje čísla od jedné do 30 (náhodně uspořádaná, na příkaz 1:30 tudíž zapomeňte). Tou druhou proměnnou bude zeměpis, která obsahuje náhodný vektor známek z písemky. Následně vytvořte obdobnou Databázi B, která bude naopak obsahovat známky z matematiky. Vaším úkolem bude tyto dvě databáze spojit podle proměnné ID. A aby to nebylo tak jednoduché, známky z jednotlivých předmětů se budou vyskytovat s následující pravděpodobností (1: 30 %; 2: 50 %; 3: 10 %; 4: 5 %; 5: 5 %). Jak je vidět, pan učitel byl velice mírný.
+
+```{r, eval=F, echo=T}
+Databáze_A <- data.frame(
+  ID = sample(30, size = 30, replace = FALSE),
+  Zeměpis = sample(1:5, size = 30, replace = TRUE, prob=c(.30, .50, .10, .5, .5)))
+
+Databáze_B <- data.frame(
+  ID = sample(30, size = 30, replace = FALSE),
+  Matematika = sample(1:5, size = 30, replace = TRUE, prob=c(.30, .50, .10, .5, .5)))
+
+MergeData <-
+  merge(Databáze_A, Databáze_B[ , c("ID", "Zeměpis", "Matematika")], by = "ID")
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Databáze_A <- data.frame(
+  ID = sample(30, size = 30, replace = FALSE),
+  Zeměpis = sample(1:5, size = 30, replace = TRUE, prob = c(.30, .50, .10, .05, .05)))
+
+Databáze_B <- data.frame(
+  ID = sample(30, size = 30, replace = FALSE),
+  Matematika = sample(1:5, size = 30, replace = TRUE, prob = c(.30, .50, .10, .05, .05)))
+
+MergeData <-
+  merge(Databáze_A, Databáze_B[ ,c("ID", "Matematika")], by = "ID")
+
+MergeData
+```
+
+> Příklad 16
+
+Vypočítejte průměr proměnné Partie podle pohlaví a vzdělání.
+
+```{r, eval=F, echo=T}
+aggregate(
+	Katan$Partie,
+	list(Katan$Pohlaví, 
+	     Katan$Vzdělání),
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+aggregate(
+	Katan$Partie,
+	list(Katan$Pohlaví, 
+	Katan$Vzdělání),
+	FUN = mean, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+
+> Příklad 17
+
+Vypočítejte medián proměnné Věk podle pohlaví a kouření.
+
+```{r, eval=F, echo=T}
+aggregate(
+	Katan$Věk,
+	list(Katan$Pohlaví, 
+	     Katan$Kouření),
+	FUN = median, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+aggregate(
+	Katan$Věk,
+	list(Katan$Pohlaví, 
+	Katan$Kouření),
+	FUN = median, 
+	simplify = TRUE, 
+	na.rm = TRUE)
+```
+
+> Příklad 18
+
+Vypočítejte průměr proměnné Partie podle pohlaví a vzdělání u jedinců, kteří mají alespoň jedno dítě.
+
+```{r, eval=F, echo=T}
+aggregate(
+  Katan$Partie,
+  list(Katan$Pohlaví, 
+       Katan$Vzdělání, 
+       Katan$Děti >= 1),
+  FUN = mean, 
+  simplify = TRUE, 
+  na.rm = TRUE)
+
+# nebo
+
+tapply(
+  Katan$Partie,
+  list(Katan$Pohlaví, 
+       Katan$Vzdělání, 
+       Katan$Děti >= 1),
+  mean, 
+  simplify = TRUE)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+aggregate(
+  Katan$Partie,
+  list(Katan$Pohlaví, 
+       Katan$Vzdělání, 
+       Katan$Děti >= 1),
+  FUN = mean, 
+  simplify = TRUE, 
+  na.rm = TRUE)
+
+tapply(
+  Katan$Partie,
+  list(Katan$Pohlaví, 
+       Katan$Vzdělání, 
+       Katan$Děti >= 1),
+  FUN = mean, 
+  simplify = TRUE)
+```
+
+> Příklad 19
+
+Vytáhněte si rukávy, je tu pro vás připraven jeden docela komplikovaný příklad. Vaším úkolem bude vytvořit funkci s názvem mzdová_kalkulačka. Ta po udání hrubé mzdy vypočítá náklady zaměstnance na sociální pojištění, zdravotní pojištění a daň z příjmů fyzických osob. 
+
+Následně vytvořte tři náhodné vektory o sto položkách hodnot, které budou obsahovat údaje o hrubé mzdě, počtu dětí a manželce (nebo manželovi), jejíž (jehož) příjem je nižší než 68 000 Kč za rok (1: ano, 0: ne). Poté pomocí funkce mzdová_kalkulačka vypočítejte výše uvedená pojištění a daň z příjmů. Závěrem vytvořte data frame, který bude obsahovat sedm sloupců: hrubá mzda, čistá mzda, počet dětí, manžel(ka), sociální pojištění, zdravotní pojištění a daň z příjmů.
+
+Pozn. sociální pojištění: 6,5 % z hrubé mzdy; zdravotní pojištění: 4,5 % z hrubé mzdy; daň z příjmů: 15 % ze **superhrubé mzdy**; superhrubá mzda: hrubá mzda * 1,34; daňová sleva na každého poplatníka: 2 070 Kč; daňová sleva na manžela(ku): 2 070 Kč; daňová sleva na dítě: 1. dítě = 1 267 Kč měsíčně, 2. dítě = 1 617 Kč, 3. a každé další dítě = 2 017 Kč. 
+
+Pro zjednodušení uvažujte, že sleva na dítě činí 1 500 Kč na všechny děti. Dosud jsme totiž neprobírali podmínku IF, bez jejíž pomoci byste tento problém nemohli vyřešit. Ta se stane předmětem našeho zájmu v příští kapitole.
+
+V příkladu se nezapomeňte vypořádat s tím, že sleva na poplatníka a manželku může snížit daň maximálně na nulu, zatímco slevy na dítě se mohou přetvořit v tzv. daňový bonus, tj. daň může být záporná. Uveďme si příklad. Daň z příjmů byla u jedince, jenž má nárok na slevu na manželku, vypočítána na hodnotu 3 000 Kč. Sleva na poplatníka a manželku činí dohromady 4 140 Kč. Daň však nemůže jít do záporných hodnot, proto bude činit nula. V případě, že ale takový člověk měl například dvě děti, bude mu vypočítán daňový bonus ve výši 2 884 Kč (respektive v našem příkladu 3 000 Kč). 
+
+```{r, eval=F, echo=T}
+mzdová_kalkulačka <- function(Hrubá_mzda, Manželka = 0, Děti = 0) {
+  sociální <- 0.065 * Hrubá_mzda
+  zdravotní <- 0.045 * Hrubá_mzda
+  daň <- (0.15 * (Hrubá_mzda * 1.34) - 2070 - (Manželka * 2070))
+  daň[daň < 0] <- 0
+  daň <- daň - (Děti * 1500)
+  cmzda <- Hrubá_mzda - sociální - zdravotní - daň
+  
+  return(data.frame(Hrubá_mzda,
+                    "Čistá_mzda" = cmzda,
+                    Manželka,
+                    Děti,
+                    "Sociální_pojištění" = sociální, 
+                    "Zdravotní_pojištění" = zdravotní, 
+                    "Daň_z_příjmu" = daň))
+}
+
+Hrubá_mzda <- sample(18000:50000, size = 100, replace = TRUE)
+Manželka <- sample(c(0,1), size = 100, replace = TRUE)
+Děti <- sample(0:4, size = 100, replace = TRUE)
+mzdy <- data.frame(Hrubá_mzda,Manželka,Děti)
+
+Data <- mzdová_kalkulačka(mzdy$Hrubá_mzda, mzdy$Manželka, mzdy$Děti)
+```
+```{r}
+mzdová_kalkulačka <- function(Hrubá_mzda, Manželka = 0, Děti = 0) {
+  sociální <- 0.065 * Hrubá_mzda
+  zdravotní <- 0.045 * Hrubá_mzda
+  daň <- (0.15 * (Hrubá_mzda * 1.34) - 2070 - (Manželka * 2070))
+  daň[daň < 0] <- 0
+  daň <- daň - (Děti * 1500)
+  cmzda <- Hrubá_mzda - sociální - zdravotní - daň
+  
+  return(data.frame(Hrubá_mzda,
+                    "Čistá_mzda" = cmzda,
+                    Manželka,
+                    Děti,
+                    "Sociální_pojištění" = sociální, 
+                    "Zdravotní_pojištění" = zdravotní, 
+                    "Daň_z_příjmu" = daň))
+}
+
+Hrubá_mzda <- sample(18000:50000, size = 100, replace = TRUE)
+Manželka <- sample(c(0,1), size = 100, replace = TRUE)
+Děti <- sample(0:4, size = 100, replace = TRUE)
+mzdy <- data.frame(Hrubá_mzda,Manželka,Děti)
+
+Data <- mzdová_kalkulačka(mzdy$Hrubá_mzda, mzdy$Manželka, mzdy$Děti)
+Data
+```
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------

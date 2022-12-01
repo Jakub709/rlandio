@@ -1,0 +1,1978 @@
+---
+title: Na počátku cesty
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 1**</p align="center">
+<p align="center">**NA POČÁTKU CESTY**</p align="center">
+
+V první kapitole kurzu se seznámíme se základy práce v jazyce R. Ačkoliv nám znalosti zde získané nepřinesou okamžitý užitek (nenaučíme se tu pracovat s datovými soubory), je důležité ji absolvovat. Proto neztrácejme čas a vrhněme se společně do studia.
+
+K tomu Vám přeji spoustu radosti při objevování tohoto kouzelného jazyka, během kterého společně procestujeme celý svět. Naše cesta začíná v místech, kam zabloudil Praotec Čech a končí až v daleké Coimbře, respektive v Katanu. Šťastnou cestu přátelé!
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 1**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**NA POČÁTKU CESTY**</p align="center"></font>
+
+<font color="white">
+V první kapitole kurzu se seznámíme se základy práce v jazyce R. Ačkoliv nám znalosti zde získané nepřinesou okamžitý užitek (nenaučíme se tu pracovat s datovými soubory), je důležité ji absolvovat. Proto neztrácejme čas a vrhněme se společně do studia.
+
+K tomu Vám přeji spoustu radosti při objevování tohoto kouzelného jazyka, během kterého společně procestujeme celý svět. Naše cesta začíná v místech, kam zabloudil Praotec Čech a končí až v daleké Coimbře, respektive v Katanu. Šťastnou cestu přátelé!
+</font>
+
+### Několik poznámek před cestou {.pozadi .no-mobile}
+
+Zde vidíme cestu, která na nás čeká v následujících osmi kapitolách. Kapitoly jsou rozděleny do jednotlivých lekcí (respektive měst, např. Instalace, Cesta za RStudiem, Vektory atd., která jsou za sebou seřazena dle postupu studia). Ty jsou následně rozlišeny ve třech barvách (zelené, žluté a červené). Zelená barva je určena pro ty města, kterými jsme již prošli. Vzhledem k tomu, že se nacházíme na počátku cesty, není na mapě žádné město touto barvou zobrazeno. Druhá barva je žlutá. Ta zobrazuje dosud neprojité lekce aktuální kapitoly naší eRkové poutě. Jak je vidět, cílem první kapitoly je vydat se na cestu z Řípu až do portugalské Coimbry. Zbývající barvou je červená. Ta značí města, která na nás čekají v ostatních sedmi kapitolách.
+
+Mapu si můžete přiblížit (oddálit) pomocí tlačítka plus (mínus) v levém rohu mapy, stejně jako ji roztáhnout na celé okno pomocí tlačítka s okénkem. Veškerá města po rozkliknutí jejich názvu (respektive po kliknutí bodu na mapě) poskytují přímý odkaz na danou lekci. Nyní však již dost povídání, jelikož nastává nejvyšší čas pustit se do instalace. <b>Hodně štěstí</b>!
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=23, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/1.kapitola/1.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 14.289571, lat = 50.386464, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 14.289571, lat = 50.386464, 
+            '<h6><a href="https://www.rlandio.cz/cesta/1.kapitola.html#instalace" target="_blank" style="color:#014B7C">Říp</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = -8.410257, lat = 40.203316, 
+            '<h6><a href="https://www.rlandio.cz/cesta/1.kapitola.html#matematika-0" target="_blank" style="color:#014B7C">Coimbra</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Instalace
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Říp: Instalace {.pozadi}
+
+Ačkoliv bylo R původně naprogramováno v roce 1993 na Univerzitě v Aucklandu, my odstartujeme naši pouť u nás doma na vrcholku bájné hory Říp. Předtím než se ale pustíme do samotné práce, musíme R nejprve nainstalovat na svůj počítač či notebook. Nejedná se o nic složitého. Stačí postupovat podle následujícího návodu, který je rozdělen podle jednotlivých operačních systémů (Windows, MAC OS X a Linux).
+
+>Windows
+
+Programovací jazyk R v současnosti nejaktuálnější verzi 4.0.0 si můžete zdarma stáhnout kliknutím na následující logo. Instalace není záludná, proto ji snad netřeba podrobně popisovat. Úvodní nastavení v rámci instalačního procesu nemusíme měnit.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r.jpg)](https://cran.r-project.org/bin/windows/base/R-4.0.2-win.exe)</p align="center">
+
+Tím ale práce nekončí. Ke spokojenosti nám totiž bude scházet stáhnout tzv. vývojové prostředí pod názvem RStudio (je též zdarma), ve kterém budeme reálně pracovat. To nám práci s programovacím jazykem v mnohém velmi zjednoduší a po uživatelské stránce zpříjemní. Práce v R bez RStudia není příliš přívětivá. Rozdíl tu naleznete jako mezi Favoritem a novým Porsche. Obě auta Vás s jistou dávkou pravděpodobnosti sice dovezou do kýženého cíle, kvalita jízdy však bude nesrovnatelná. Na druhé straně nesmíme zapomenout, že RStudio bez nainstalovaného R bude fungovat obdobně jako auto bez benzínu. Jinými slovy R bez RStudia spustit lze, opačně ale nikoliv.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rstudio.png)](https://download1.rstudio.org/desktop/windows/RStudio-1.2.1335.exe)</p align="center">
+
+Jak pevně doufám, vše je nainstalováno a již se určitě nemůžete dočkat, až poprvé ve svém životě RStudio otevřete. Nuže, není na co čekat, klikněme společně na jeho ikonu a přesuňme se k další lekci, ve které se s tímto vývojovým prostředím seznámíme.
+
+>Mac OS X
+
+Programovací jazyk R v současnosti nejaktuálnější verzi 4.0.0 si můžete zdarma stáhnout kliknutím na následující logo. Instalace není záludná, proto ji snad netřeba podrobně popisovat. Úvodní nastavení v rámci instalačního procesu nemusíme měnit.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r.jpg)](https://mirrors.nic.cz/R/bin/macosx/R-4.0.0.pkg)</p align="center">
+
+Tím ale práce nekončí. Ke spokojenosti nám totiž bude scházet stáhnout tzv. vývojové prostředí pod názvem RStudio (je též zdarma), ve kterém budeme reálně pracovat. To nám práci s programovacím jazykem v mnohém velmi zjednoduší a po uživatelské stránce zpříjemní. Práce v R bez RStudia není příliš přívětivá. Rozdíl tu naleznete jako mezi Favoritem a novým Porsche. Obě auta Vás s jistou dávkou pravděpodobnosti sice dovezou do kýženého cíle, kvalita jízdy však bude nesrovnatelná. Na druhé straně nesmíme zapomenout, že RStudio bez nainstalovaného R bude fungovat obdobně jako auto bez benzínu. Jinými slovy R bez RStudia spustit lze, opačně ale nikoliv.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rstudio.png)](https://download1.rstudio.org/desktop/macos/RStudio-1.2.1335.dmg)</p align="center">
+
+Jak pevně doufám, vše je nainstalováno a již se určitě nemůžete dočkat, až poprvé ve svém životě RStudio otevřete. Nuže, není na co čekat, klikněme společně na jeho ikonu a přesuňme se k další lekci, ve které se s tímto vývojovým prostředím seznámíme. 
+
+>Linux
+
+Programovací jazyk R v současnosti nejaktuálnější verzi 4.0.0 si můžete zdarma stáhnout kliknutím na následující logo. Instalace není záludná, proto ji snad netřeba podrobně popisovat. Úvodní nastavení v rámci instalačního procesu nemusíme měnit. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r.jpg)](https://cran.r-project.org/bin/linux/)</p align="center">
+
+Tím ale práce nekončí. Ke spokojenosti nám totiž bude scházet stáhnout tzv. vývojové prostředí pod názvem RStudio (je též zdarma), ve kterém budeme reálně pracovat. To nám práci s programovacím jazykem v mnohém velmi zjednoduší a po uživatelské stránce zpříjemní. Práce v R bez RStudia není příliš přívětivá. Rozdíl tu naleznete jako mezi Favoritem a novým Porsche. Obě auta Vás s jistou dávkou pravděpodobnosti sice dovezou do kýženého cíle, kvalita jízdy však bude nesrovnatelná. Na druhé straně nesmíme zapomenout, že RStudio bez nainstalovaného R bude fungovat obdobně jako auto bez benzínu. Jinými slovy R bez RStudia spustit lze, opačně ale nikoliv.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rstudio.png)](https://www.rstudio.com/products/rstudio/download/#download)</p align="center">
+
+Jak pevně doufám, vše je nainstalováno a již se určitě nemůžete dočkat, až poprvé ve svém životě RStudio otevřete. Nuže, není na co čekat, klikněme společně na jeho ikonu a přesuňme se k další lekci, ve které se s tímto vývojovým prostředím seznámíme. 
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Programovat v jazyce R se naučíte nejlépe tak, že budete neustále experimentovat, vytvářet si své vlastní příklady a záludné úkoly. Přitom se přiučíte nejen novým příkazům, které si i lépe zažijete, ale hlavně se též naučíte řešit problémy s pomocí různých diskusních fór jako např. <a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a>, což je totiž klíčová dovednost každého programátora.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/1.kapitola/1.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 4.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 14.289571, lat = 50.386464, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/%C5%98%C3%ADp" target="_blank" style="color:#014B7C">Říp</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 14.289571, lat = 51.958288, '<h7><p align="justify"><p>Kliknete-li na název <b>tohoto města</b>, dovíte se o něm víc. Kliknete-li na ikonu <b>jiného města</b>, dostanete se na příslušnou lekci.</p></h7>',
+    options = popupOptions(closeButton = TRUE))
+```
+
+# Cesta za RStudiem
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Vídeň: Cesta za RStudiem {.pozadi}
+
+>Teoretické krůčky v RStudiu
+
+Doma v Česku jsme toho kromě instalace příliš mnoho nepředvedli, proto se přesuňme do Vídně. Ta je známa především svojí překrásnou architekturou, která je stejně tak úžasná a elegantní jako podoba RStudia. V něm nalezneme čtyři základní panely, které si nyní ve stručnosti představíme (viz obrázek). V případě, že byste v následujících několika odstavcích něčemu nerozuměli, nepropadejte prosím žádné panice. Ve druhé části této lekce na nás totiž čekají praktické příklady, na kterých si vše jednoduše ukážeme. Pojďme na to!
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\Panely.jpg)](#cesta-za-rstudiem)</p align="center">
+
+<h2>Konzole</h2>
+Obecně lze příkazy do R zapisovat dvěma různými způsoby. Tím prvním je konzole (levý dolní panel) a tím druhým je skript (levý horní panel). Zaměřme se v tuto chvíli pouze na konzoli, kterou lze nazvat takovým mozkem, srdcem a plícemi eRka zároveň. Konzole totiž uchovává veškeré příkazy, které jsme kdy v R úspěšně i neúspěšně spustili. Samozřejmě jen do té doby, než se rozhodneme RStudio zavřít a opětovně otevřít. Z podstaty fungování konzole proto nelze již jednou spuštěné příkazy v ní nijak upravovat jako v běžném textovém editoru. 
+
+Výše uvedený odstavec zněl poněkud neprakticky, co říkáte? Až tak hrozné to však není. Chceme-li totiž nějaký příkaz přímo v konzoli upravit, stačí ho napsat a spustit znovu. To sice zní už o trochu lépe, ale přesto tu k dokonalosti stále něco chybí. Je vážně nutné například kvůli drobné chybě v zápisu kódu tento příkaz zdlouhavě opisovat či kopírovat? Jistěže není. RStudio nabízí funkci, pomocí které stisknutím horní (respektive dolní) šipky na klávesnici postupně zobrazíme veškeré předchozí proběhlé příkazy, jež můžeme následně upravovat a opětovně spouštět.
+
+Konzoli budeme využívat zejména pro vytváření jednoduchých příkazů, jelikož na rozdíl od skriptu nevyžaduje při spuštění kódu nic víc než zmáčknutí enteru. Pro vytváření složitějších (víceřádkových) kódů se však konzole nepoužívá. A to už jenom z toho důvodu, že byste si takový kód nemohli uložit, což by jistě byla věčná škoda. Přesuňme proto nyní naši pozornost směrem ke skriptu.
+
+<h2>Skript</h2>
+Pokud napíšeme příkaz do skriptu (panel vlevo nahoře), nevyhodnotí se po stisknutí enteru, ale teprve až po kliknutí na tlačítko **run** či **source**. Do té doby skript funguje jako textový editor (respektive poznámkový blok). Pokud chceme spustit celý kód ve skriptu najednou (vše co v něm máme napsáno), stačí kliknout na tlačítko source. Chceme-li však spustit pouze určitou část skriptu, musíme ji modře přetáhnout myší a poté kliknou na tlačítko run (viz modrý obdélník na následujícím obrázku). 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r1.jpg)](#cesta-za-rstudiem)</p align="center">
+
+Levý horní panel má však ještě další využití a tím je zobrazování dat ve formátu přehledné tabulky. Budeme-li se chtít podívat na určitá data, která jsme v R vytvořili či si je do něj stáhli (například ve formátu txt, csv, xlsx atd.), budeme se dívat právě na tento panel, který obsahuje záložky podobně jako webový prohlížeč (viz červený obdélník na předchozím obrázku). V neposlední řadě budeme v tomto levém horním panelu tvořit webové stránky a PDF dokumenty s našimi výstupy z R. Tímto tématem se však budeme zabývat až v osmé kapitole.
+
+<h2>Proměnné</h2>
+V R budeme pracovat s mnoha různými proměnnými. Abychom si jejich názvy nemuseli pamatovat, budeme je vidět v pravém horním panelu. V něm navíc nalezneme mnoho dalších užitečných informací o formátu těchto dat. O nich však později ve druhé kapitole.
+
+<h2>Grafy, nápověda & další</h2>
+V pravém dolním rohu se budeme potkávat nejenom s grafy (záložka Plots), ale i s nápovědou (záložka Help) a adresářem (záložka Files), se kterým si nyní vůbec nemusíte lámat hlavu. Prozatím postačí, že jste o něm slyšeli. Co se týče grafů, těm se budeme podrobně věnovat v páté kapitole, kterou započneme v daleké Nairobi. Do ní je však z Vídni daleko, a proto zůstaňme ještě chvíli tu ve střední Evropě.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r2.jpg)](#cesta-za-rstudiem)</p align="center">
+
+Úvodní proslov k RStudiu máme za sebou. Co podstatného bychom si z něho měli odnést? Pro začátek doporučuji zapisovat příkazy přímo do konzole. Nebudeme tudíž muset neustále přehmatávat z klávesnice na myš, označovat příkazy ve skriptu a klikat na tlačítko run či source. Volba je však čistě na vás. V každém případě si ale v této lekci vyzkoušíme obojí. Pouze ještě doplním, že skript můžeme vytvořit tak, že klikneme na záložku **File > New File > R Script** (nebo použijeme klávesovou zkratku Ctrl + Shift + N). První skript máme nicméně automaticky spuštěný již při otevření RStudia. Jeho uložení provedeme tak, že klikneme na **File > Save As** a následně uvedeme požadovaný název souboru. Žádnou koncovku k němu přidávat nemusíme, jelikož se koncovka **.R** k dokumentu připojí automaticky.
+
+>Praktické krůčky v RStudiu
+
+Teorii máme za sebou, pojďme se proto podívat na praktické příklady. Pro začátek si vytvoříme proměnnou, která bude obsahovat jednu hodnotu, v našem případě číslo jedna. Na ní si blíže představíme všechny čtyři panely RStudia. Následující příkaz prosím zapište do konzole a stiskněte enter.
+
+```{r, eval=F, echo=T}
+x <- 1
+# Příkazy uvedené v tomto kurzu budou zobrazeny vždy 
+# v takovémto ohraničení s modrofialovým pruhem vlevo.
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\konzole.png)](#cesta-za-rstudiem)</p align="center">
+
+V našem prvním příkazu jsme vytvořili proměnnou s názvem `x` a k ní přiřadili hodnotu jedna. Symbol zobáčku s pomlčkou `<-` (klávesová zkratka Alt + pomlčka) by šel přeložit i jako rovná se, nicméně prosté rovnítko nepoužívejte, i když by takový příkaz rovněž fungoval (`x = 1`). Rovnítka totiž budeme používat uvnitř jednotlivých příkazů. Stejný příkaz by bylo možné zapsat dokonce ještě jedním způsobem, a tím je `1 -> x`. Takovýto styl zápisu však též raději nepoužívejte, jelikož by zhoršoval čitelnost a přehlednost vašeho kódu. Na závěr je nutné ještě podotknout, že R je citlivé na velká a malá písmena. Pokud bychom napsali příkaz `X <- 1` (s velkým X), vytvoříme úplně novou proměnnou, která nebude nijak závislá na předchozí proměnné malé x.
+
+<div id="demobox">
+
+<h2>Box: Názvy proměnných</h2>
+
+Jméno proměnné se může skládat z písmen, číslic, teček a podtržítek. Musí ale začínat písmenem nebo tečkou, za kterou nenásleduje číslice (tj. `x.1 <- 1` lze, `x1 <- 1` též, nemluvě o `.x <- 1`, ale `.1 <- 1` už hlásí chybu, stejně jako `1x <- 1`).
+
+</div>
+
+Naše první proměnná x je na světě. O tom svědčí i pravý horní panel, který nám tuto hodnotu již zobrazuje. Podívejme se na něj.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r3.jpg)](#cesta-za-rstudiem)</p align="center">
+
+Pokračujme dále a do konzole zapišme další příkaz. Tentokrát se bude jednat o samotné písmeno x. Po spuštění tohoto příkazu se nám v konzoli objeví číslo jedna, tj. hodnota, která byla proměnné x přiřazena. Po zapsání pouhého příkazu `x <- 1` se hodnota do konzole nevypíše, pouze se příkaz v R provede. Chceme-li proto hodnoty z proměnné do konzole vypsat, musíme do ní zapsat příkaz, jenž bude obsahovat název proměnné. (Pozn.: Pro upřesnění ještě uvedu, že výstupy příkazů do konzole budou v tomto kurzu uváděny vždy hned pod samotný příkaz, viz níže.)
+
+```{r, eval=F, echo=T}
+x
+```
+```{r}
+x <- 1
+print(x)
+```
+
+Vypsat hodnotu proměnné do konzole lze velice jednoduše. Existují tu však i další způsoby, kterými lze stejného výsledku dosáhnout. Podívejme se proto na další modrý (pro někoho fialový) box.
+
+<div id="demobox">
+
+<h2>Box: VYPSÁNÍ HODNOTY PROMĚNNÉ DO KONZOLE</h2>
+
+<h4>Implicitní způsob</h4>
+
+Implicitní způsob vypsání hodnoty proměnné do konzole znamená, že do konzole zapíšeme název dané proměnné (v našem případě x).
+
+```{r, eval=F, echo=T}
+x <- 1
+x
+```
+```{r}
+x <- 1
+print(x)
+```
+
+<h4>Explicitní způsob</h4>
+
+Explicitní způsob vypsání hodnoty proměnné do konzole znamená, že použijeme příkaz `print()`, ve kterém do závorky uvedeme název dané proměnné. Tento styl zápisu je doporučen zejména pro skripty. To však neznamená, že by implicitní způsob ve skriptu nefungoval. Spíše se tak jedná o zlepšení přehlednosti vašeho kódu (příkaz `print()` toho nicméně umí mnohem víc, o tom ale někdy příště).
+
+```{r, eval=F, echo=T}
+x <- 1
+print(x)
+```
+```{r}
+x <- 1
+print(x)
+```
+
+<h4>Při tvorbě proměnné</h4>
+
+V případě, že své výtvory zapisujete přímo do konzole, můžete svůj příkaz vložit do závorky a výsledek se okamžitě vypíše na další řádek.
+
+```{r, eval=F, echo=T}
+(x <- 1)
+```
+```{r}
+(x <- 1)
+```
+</div>
+
+Prozatím jsme vytvořili proměnnou pouze s jednou hodnotou. Představte si však, že se chceme podívat na tabulku, která obsahuje třeba devět proměnných s dvěma sty pozorováními pro každou z nich (již nyní se můžete těšit na databázi Katan obsahující údaje o hráčích populární deskové hry <a href="https://www.youtube.com/watch?v=LQr42nel7ok" target="_blank">Osadníci z Katanu</a>). V takovém případě by nebylo příliš přehledné tyto data zobrazovat v konzoli. Z tohoto důvodu v R existuje příkaz `View()`, který nám proměnnou (databázi) zobrazí v levém horním panelu. Dávejte si prosím pozor na to, že se příkaz `View()` na rozdíl od drtivé většiny ostatních příkazů (srovnejte například s příkazem `print()`) píše s velkým počátečním písmenem.
+
+```{r, eval=F, echo=T}
+View(x)
+# Příkaz zobrazí tabulku s daty proměnné x, čímž se nám zde 
+# vytvoří druhá záložka (ta první pod názvem Untitled1 označuje 
+# skript, viz obrázek).
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r4.jpg)](#cesta-za-rstudiem)</p align="center">
+
+S proměnnou x chodí ruku v ruce vždy i proměnná y. Pojďme si tuto proměnnou též vytvořit, nyní pro změnu s pomocí skriptu. Stačí do něj vypsat následující dva příkazy a stisknout tlačítko source či přetáhnout myší oba řádky a kliknout na run, což je varianta, kterou já preferuji. Ve skriptu mám totiž častokrát uveden větší počet nesouvisejících příkazů. 
+
+```{r, eval=F, echo=T}
+y <- 2	
+print(y) 
+# Chceme-li do skriptu vepsat naše popisky, které nám například 
+# budou říkat, co který kód znamená (jako právě nyní), použijeme 
+# znak mřížky (#) a R takový text při spuštění daného skriptu 
+# přeskočí.
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\r5.jpg)](#cesta-za-rstudiem)</p align="center">
+
+Na výše uvedeném obrázku vidíme, že jsme skript spustili dvěma různými způsoby. V tom prvním jsme zvolili tlačítko source a v tom druhém run. V obou případech nám příkazy fungovaly naprosto stejně, přesto tu jedna drobná odlišnost existuje. Rozdíl se skrývá v zápisu příkazů do konzole. V prvním případě totiž v konzoli nevidíme přesné znění příkazu, jelikož v něm nalézáme pouhou hlášku: **source('~/.active-RSTUDIO-document')**. Ve druhém případě, v němž jsme použili run, se nám v konzoli zobrazily oba příkazy ze skriptu. Jinou odlišnost zde už ale nehledejte.
+
+Odstupme na chvíli od skriptu a zaměřme se na další příklad. V něm budeme chtít změnit hodnotu proměnné x a přiřadit jí místo jedničky číslo tři. V takovém případě nám bude stačit do konzole vepsat následující pokyn.
+
+```{r, eval=F, echo=T}
+x <- 3
+```
+
+Není tedy třeba proměnnou nejdříve mazat, jelikož stačí jednoduše vložit nový příkaz s novými hodnotami. Při tom můžeme využít i horní šipku na klávesnici, pomocí které se proklikáme na původní příkaz `x <- 1`, který následně upravíme dle libosti. 
+
+V průběhu času vás jistě bude napadat hromada otázek. Není tedy od věci se již v tuto chvíli seznámit s nápovědou. Tu lze vyvolat třemi různými způsoby. První možností je, že vejdete přímo do pravého dolního panelu, kliknete na záložku Help a do políčka pro vyhledávání zadáte název příkazu, který vás zajímá (například příkaz `View`). Zbývajícími variantami jsou následující dva typy zápisu, které lze zapsat ve formě eRkového příkazu. Výsledná nápověda se objeví stejně jako v prvním případě v pravém dolním panelu.
+
+```{r, eval=F, echo=T}
+?View	   # použijeme symbol otazníku doplněný o název příkazu
+help(View) # další způsob pro zobrazení nápovědy
+```
+
+Na druhou stranu je na tomto místě nezbytné znovu zdůraznit, že hlavní nápovědou pro R je vyhledávač Google, respektive Stack Overflow, pomocí něhož získáte odpovědi na 90 % vašich otázek. Zbývající odpovědi nezískáte pouze z toho důvodu, že jste se špatně zeptali.
+
+V tuto chvíli jsme si prakticky ukázali (ve velmi zjednodušené formě) celé prostředí RStudia. Jediné, co jsme si prozatím nepředstavili, jsou grafy, které by se měly zobrazovat též v pravém dolním panelu. Jelikož jste ale byli velice šikovní, zapište si za odměnu následující příkaz s názvem `plot()`.
+
+```{r, eval=F, echo=T}
+x <- 3
+y <- 2
+plot(x, y) 
+# Na prvním místě příkazu plot definujeme body na x-ové ose, 
+# na druhé pozici na y-ové ose.
+# Jednotlivé proměnné se nicméně samozřejmě mohou jmenovat
+# i jinak než x a y.
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\plot1.jpg)](#cesta-za-rstudiem)</p align="center">
+
+To je nádhera, co říkáte? Váš první graf v eRku. Jak ale možná cítíte, stále to ještě není úplně ono. Pojďme se proto přesunout do Milána, ve kterém se zaměříme na vektory. Před tím se však prosím ještě podívejte na příklady k procvičení. Řešení k těmto příkladům naleznete v závěrečné sekci této kapitoly s názvem **Příklady**.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 2
+
+Vytvořte proměnnou s názvem Osadníci a přiřaďte jí hodnotu čtyři. Je možné vytvářet proměnné s českou diakritikou? Může mít název proměnné více slov, jako např. Osadníci z Katanu? Lze tento problém případně nějak vyřešit?
+
+> Příklad 3
+
+Výše zmíněnou proměnnou Osadníci zobrazte v levém horním panelu. Jaký příkaz použijete? 
+
+> Příklad 4
+
+Jaká klávesová zkratka se používá pro symbol `<-` ?
+
+> Příklad 5
+
+Vytvořte graf, který bude na y-ové ose obsahovat hodnotu deset a na x-ové ose hodnotu dvacet.
+
+> Příklad 6
+
+Dokázali byste svému kamarádovi, který se též učí programovat v R, vlastními slovy popsat rozdíl mezi skriptem a konzolí?
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/1.kapitola/1.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 16.373819, lat = 48.208176, zoom = 4.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 16.373819, lat = 48.208176, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/V%C3%ADde%C5%88" target="_blank" style="color:#014B7C">Vídeň</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 16.373819, lat = 49.78, '<h7><p align="justify"><p>Kliknete-li na název <b>tohoto města</b>, dovíte se o něm víc. Kliknete-li na ikonu <b>jiného města</b>, dostanete se na příslušnou lekci.</p></h7>',
+    options = popupOptions(closeButton = TRUE))
+```
+
+# Vektory
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Milán: Vektory {.pozadi}
+
+>Úvod do vektorů
+
+V předchozí lekci jsme se seznámili s prostředím RStudia. Nyní přichází čas pustit se do tvorby příkazů, které již budou o maličko komplikovanější a elegantnější nežli `x <- 1`. Z tohoto důvodu se přesouváme opět na jih, a to do hlavního města módy do Milána. Začneme tím, že se naučíme pracovat s vektory. Pod pojmem vektor si můžete představit řetězec (lze i jednočlenný) povětšinou nějakých čísel (např. známek z matematiky či dějepisu, zkrátka cokoliv), ale i písmen nebo slov. Z tohoto důvodu prosím nehledejte přímou paralelu s vektory, tak jak je znáte z matematiky či animovaného filmu Já, padouch. 
+
+V minulé kapitole jsme pracovali s proměnnými x a y, které obsahovaly vždy pouze jednu číslici. I tyto byly vektory. Práce s proměnnými, které obsahují jednu hodnotu (respektive jedno **pozorování**), však není příliš zábavná. Ukažme si tedy pro začátek alespoň jednoduchou číselnou posloupnost.
+
+```{r, eval=F, echo=T}
+x <- 10:50	
+# příkaz vytvoří proměnnou x s hodnotami od 10 do 50
+```
+```{r}
+x <- 10:50
+x
+```
+
+Co se v R přihodilo? Dřívější hodnota proměnné x se změnila na hodnoty 10 až 50. Čísla na začátcích řádků v hranatých závorkách (výše uvedený výstup z konzole) odkazují na pořadí první hodnoty řádku ve vektoru x.
+
+Nyní si na tomto místě dovolím drobnou technickou poznámku. Nezdá se vám na předchozím příkazu a jeho výstupu něco zvláštního? Pokud do konzole vypíšeme pouhý příkaz `x <- 10:50`, víme, že se nám vlastní hodnoty 10 až 50 v konzoli nezobrazí. Proto je nutné zapsat na další řádek příkaz ve formě názvu dané proměnné, v našem případě x. My však v našich skriptech, které jsou uváděny v tomto kurzu, takovýto typ příkazu pro lepší přehlednost a čitelnost uvádět nebudeme, a přesto pod něj budeme vypisovat výstup z konzole. K tomu ještě doplním, že je-li vaším cílem vypsat výsledek pouze do konzole a nevytvářet přitom žádnou proměnnou, stačí do ní uvést samotný příkaz `10:50`. Vyzkoušejte. 
+
+```{r, eval=F, echo=T}
+10:50	
+```
+```{r}
+10:50
+```
+
+Pokračujme dalším úkolem. V něm si ukážeme, jak s pomocí příkazu `c()` vytvoříme proměnnou, která bude obsahovat několik různých na sebe přímo nenavazujících čísel. 
+
+```{r, eval=F, echo=T}
+x <- c(1, 6, 90, 95) # nelze zapsat ve tvaru x <- 1, 6, 90, 95
+x <- c(1, c(6, c(90, 95))) # i takovýto styl zápisu lze použít
+```
+```{r}
+x <- c(1, 6, 90, 95)
+x
+x
+```
+
+Vektor nemusí obsahovat pouze číslice, neboť může obsahovat i písmena a celá slova. Ty však na rozdíl od číslic musí být uvedeny uvnitř uvozovek či apostrofů.
+
+```{r, eval=F, echo=T}
+x1 <- "Jakub"	
+# s apostrofy x1 <- 'Jakub'
+```
+```{r}
+x1 <- "Jakub"	
+x1
+```
+
+Chceme-li v proměnné více slov či jednotlivých písmen najedou, použijeme opět příkaz `c()`, tj. concatenate (concatenation znamená v angličtině zřetězení).
+
+```{r, eval=F, echo=T}
+x2 <- c("Jakub", "David")	
+```
+```{r}
+x2 <- c("Jakub", "David")	
+x2
+```
+
+Pomocí příkazu `c()` lze spojovat nejenom čísla nebo písmena, ale též i samotné vektory.
+
+```{r, eval=F, echo=T}
+x3 <- c(x1, x2)	
+# příkaz zanechá pořadí jednotlivých hodnot z vektorů x1 a x2
+```
+```{r}
+x3 <- c(x1, x2)
+x3
+```
+
+V R lze vytvořit dokonce i takový vektor, který bude obsahovat kombinaci písmen a číslic zároveň. Výsledný vektor se nicméně stane textovým, tj. s ním nebudeme moci provádět některé matematické operace, což asi nikoho nepřekvapí. Dokonce i samy číslice totiž mají v takovém vektoru formát textu, o čemž svědčí uvozovky, do kterých jsou čísla ve výstupu v konzoli vepsány (více o tzv. datových typech v příští kapitole).  
+
+```{r, eval=F, echo=T}
+x <- c(1, 5, "ano", "ne", "ano1", "ne5") 
+```
+```{r}
+x <- c(1, 5, "ano", "ne", "ano1", "ne5") 
+x
+```
+
+V případě, že vás proměnná x již omrzela a vy byste ji chtěli smazat, stačí do konzole vepsat následující příkaz `rm()`.
+
+```{r, eval=F, echo=T}
+rm(x)	
+# Do závorky uvedeme název proměnné, kterou chceme smazat.
+# Smazání se projeví tak, že proměnná zmizí z pravého 
+# horního panelu.
+```
+
+>Tvorba vektorové posloupnosti
+
+Toužíte-li vytvořit číselný řetězec s určitým pravidlem, nebudeme ho vypisovat ručně jako doposud pomocí příkazu `c()`, jelikož použijeme vhodnější příkazy `seq()` a `rep()`. Ukažme si, co umí. Pro začátek nás bude zajímat, jak vytvořit proměnnou od jedné do sedmi, aniž bychom použili příkaz `1:7`.
+
+```{r, eval=F, echo=T}
+y <- seq(7)
+```
+```{r}
+y <- seq(7)
+y
+```
+
+V R je běžné, že mnoho úkonů lze provést se stejným výsledkem mnoha různými způsoby. Jak ale vytvořit příkaz, který bude obsahovat čísla od jedné do tří navýšená vždy například o 1/2? K tomu bude nutné použít následující o trochu složitější formu příkazu `seq()`.
+
+```{r, eval=F, echo=T}
+y <- seq(from = 1, to = 3, by = 1/2)	
+# Všimněte si desetinných teček ve výstupu v konzoli, 
+# v R se totiž desetinná čárka nepoužívá.
+```
+```{r}
+y <- seq(from = 1, to = 3, by = 1/2)
+y
+```
+
+Zastavme se na chvíli u tohoto příkazu a seznamme se s novým eRkovým termínem **parametr**, jímž máme na mysli příkaz uvnitř příkazu. Výše uvedený příkaz `seq()` jsme modifikovali parametry `from, to a by`. Skutečnost, že každý příkaz obsahuje jeden a více parametrů nicméně neznamená, že je všechny musíme při zadávání příkazu definovat. Veškeré parametry totiž mají svoji základní hodnotu, která zůstává stále stejná, pokud ji aktivně nezměníme (např. `seq(from = 1, to = 1, by = ((to - from)/(length.out - 1)), length.out = NULL, along.with = NULL, ...)`, viz nápověda). Parametry `length.out` a `along.with` proto zůstaly příkazem `seq(from = 1, to = 3, by = 1/2)` nezměněny (`length.out` si představíme za chvíli).
+
+Parametry lze do příkazu uvádět dvěma základními způsoby. Uveďme si příklad. Příkaz `seq(from = 1, to = 3, by = 1/2)` by šlo zapsat též i ve zkráceném formátu `seq(1, 3, 1/2)`. Tento druhý styl zápisu nicméně nelze obecně příliš doporučit, protože vy jako člověk na rozdíl od počítače můžete velice jednoduše ztratit přehled o tom, kde se jaký parametr, na jaké pozici nachází. 
+
+Další nevýhodou je i to, že pokud byste chtěli v příkazu změnit parametr, který je defaultně nastaven např. na třetí pozici, museli byste do příkazu uvést hodnoty i pro první dva, které třeba vůbec měnit nechcete (zjednodušeně řečeno, protože tento problém je trochu složitější, viz např. `seq(7)`). U prvního stylu zápisu však stačí uvést pouze takové parametry, které chcete přepsat z výchozích hodnot. V rámci prvního způsobu je navíc jedno, jestli napíšete `seq(from = 1, to = 3, by = 1/2)` nebo parametry přeskupíte a napíšete `seq(by = 1/2, to = 3, from = 1)`. Jistě, u tohoto příkazu nedává přeskupení valný smysl, jelikož `from, to, by` zde mají určitou logickou posloupnost. V dalších příkazech nicméně parametry nemusí vytvářet přímou návaznost, a proto je budeme často psát v různém pořadí. 
+
+Následující příklad, který si zde ukážeme, si klade za cíl vytvořit posloupnost ve tvaru od do s předem určeným počtem hodnot. V něm využijeme výše slíbený parametr `length.out`.
+
+```{r, eval=F, echo=T}
+y <- seq(from = 1, to = 7, length.out = 6)	
+```
+```{r}
+y <- seq(from = 1, to = 7, length.out = 6)	
+y
+```
+
+V nadcházející části této lekce se zaměříme na příkaz `rep()`. Ten nám například umožní vytvořit vektor o deseti jedničkách, aniž bychom tyto čísla museli ručně vypisovat.
+
+```{r, eval=F, echo=T}
+y <- rep(1, times = 10) 	
+```
+```{r}
+y <- rep(1, times = 10) 	
+y
+```
+
+Opakovat nemusíme pouze jedno, ale i více číslic najednou.
+
+```{r, eval=F, echo=T}
+y <- rep(c(1, 3), times = 10) 	
+```
+```{r}
+y <- rep(c(1, 3), times = 10) 	
+y
+```
+
+```{r, eval=F, echo=T}
+y <- rep(1:3, times = 5) 
+```
+```{r}
+y = rep(1:3, times = 5) 
+y
+```
+
+Nejenom čísla, ale i celá slova můžeme opakovat pomocí příkazu `rep()`.
+
+```{r, eval=F, echo=T}
+y <- rep("Jakub", times = 2) 		
+```
+```{r}
+y <- rep("Jakub", times = 2) 		
+y
+```
+
+A co si takhle předvést něco složitějšího? Zkusme nyní vytvořit sekvenci čísel od jedné do sedmi, která bude obsahovat čísla navýšená vždy o 1/3 a tuto sekvenci následně zopakovat třeba třikrát.
+
+```{r, eval=F, echo=T}
+y <- rep(seq(from = 1, to = 7, by = 1/3), times = 3) 
+```
+```{r}
+y <- rep(seq(from = 1, to = 7, by = 1/3), times = 3) 		
+y
+```
+
+Pomocí `rep()` lze zopakovat jednotlivá čísla nikoliv pouze najednou, ale též i postupně.
+
+```{r, eval=F, echo=T}
+y <- rep(2:5, each = 3) 
+```
+```{r}
+y <- rep(2:5, each = 3) 	
+y
+```
+
+A co takhle využít parametry `times` a `each` současně?
+
+```{r, eval=F, echo=T}
+y <- rep(1:6, each = 2, times = 2)		
+```
+```{r}
+y <- rep(1:6, each = 2, times = 2)		
+y
+```
+
+Stejně jako u sekvencí, lze i u replikací předem stanovit délku řetězce s pomocí parametru `length.out`.
+
+```{r, eval=F, echo=T}
+y <- rep(-1:3, length.out = 10)	
+# všimněte si mínusu
+```
+```{r}
+y <- rep(-1:3, length.out = 10)	
+y
+```
+
+```{r, eval=F, echo=T}
+y <- rep(c(1, 3), length.out = 5)  
+```
+```{r}
+y <- rep(c(1, 3), length.out = 5)  	
+y
+```
+
+V rámci příkazu `rep()` není ani žádný problém pracovat s písmeny místo číslic. Podívejme se na následující dva příkazy.
+
+```{r, eval=F, echo=T}
+y <- letters[rep(2:5, times = 3)]	
+# Pokud chceme místo čísel písmena, vložíme výraz 
+# do hranatých závorek a napíšeme před ní letters.
+```
+```{r}
+y <- letters[rep(2:5, times = 3)]			
+y
+```
+
+```{r, eval=F, echo=T}
+y <- append(10:15, letters[1:4], after = 4) 
+# vložení vektoru do vektoru
+```
+```{r}
+y <- append(10:15, letters[1:4], after = 4) 		
+y
+```
+
+S příkazy `rep()` a `seq()` bychom si mohli hrát ještě dlouho, nám však tento úvod naprosto stačí. Pojďme se proto vrhnout do závěrečné části této lekce.
+
+>Tvorba náhodného vektoru
+
+Prozatím jsme se naučili vytvářet vektory, které byly nenáhodné a přesně definované. Co když ale budeme chtít vytvořit zcela náhodný vektor? Jinými slovy, co když si budeme chtít zahrát Člověče nezlob se a po ruce zrovna nebudeme mít kostku, ale RStudio? Naprosto běžná záležitost. Podívejme se proto na následující příkaz `sample()`, který nám problém s kostkou a večerním programem (například v době koronavirové pandemie) vyřeší.
+
+```{r, eval=F, echo=T}
+kostka <- sample(6, size = 20, replace = TRUE)      
+# příkaz simuluje 20 hodů kostkou
+# parametr replace umožní, aby se čísla mohla opakovat
+```
+```{r}
+kostka <- sample(6, size = 20, replace = TRUE)      
+kostka
+```
+
+Dokázali byste uhodnout, co se stane, pokud do parametru `replace` uvedeme FALSE? Vyzkoušejte sami. Bude to červené a obvykle to nebudete mít příliš rádi. Jedná se o `error`. Nelze totiž z pochopitelných důvodů házet dvacetkrát kostkou a přitom zabezpečit, že se nám hodnoty nebudou opakovat.
+
+<h3>Error in sample.int(x, size, replace, prob): cannot take a sample larger than the population when 'replace = FALSE'</h3>
+
+Hlášku erroru je dobré si vždy přečíst, jelikož nám obvykle dokáže velmi dobře poradit, co je v našem skriptu špatně a co bychom měli opravit.
+
+Jste statistik a máte chuť vytvořit si náhodnou proměnnou z normálního rozdělení? Vyzkoušejte si příkaz `rnorm()`. K tomu si navíc můžete prostudovat nápovědu `help(rnorm)`, máte-li zájem se o něm dozvědět víc. My ostatní se nicméně vydáme vstříc další lekci, která nás naučí vybírat hodnoty z již existujících proměnných (v našem případě prozatím pouze z vektorů). Čeká nás Barcelona.
+
+```{r, eval=F, echo=T}
+rnorm(7)  
+# sedm náhodných čísel z normálního rozdělení
+# defaultně střední hodnota = 0, směrodatná odchylka = 1
+# rnorm(n, mean = 0, sd = 1)
+```
+```{r}
+rnorm(7)  			
+```
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 7
+
+Vytvořte proměnnou s názvem desítka, která bude obsahovat hodnoty od jedné do deseti, které se budou postupně navyšovat o 1/4 (tj. 1; 1,25; 1,5 atd.).
+
+> Příklad 8
+
+Vytvořte proměnnou s názvem dvacítka, která bude obsahovat celkově dvacet hodnot mezi jedničkou a stovkou rovnoměrně rozprostřených v tomto rozmezí.
+
+> Příklad 9
+
+Vytvořte proměnnou s názvem třicítka, která bude obsahovat sekvenci třiceti jedniček a nul (tj. 0, 1, 0, 1 atd.).
+
+> Příklad 10
+
+Vytvořte proměnnou čtyřicítka, která bude obsahovat hodnoty mezi jedničkou a trojkou, které se budou navyšovat vždy o 1/3 a tuto sekvenci následně zopakujte čtyřicetkrát.
+
+> Příklad 11
+
+Vytvořte program na hod dvěma kostkami (například pro deskovou hru Osadníci z Katanu). Program by se měl jmenovat Kostka a měl by být spustitelný tlačítkem source. Výsledný program uložte na svůj počítač.
+
+> Příklad 12
+
+Vytvořte proměnnou s názvem statistik, vložte do ní tisíc hodnot z normálního rozdělení se střední hodnotou dva a směrodatnou odchylkou též dva. Výsledek vykreslete do grafu.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/1.kapitola/1.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 9.189982, lat = 45.464203, zoom = 4.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 9.189982, lat = 45.464203, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Mil%C3%A1n" target="_blank" style="color:#014B7C">Milán</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Subvektory
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Barcelona: Subvektory {.pozadi}
+
+Výběr barcelonských fotbalistů patří dlouhodobě mezi ty nejlepší na celém světě. Proto i my bychom se měli naučit vytvářet takové výběry, se kterými budeme náležitě spokojeni, i když se v našem případě bude jednat pouze o vektory. Když už totiž máme určitý vektor vytvořený, budeme nezřídka kdy potřebovat vybrat z něj pouze určitou jeho část. Třeba jen jeho druhý prvek, který jsme se zrovna rozhodli vystřídat jiným číslem či písmenem. Jak takový subvektor vytvořit, tak se totiž odborně výběru z vektoru říká, se naučíme právě nyní v Barceloně za pomoci hranatých závorek. Před tím si však vytvořme novou proměnnou x.
+
+```{r, eval=F, echo=T}
+x <- 11:16 
+# vektor pro práci s nadcházejícími příklady
+```
+```{r}
+x <- 11:16
+x
+```
+
+Máte-li proměnnou vytvořenou, zkuste do konzole zapsat následující příkaz. Ten bude začínat názvem vektoru, ze kterého budeme hodnoty vybírat a následně pokračovat hranatou závorkou s číslem pozice dané hodnoty, kterou chceme vybrat (v našem případě se bude jednat o druhou pozici ve vektoru x). 
+
+```{r, eval=F, echo=T}
+x[2]	
+# příkaz vypíše druhou pozici proměnné x 
+```
+```{r}
+x <- 11:16
+x[2]
+```
+
+Jednoduché, co říkáte? A co když budeme chtít vybrat hodnoty na pozici číslo jedna a pět, respektive jedna až pět?
+
+```{r, eval=F, echo=T}
+x[c(1, 5)]	
+# příkaz vypíše první a pátou pozici proměnné x 
+
+x[1:5] 	
+# příkaz vypíše všechny hodnoty od 1. do 5. pozice ve vektoru
+```
+```{r}
+x <- 11:16 
+x[c(1, 5)]	
+x[1:5] 	
+```
+
+Pochopení principu výše uvedeného příkazu `x[c(1, 5)]` je velice podstatné pro další práci v R, proto se u něj na chvíli zastavme. V příkazu vidíme jak hranaté, tak i kulaté závorky. Co to znamená? Z vektoru x vybíráme určité hodnoty, proto volíme hranaté závorky. Při tom chceme vybrat hodnoty na první a páté pozici, z toho důvodu volíme příkaz `c()`, v němž jsou závorky jako u všech příkazů naopak kulaté.  Zápis není složitý. Je však podstatné pochopit základní rozdíl mezi hranatou závorkou, jež je spojena s výběrem hodnot z proměnné, před kterou je vytknut název proměnné a kulatou závorkou, která bývá povětšinou spojena s určitým příkazem (popřípadě parametrem) vytknutým před ní (najdou se nicméně i drobné výjimky, viz příkaz `letters[]`).
+
+Následující úkol bude oproti těm předcházejícím o maličko komplikovanější, jelikož budeme chtít z vektoru x vybrat veškeré hodnoty, které jsou menší nebo rovno dvanácti.
+
+```{r, eval=F, echo=T}
+x[x <= 12]	
+# příkaz vypíše všechny hodnoty proměnné x menší nebo rovno 12 
+```
+```{r}
+x <- 11:16 	
+x[x <= 12]	
+```
+
+U předchozího příkazu si prosím uvědomme, že nevybíráme pozice 1 až 12 (pozici nula zde v R nemáme, na rozdíl například od programovacího jazyka Python), ale samotné hodnoty uvnitř vektoru, které splňují podmínku `x <= 12`.
+
+Chceme-li výběr našich hodnot z vektoru x přiřadit do nové proměnné, například y, použijeme následující velice jednoduchý zápis, který vás jistě nepřekvapí.
+
+```{r, eval=F, echo=T}
+y <- x[x <= 12] 	
+# Příkaz vytvoří proměnnou y, která bude obsahovat všechny 
+# hodnoty z proměnné x, které jsou menší nebo rovno 12.
+```
+```{r}
+x <- 11:16 
+y <- x[x <= 12]
+y
+```
+
+Doposud jsme se naučili hodnoty z vektoru pouze vybírat a tento výběr přesouvat do jiné proměnné. Stále tudíž nevíme, kterak lze změnit hodnoty uvnitř samotného vektoru. Postupovat budeme obdobně jako kdybychom vytvářeli novou proměnnou. Pouze na levé straně nebude stát název nové proměnné, ale námi zvolený výběr, třeba čtvrtá hodnota z vektoru x.
+
+```{r, eval=F, echo=T}
+x[4] <- 14		
+# v pořadí 4. hodnotu vektoru x nahradíme číslem 14
+
+x[c(1, 6)] <- c(90, 80)	
+# hodnotám x na 1. a 6. pozici přiřadíme nové hodnoty 90 a 80
+```
+```{r}
+x <- 11:16
+x[4] <- 14		
+x[c(1, 6)] <- c(90, 80)
+```
+
+Máte-li ve všem jasno, můžeme bez obav pokračovat dál a podívat se na závěr této lekce, ve kterém se blíže seznámíme s problematikou závorek.
+
+<div id="demobox">
+
+<h2>Box: Se závorkami a bez</h2>
+
+Zapište si prosím následující dva kratičké skripty a přitom se podívejte na jejich rozdíly v zápisu a ve výstupu. 
+
+```{r, eval=F, echo=T}
+# 1. příklad 
+x <- 11:16
+y <- x[x <= 13]
+print(y)
+```
+```{r}
+x <- 11:16
+y <- x[x <= 13]
+print(y)
+```
+
+```{r, eval=F, echo=T}
+# 2. příklad 
+x <- 11:16
+y <- x <= 13
+print(y)
+```
+```{r}
+x <- 11:16
+y <- x <= 13
+print(y)
+```
+
+Příkaz `x <= 13` vytváří logický vektor TRUE a FALSE (jedná se o datový typ, se kterým se seznámíme v následující kapitole). Výsledkem tudíž nebudou samotné hodnoty, jelikož k těm se dostaneme pouze skrze hranaté závorky. TRUE znamená, že podmínka `x <= 13` byla splněna. Z tohoto důvodu příkaz `x[x <= 13]` vybere pouze ty hodnoty, jež splňují podmínku. Podmínkám se budeme blíže věnovat v Limě (3. kapitola).
+
+</div>
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 13
+
+Vytvořte proměnnou x2, která bude obsahovat pouze prvních pět hodnot z proměnné `x <- 2:20`.
+
+> Příklad 14
+
+V proměnné x (`x <- 2:20`) změňte hodnotu na páté pozici za číslo padesát.
+
+> Příklad 15
+
+V proměnné x (`x <- 2:20`) vyberte posledních šest hodnot a vytvořte z nich proměnnou Konec. K řešení tohoto příkladu použijte příkaz `length()`, pomocí kterého zjistíte počet prvků (hodnot) ve vektoru.
+
+> Příklad 16
+
+V proměnné x (`x <- 2:20`) změňte hodnoty na předposledním a posledním místě na 190 a 200. Předpokládejte však, že nevíte, jak je vektor x dlouhý a kolik prvků tedy obsahuje. Opět využijete příkaz `length()`.
+
+> Příklad 17
+
+Vytvořte proměnnou, která bude obsahovat každé sudé číslo mezi dvojkou až stovkou a z této proměnné vytvořte proměnnou s názvem výběr, která bude obsahovat veškerá čísla menší než 50.
+
+> Příklad 18
+
+Vytvořte vektor Jména ve tvaru Jakub a David, který bude obsahovat 100 těchto zcela náhodně uspořádaných jmen.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/1.kapitola/1.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 2.173404, lat = 41.385063, zoom = 4.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 2.173404, lat = 41.385063, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Barcelona" target="_blank" style="color:#014B7C">Barcelona</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Matematika 0
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Coimbra: Matematika 0 {.pozadi}
+
+>První stupeň základní školy
+
+Úvod do vektorů je za námi, posuňme se proto o další kousek dál a to do Coimbry, ve které leží jedna z nejstarších <a href="https://www.youtube.com/watch?v=XIg_6l813XY" target="_blank">univerzit</a> na světě. Se záplavou vědomostí to však nebudeme příliš přehánět, jelikož se zaměříme pouze na základní matematické operace, které nás budou provázet po celou dobu našeho studia. Začneme jako na základní škole a to sčítáním, odečítáním, násobením a dělením.
+
+Drazí studenti, zaveďme si tři proměnné x, y, z a s nimi počítejme.
+
+```{r, eval=F, echo=T}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+# Pokud chceme zapsat více příkazů do konzole v jednom 
+# řádku, viz zadání příkladu, použijeme středník.
+```
+
+Chceme-li připočíst určité číslo ke všem číslům z vektoru, použijeme následující zápis příkazu.
+
+```{r, eval=F, echo=T}
+x <- 1:5
+q <- x + 2
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x + 2
+q
+```
+
+Odečítání funguje obdobně.
+
+```{r, eval=F, echo=T}
+x <- 1:5
+q <- x - 2	
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x - 2	
+q
+```
+
+Sčítat můžeme i samotné vektory.
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8) 
+q <- x + z	
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x + z	
+q
+```
+
+A opět je můžeme stejně tak i odečítat.
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8) 
+q <- x - z
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x - z
+q
+```
+
+V případě, že se sčítají (odečítají) dvě nestejně dlouhé proměnné, kratší proměnná (x) se začne opakovat. Uplatňuje se zde tzv. recycling rule.
+
+```{r, eval=F, echo=T}
+# nestejné délky vektorů
+x <- 1:5; y <- 1:8
+q <- x + y 
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x + y 
+q
+```
+
+```{r, eval=F, echo=T}
+# nestejné délky vektorů
+x <- 1:5; y <- 1:8
+q <- x - y 
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x - y 
+q
+```
+
+Násobení funguje na podobném principu jako sčítání a odečítání. Ukažme si opět různé kombinace násobení vektorů různých délek.
+
+```{r, eval=F, echo=T}
+x <- 1:5
+q <- x * 2 
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x * 2
+q
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8) 
+q <- x * z 
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x * z
+q
+```
+
+```{r, eval=F, echo=T}
+# nestejné délky vektorů
+x <- 1:5; y <- 1:8
+q <- x * y
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x * y
+q
+```
+
+A stejně tak i dělení.
+
+```{r, eval=F, echo=T}
+x <- 1:5
+q <- x / 2 
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x / 2
+q
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8) 
+q <- x / z 
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8) 
+q <- x / z
+q
+```
+
+```{r, eval=F, echo=T}
+# nestejné délky vektorů
+x <- 1:5; y <- 1:8 
+q <- x / y
+```
+```{r}
+x <- 1:5; y <- 1:8; z <- c(0, 2, 4, 6, 8) 
+q <- x / y
+q
+```
+
+Je vám logika sčítání, odečítání, násobení a dělení různě dlouhých vektorů jasná? Pojďme dál. 
+
+>Druhý stupeň základní školy
+
+Matematika zahrnuje nejenom prosté sčítání, odečítání, násobení a dělení. Podívejme se tudíž i na učivo druhého stupně základní školy.
+
+<div id="demobox">
+
+<h2>Box: Desetinný rozvoj</h2>
+
+V některých případech se můžeme v R setkat s následujícími zápisy čísel. Ničeho se však nebojte, nejedná se o nic komplikovaného a ve své podstatě ani častého.
+
+```{r, eval=F, echo=T}
+1.3e3
+```
+```{r}
+1.3e3
+```
+
+```{r, eval=F, echo=T}
+2.7e-03
+```
+```{r}
+2.7e-03
+```
+
+</div>
+
+Zaveďme si proměnné x, z a s nimi počítejme.
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+```
+
+Mocniny, odmocniny, ale i dělení beze zbytku se nám v naší práci může někdy hodit.
+
+```{r, eval=F, echo=T}
+x <- 1:5
+x^2 
+# mocnina (respektive odmocnina přes zlomek x^(1/2))
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+x^2 
+```
+
+```{r, eval=F, echo=T}
+sqrt(x)
+# druhá odmocnina
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+sqrt(x)
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+x%/%z	
+# dělení beze zbytku
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+x%/%z	
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+x%%z	
+# zbytek po dělení
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+x%%z
+```
+
+Nezapomeňme však ani na průměr či příkaz suma, který nám zjistí součet všech hodnot v proměnné.
+
+```{r, eval=F, echo=T}
+x <- 1:5
+mean(x) 
+# průměr vektoru x
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+mean(x) 
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5
+sum(x) 
+# součet všech hodnot v proměnné x
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+sum(x)
+```
+
+<div id="demobox">
+<h2>Box: Suma</h2>
+
+```{r, eval=F, echo=T}
+x <- 1:5
+sum(x) 
+# součet všech hodnot v proměnné x
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+sum(x)
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5
+sum(x > 2) 
+# Příkaz zjistí, kolik hodnot v proměnné x je > 2,
+# tj. nikoliv jejich součet.
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+sum(x > 2) 
+```
+
+```{r, eval=F, echo=T}
+x <- 1:5
+sum(x[x > 2]) 
+# příkaz sečte hodnoty vektoru x, které jsou větší než 2 
+```
+```{r}
+x <- 1:5; z <- c(0, 2, 4, 6, 8)
+sum(x[x > 2])
+```
+
+</div>
+
+Pamatujete si ze školy na logaritmy? Vezměme si následující běžný příklad ze života. Vlastníte přebytečný jeden milion korun (pro vás jako studenta R je to pouze otázka času, pokud ho ještě nemáte) a vložíte jej do banky s bohužel mizerným úrokem 1 %. V jakém roce se můžete těšit na zdvojnásobení vašich úspor? 
+
+Znáte-li pravidlo sedmdesáti, budete vědět, že při ročním úroku 1 % se vám hodnota Vašich úspor zdvojnásobí za přibližně sedmdesát let. S pomocí logaritmů však tento příklad vypočítáme naprosto přesně (69 let a 8 měsíců). Na druhou stranu si musíme uvědomit, že realita je bohužel mnohem horší. Budeme-li totiž počítat s průměrnou roční inflací 2 %, tak se nám za sedmdesát let naše bohatství nezdvojnásobí, ale naopak jeho hodnota bude o polovinu menší nežli dnes. Jak smutné.
+
+**1 000 000 x 1.01^n = 2 000 000, tj. 1.01^n = 2, tj. log1,01 2 = 69.66 let**
+
+```{r, eval=F, echo=T}
+# zdvojnásobení bohatství při nulové inflaci a 1 % úroku
+log(2, 1.01) 	
+
+# poloviční bohatství při inflaci 2 % ročně a 1 % úroku
+log(0.5, 0.9898)
+# Proč 0.9898? 1 000 000 * 1.01 (úrok) * 0.98 (inflace) 
+# = 98.98 % zbyde reálně z úspor.
+
+# pozor na desetinnou tečku
+```
+```{r}
+print("zdvojnásobení bohatství při nulové inflaci a 1 % úroku")
+log(2, 1.01)
+
+print("poloviční bohatství při inflaci 2 % ročně a 1 % úroku")
+log(0.5, 0.9898) 	
+```
+
+Baví vás zaokrouhlování? Ne? I tak se podívejte na následující tři příkazy.
+
+Zaveďme si novou proměnnou x a s ní počítejme.
+
+```{r, eval=F, echo=T}
+x <- c(1.25, 1.5, 1.89) 
+```
+
+```{r, eval=F, echo=T}
+x <- c(1.25, 1.5, 1.89)
+ceiling(x) 	
+# zaokrouhlení vektoru x nahoru
+```
+```{r}
+x <- c(1.25, 1.5, 1.89) 
+ceiling(x) 	
+```
+
+```{r, eval=F, echo=T}
+x <- c(1.25, 1.5, 1.89)
+floor(x) 	
+# zaokrouhlení vektoru x dolů
+```
+```{r}
+x <- c(1.25, 1.5, 1.89) 
+floor(x) 	
+```
+
+```{r, eval=F, echo=T}
+x <- c(1.25, 1.5, 1.89)
+round(x, digits = 1)	
+# zaokrouhlení vektoru x k nejbližšímu celému číslu
+# Parametrem digits = n volíme počet desetinných míst, 
+# implicitně digits = 0.
+```
+```{r}
+x <- c(1.25, 1.5, 1.89) 
+round(x, digits = 1)
+```
+
+Jednotlivé příkazy (např. `round(), seq(), View()` atd.) obsahují různé parametry, kterými tyto příkazy můžeme různě modifikovat a upravovat, to již víme. Také jsme si už pověděli, že jednotlivé parametry lze v rámci příkazu zapisovat na různých pozicích (např. příkaz `seq(from = 1, to = 3, by = 1/2)` lze zapsat i ve tvaru `seq(by = 1/2, from = 1, to = 3)`. Existuje tu však jedna výjimka a tou je název proměnné, která vstupuje jako zdroj dat do příkazu. Ten musí být uveden vždy na první pozici za závorkou. Příkaz `round(x, digits = 2)` nelze tudíž zapsat jako `round(digits = 2, x)`. 
+
+A to byla poslední informace z první kapitoly. Pokud jste došli až sem, je nutné vás pochválit. Urazili jste totiž notný kus cesty, která nebyla jednoduchá. Nyní nás čeká přelet přes oceán, jelikož další lekce začíná v New Yorku.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 19
+
+Vytvořte vektor `x <- 1:100` a zjistěte součet všech jeho hodnot.
+
+> Příklad 20
+
+Vytvořte vektor Rozdíl, který bude obsahovat rozdíl sumy druhé poloviny z předchozího vektoru x (`x <- 1:100`) a první poloviny téhož vektoru x.
+
+> Příklad 21
+
+Zjistěte součet všech sudých a lichých hodnot z vektoru x (`x <- 1:100`) a dokažte, která část je větší.
+
+> Příklad 22
+
+Vytvořte vektor s tisíci čísly z náhodného rozdělení (střední hodnota = 0, směrodatná odchylka = 10), ty zaokrouhlete na celá čísla a spočítejte jejich průměr. 
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/1.kapitola/1.5.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -3.70379, lat = 40.416775, zoom = 4.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -8.410257, lat = 40.203316, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Coimbra" target="_blank" style="color:#014B7C">Coimbra</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+Programovat v jazyce R se naučíte nejlépe tak, že budete neustále experimentovat, vytvářet si své vlastní příklady a záludné úkoly. Přitom se přiučíte nejen novým příkazům, které si i lépe zažijete, ale hlavně se též naučíte řešit problémy s pomocí různých diskusních fór jako např. <a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a>, což je totiž klíčová dovednost každého programátora.
+
+> Příklad 2
+
+Vytvořte proměnnou s názvem Osadníci a přiřaďte jí hodnotu čtyři. Je možné vytvářet proměnné s českou diakritikou? Může mít název proměnné více slov, jako např. Osadníci z Katanu? Lze tento problém případně nějak vyřešit?
+
+```{r, eval=F, echo=T}
+Osadníci <- 4
+Osadníci_z_Katanu <- 4
+# s českou diakritikou nebývá problém
+
+Osadníci
+Osadníci_z_Katanu
+# stačí použít podtržítko
+```
+```{r}
+Osadníci <- 4
+Osadníci_z_Katanu <- 4
+Osadníci
+Osadníci_z_Katanu
+```
+
+> Příklad 3
+
+Výše zmíněnou proměnnou Osadníci zobrazte v levém horním panelu. Jaký příkaz použijete? 
+
+```{r, eval=F, echo=T}
+View(Osadníci)
+```
+
+> Příklad 4
+
+Jaká klávesová zkratka se používá pro symbol `<-` ?
+
+```{r, eval=F, echo=T}
+alt + pomlčka
+# funguje pouze v RStudiu
+```
+
+> Příklad 5
+
+Vytvořte graf, který bude na y-ové ose obsahovat hodnotu deset a na x-ové ose hodnotu dvacet.
+
+```{r, eval=F, echo=T}
+x <- 20
+y <- 10
+plot(x, y)
+
+# V případě, že chceme graf uložit jako obrázek, stačí kliknout na
+# tlačítko Export v pravém dolním panelu.
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\plot2.png)](#cesta-za-rstudiem)</p align="center">
+
+> Příklad 6
+
+Dokázali byste svému kamarádovi, který se též učí programovat v R, vlastními slovy popsat rozdíl mezi skriptem a konzolí?
+
+<h2>Skript</h2>
+
+Pokud napíšeme příkaz do skriptu, nevyhodnotí se okamžitě, ale teprve až poté, co klikneme na tlačítko run. Zde však pozor! Skript se z podstaty věci obvykle neskládá pouze z jednoho, ale z více řádků. Pokud tedy chceme spustit celý kód najednou, musíme ho nejdříve přetažením myši označit (nebo jednoduše stisknout ctrl + a). Pokud toto neučiníme a klikneme na run, spustí se nám pouze ten řádek, kde nám bliká kurzor. Celý skript lze jednoduše editovat, jako bychom psali text do poznámkového bloku. Po každém spuštění skriptu (byť jen jeho části) se vždy každý spuštěný řádek propíše do konzole v levém dolním panelu. 
+
+<h2>Konzole</h2>
+
+Konzole je taková historie všech již provedených příkazů, které jsme v R napsali. Jednou zapsaný příkaz tedy již nelze odstranit. Každý řádek konzole začíná zobáčkem (`>`). Poté, co jsme se svým příkazem spokojeni a chceme ho spustit, stačí kliknout na tlačítko enter a příkaz se okamžitě vyhodnotí (pokud u skriptu stiskneme enter, dostaneme se pouze na další řádek). V případě, že se rozhodneme předchozí příkaz editovat, musíme ho na rozdíl od skriptu napsat a spustit znovu. RStudio však nabízí funkci, ve které stačí klikat horní (dolní) šipkou na klávesnici a zobrazí se nám předchozí příkazy v konzoli, které již jednoduše upravovat lze. 
+
+> Příklad 7
+
+Vytvořte proměnnou s názvem desítka, která bude obsahovat hodnoty od jedné do deseti, které se budou postupně navyšovat o 1/4 (tj. 1; 1,25; 1,5 atd.).
+
+```{r, eval=F, echo=T}
+desítka <- seq(from = 1, to = 10, by = 1/4)	
+```
+```{r}
+desítka <- seq(from = 1, to = 10, by = 1/4)	
+desítka
+```
+
+> Příklad 8
+
+Vytvořte proměnnou s názvem dvacítka, která bude obsahovat celkově dvacet hodnot mezi jedničkou a stovkou rovnoměrně rozprostřených v tomto rozmezí.
+
+```{r, eval=F, echo=T}
+dvacítka <- seq(from = 1, to = 100, by = 5)	
+```
+```{r}
+dvacítka <- seq(from = 1, to = 100, by = 5)	
+dvacítka
+```
+  
+> Příklad 9
+
+Vytvořte proměnnou s názvem třicítka, která bude obsahovat sekvenci třiceti jedniček a nul (tj. 0, 1, 0, 1 atd.).
+
+```{r, eval=F, echo=T}
+třicítka <- rep(c(0, 1), length.out = 30)  
+```
+```{r}
+třicítka <- rep(c(0, 1), length.out = 30)  	
+třicítka
+```
+
+> Příklad 10
+
+Vytvořte proměnnou čtyřicítka, která bude obsahovat hodnoty mezi jedničkou a trojkou, které se budou navyšovat vždy o 1/3 a tuto sekvenci následně zopakujte čtyřicetkrát.
+
+```{r, eval=F, echo=T}
+čtyřícítka <- rep(seq(from = 1, to = 3, by = 1/3), times = 40)	
+```
+```{r}
+čtyřícítka <- rep(seq(from = 1, to = 3, by = 1/3), times = 40)	 	
+čtyřícítka
+```
+
+> Příklad 11
+
+Vytvořte program na hod dvěma kostkami (například pro deskovou hru Osadníci z Katanu). Program by se měl jmenovat Kostka a měl by být spustitelný tlačítkem source. Výsledný program uložte na svůj počítač.
+
+```{r, eval=F, echo=T}
+Kostka <- sample(6, size = 20, replace = TRUE) + 
+          sample(6, size = 20, replace = TRUE)    	
+```
+```{r}
+Kostka <- sample(6, size = 20, replace = TRUE) + 
+          sample(6, size = 20, replace = TRUE) 
+Kostka
+```
+
+> Příklad 12
+
+Vytvořte proměnnou s názvem statistik, vložte do ní tisíc hodnot z normálního rozdělení se střední hodnotou dva a směrodatnou odchylkou též dva. Výsledek vykreslete do grafu. 
+
+```{r, eval=F, echo=T}
+statistik <- rnorm(1000, mean = 2, sd = 2)
+plot(statistik)
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\plot3.png)](#vektory)</p align="center">
+
+> Příklad 13
+
+Vytvořte proměnnou x2, která bude obsahovat pouze prvních pět hodnot z proměnné `x <- 2:20`.
+
+```{r, eval=F, echo=T}
+x <- 2:20
+x2 <- x[1:5] 	
+```
+```{r}
+x <- 2:20
+x2 <- x[1:5]
+x2
+```
+
+> Příklad 14
+
+V proměnné x (`x <- 2:20`) změňte hodnotu na páté pozici za číslo padesát.
+
+```{r, eval=F, echo=T}
+x <- 2:20
+x[5] <- 50
+x[5]
+```
+```{r}
+x <- 2:20
+x[5] <- 50
+x[5]	
+```
+
+> Příklad 15
+
+V proměnné x (`x <- 2:20`) vyberte posledních šest hodnot a vytvořte z nich proměnnou Konec. K řešení tohoto příkladu použijte příkaz `length()`, pomocí kterého zjistíte počet prvků (hodnot) ve vektoru.
+
+```{r, eval=F, echo=T}
+x <- 2:20
+Konec <- x[(length(x)-5):length(x)]
+```
+```{r}
+x <- 2:20
+Konec <- x[(length(x)-5):length(x)]
+Konec
+```
+
+> Příklad 16
+
+V proměnné x (`x <- 2:20`) změňte hodnoty na předposledním a posledním místě na 190 a 200. Předpokládejte však, že nevíte, jak je vektor x dlouhý a kolik prvků tedy obsahuje. Opět využijete příkaz `length()`.
+
+```{r, eval=F, echo=T}
+x <- 2:20	
+x[c((length(x)-1), length(x))] <- c(190, 200)	
+```
+```{r}
+x <- 2:20	
+x[c((length(x)-1), length(x))] <- c(190, 200)
+x
+```
+
+> Příklad 17
+
+Vytvořte proměnnou, která bude obsahovat každé sudé číslo mezi dvojkou až stovkou a z této proměnné vytvořte proměnnou s názvem Výběr, která bude obsahovat veškerá čísla menší než padesát.
+
+```{r, eval=F, echo=T}
+x <- seq(from = 2, to = 100, by = 2)	
+Výběr <- x[x < 50]	
+```
+```{r}
+x <- seq(from = 2, to = 100, by = 2)	
+Výběr <- x[x < 50]
+Výběr
+```
+
+> Příklad 18
+
+Vytvořte vektor Jména ve tvaru Jakub a David, který bude obsahovat sto těchto zcela náhodně uspořádaných jmen.
+
+```{r, eval=F, echo=T}
+Jména <- sample(c("Jakub", "David"), size = 100, replace = TRUE)	
+```
+```{r}
+Jména <- sample(c("Jakub", "David"), size = 100, replace = TRUE)
+Jména
+```
+
+> Příklad 19
+
+Vytvořte vektor `x <- 1:100` a zjistěte součet všech jeho hodnot.
+
+```{r, eval=F, echo=T}
+x <- 1:100	
+sum(x)
+```
+```{r}
+x <- 1:100
+sum(x)
+```
+
+> Příklad 20
+
+Vytvořte vektor Rozdíl, který bude obsahovat rozdíl sumy druhé poloviny z předchozího vektoru x (`x <- 1:100`) a první poloviny téhož vektoru x.
+
+```{r, eval=F, echo=T}
+x <- 1:100
+x1 <- x[1:50]
+x2 <- x[51:100]
+s1 <- sum(x1)
+s2 <- sum(x2)
+Rozdíl <- s2 - s1
+```
+```{r}
+x <- 1:100
+x1 <- x[1:50]
+x2 <- x[51:100]
+s1 <- sum(x1)
+s2 <- sum(x2)
+Rozdíl <- s2 - s1
+Rozdíl
+```
+
+> Příklad 21
+
+Zjistěte součet všech sudých a lichých hodnot z vektoru x (`x <- 1:100`) a matematicky dokažte, která část je větší.
+
+```{r, eval=F, echo=T}
+x <- 1:100
+
+sudá <- x[seq(from = 2, to = 100, by = 2)]
+lichá <- x[seq(from = 1, to = 100, by = 2)]
+
+sudá_suma <- sum(sudá)
+lichá_suma <- sum(lichá)
+
+Rozdíl <- sudá_suma - lichá_suma
+```
+```{r}
+x <- 1:100
+sudá <- x[seq(from = 2, to = 100, by = 2)]
+lichá <- x[seq(from = 1, to = 100, by = 2)]
+lichá_suma <- sum(lichá)
+sudá_suma <- sum(sudá)
+Rozdíl <- sudá_suma - lichá_suma
+print('součet sudých čísel')
+sudá_suma
+print('součet lichých čísel')
+lichá_suma
+print('rozdíl')
+Rozdíl
+print('Sudá čísla ve vektoru x <- 1:100 jsou dohromady větší o 50.')
+print('1 vs 2; 3 vs 4 ... 99 vs 100; 50 dvojic')
+```
+
+> Příklad 22
+
+Vytvořte vektor s tisíci čísly z náhodného rozdělení (střední hodnota = 0, směrodatná odchylka = 10), ty zaokrouhlete na celá čísla a spočítejte jejich průměr.
+
+```{r, eval=F, echo=T}
+Norm <- rnorm(1000, mean = 0, sd = 10)
+mean(round(Norm))
+```
+```{r}
+Norm <- rnorm(1000, mean = 0, sd = 10)
+mean(round(Norm))
+print("Výsledky tohoto příkazu se budou pokaždé lišit.")
+```
+
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+

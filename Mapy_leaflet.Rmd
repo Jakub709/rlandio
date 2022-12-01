@@ -1,0 +1,845 @@
+---
+title: "Mapy s pomocí leafletu"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 8**</p align="center">
+<p align="center">**Mapy s pomocí Leafletu**</p align="center">
+
+Leaflet je jednou z nejpopulárnějších otevřených zdrojových knihoven JavaScriptu pro interaktivní mapy. Používají ho weby od New York Times, The Washington Post, GitHub, Flickr po katastrální úřady v České republice. S Leafletem se zkrátka potkáte na každém kroku.
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+# Mapy
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+Column {data-width=700}
+-----------------------------------------------------------------------
+
+### Mordeh Katan: Mapy {.pozadi}
+
+Stejně jako je hrací deska Osadníků z Katanu v nebývalé míře variabilní a tvárná, stále to není nic v porovnání s balíčkem **Leaflet**, který se používá pro tvorbu map nejen v prostředí jazyka R, ale například i JavaScriptu. Mějte tudíž na paměti, že budete-li na internetu vyhledávat různé příklady práce s Leafletem, nebudete mnohým skriptům příliš rozumět, jelikož budou psány právě v JavaScriptu. My však s tímto programovacím jazykem nepracujeme, a proto i v této poslední lekci zůstaňme věrni pouze R. 
+
+Leaflet funguje jako běžný balíček. Z tohoto důvodu budete-li chtít mapy vkládat do R Markdownu či Flexdashboardu, budete muset vždy v příslušném code chunku tento balíček znovu spustit pomocí standardního příkazu `library()`. Před tím si ho však musíme nejprve nainstalovat.
+
+```{r, eval=F, echo=T}
+install.packages("leaflet")
+```
+
+Balíček je nainstalován, můžeme se proto společně pustit do prvního úkolu, ve kterém si zobrazíme hlavní město Prahu.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 12) %>% addTiles()
+
+mapa
+```
+
+### {.mapa .map-wrapper}
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 12) %>% addTiles()
+
+mapa
+```
+
+### {.pozadi}
+
+Naše úvodní mapa Prahy se skládá z několika po sobě jdoucích příkazů, jež jsou vzájemně propojeny trubkou, která je při tvorbě map velice užitečná, jelikož nám umožňuje uvádět příkazy v jejich logické posloupnosti.
+
+První krok, který je nezbytný učinit, spočívá v tvorbě nové proměnné `mapa <- leaflet()`. Prozatím však mapa nemá co ukazovat, proto jí potřebujeme v následujícím kroku zadefinovat místo zobrazení pomocí příkazu `setView(lng = -14.4378, lat = 50.075539, zoom = 12)`, který v sobě ukrývá tři parametry. Prvním z nich je `lng`, jenž obsahuje údaje o poledníku. Bratrem toho parametru je `lat`, který značí naopak rovnoběžky (viz longitude a latitude). Třetí parametr `zoom` určuje přibližení mapy k bodu, který byl souřadnicemi nastaven. Posledním třetím krokem nezbytným k zobrazení základní mapy v Leafletu je příkaz `addTiles()`, který definuje typ mapového podkladu. Ten je v našem skriptu prázdný. Z tohoto důvodu bude použit nejzákladnější návrh ve formě <a href="https://openstreetmap.cz/" target="_blank">openstreetmap.org</a>. 
+
+<div id="demobox">
+  
+<h2>Box: Openstreetmap</h2>
+
+OpenStreetMap je projekt, jehož cílem je tvorba volně dostupných geografických dat a jejich následná vizualizace do podoby topografických map (např. silniční mapa, turistická mapa, cyklomapa atd.). Pro tvorbu geodat se jako podklad využívají záznamy z přijímačů GPS či jiné zpravidla digitalizované mapy, které jsou licenčně kompatibilní. Projekt byl založen v roce 2004 a využívá kolektivní spolupráce spolu s koncepcí Otevřeného softwaru. Data jsou poskytována pod licencí Open Database License. OpenStreetMap byl inspirován projekty jako je například Wikipedie. 
+
+<i><div align="right">**zdroj:** Wikipedia.org</div></i>
+
+</div>
+
+Mapových podkladů nalezneme v Leafletu spousty. Podívejme se tedy alespoň na ty nejznámější, mezi které bezesporu patří **Esri.WorldImagery** nebo **Esri.NatGeoWorldMap**. K jejich použití nicméně bude nutné upravit příkaz `addTiles()` na `addProviderTiles()`.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 12) %>% 
+  addProviderTiles("Esri.WorldImagery")
+
+mapa
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 12) %>% 
+  addProviderTiles("Esri.WorldImagery")
+
+mapa
+```
+
+
+### {.pozadi}
+
+Esri.NatGeoWorldMap se oproti Esri.WorldImagery a OpenStreetMap liší zejména v tom, že ho nelze volně použít ke komerčním účelům. Na druhé straně je Esri.WorldImagery od roku 2017 součástí OpenStreetMap.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 12) %>% 
+  addProviderTiles("Esri.NatGeoWorldMap")
+
+mapa
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.4378, lat = 50.075539, zoom = 12) %>% 
+  addProviderTiles("Esri.NatGeoWorldMap")
+
+mapa
+```
+
+### {.pozadi}
+
+V případě, že budeme chtít na mapě zobrazit jedno konkrétní místo a k němu určitý text, použijeme příkaz `addPopups()`, který definuje souřadnice místa zobrazení určitého popisku.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.427778, lat = 50.087222, zoom = 18) %>% 
+  addProviderTiles("Esri.WorldImagery") %>%
+  addPopups(lng = 14.427778, lat = 50.087222, 
+    '<a href="https://cs.wikipedia.org/wiki/Pra%C5%A1n%C3%A1_br%C3%A1na" target="_blank">
+    Prašná brána</a>',
+    options = popupOptions(closeButton = TRUE))
+
+mapa
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.427778, lat = 50.087222, zoom = 18) %>% 
+  addProviderTiles("Esri.WorldImagery") %>%
+  addPopups(lng = 14.427778, lat = 50.087222, '<a href="https://cs.wikipedia.org/wiki/Pra%C5%A1n%C3%A1_br%C3%A1na" target="_blank">
+            Prašná brána</a>',
+    options = popupOptions(closeButton = TRUE))
+
+mapa
+```
+
+### {.pozadi}
+
+Pokud chceme náš text v okně trochu více upravit a dostat jej na více řádků, použijeme následující postup, ve kterém využijeme naše znalosti z HTML. Parametr `sep = "<br/>"` v rámci příkazu `paste()` zaručí, že jednotlivé údaje v proměnné obsah budou odděleny vždy novým řádkem.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+obsah <- paste(sep = "<br/>",
+  '<a href="https://cs.wikipedia.org/wiki/Pra%C5%A1n%C3%A1_br%C3%A1na" target="_blank">
+  Prašná brána</a>',
+  "rok výstavby: 1475",
+  "Staré Město, Praha 1")
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.427778, lat = 50.087222, zoom = 18) %>% 
+  addProviderTiles("Esri.WorldImagery") %>%
+  addPopups(lng = 14.427778, lat = 50.087222, obsah,
+    options = popupOptions(closeButton = TRUE))
+
+mapa
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+obsah <- paste(sep = "<br/>",
+  '<a href="https://cs.wikipedia.org/wiki/Pra%C5%A1n%C3%A1_br%C3%A1na" target="_blank">Prašná brána</a>',
+  "rok výstavby: 1475",
+  "Staré Město, Praha 1")
+
+mapa <- leaflet() %>% 
+  setView(lng = 14.427778, lat = 50.087222, zoom = 18) %>% 
+  addProviderTiles("Esri.WorldImagery") %>%
+  addPopups(lng = 14.427778, lat = 50.087222, obsah,
+    options = popupOptions(closeButton = TRUE))
+
+mapa
+```
+
+### {.pozadi}
+
+Jeden odkaz na mapě nás ale příliš neuspokojí. Ukažme si proto, jak lze výše uvedených odkazů vložit do mapy o mnoho více, a to ve formě tzv. pinů. Před tím si však budeme muset nejdříve vytvořit vzorový data frame se vzorkem tří pražských památek. Jako mapový podklad použijeme Esri.WorldStreetMap. Po rozkliknutí jednotlivých pinů se zobrazí text uvedený v proměnné památka.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+památka <- c("Prašná brána", "Pražský hrad", "Karlův most")
+lng <- c(14.427778, 14.401667, 14.411944)
+lat <- c(50.087222, 50.091056, 50.086389)
+data <- data.frame(památka, lng, lat)
+
+mapa <- leaflet(data) %>% addProviderTiles("Esri.WorldStreetMap") %>%
+  addMarkers(~lng, ~lat, popup = data$památka)
+
+mapa
+```
+
+### {.mapa}
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+památka <- c("Prašná brána", "Pražský hrad", "Karlův most")
+lng <- c(14.427778, 14.401667, 14.411944)
+lat <- c(50.087222, 50.091056, 50.086389)
+data <- data.frame(památka, lng, lat)
+
+leaflet(data) %>% addProviderTiles("Esri.WorldStreetMap") %>%
+  addMarkers(~lng, ~lat, popup = památka)
+```
+
+### {.pozadi}
+
+Opusťme matičku Prahu a zaměřme se ve druhé části této lekce na celý svět. Představme si, že sledujeme hodnoty určité proměnné, například kvality městské hromadné dopravy měřené pomocí Sustainable Cities Mobility Index (viz <a href="https://www.rlandio.cz/Arcadis.html" target="_blank">What Are the Main Factors Affecting the Quality of Public Transport in Cities?</a>). Tento index nabývá různých hodnot od nuly do sta, kde vyšší číslo značí vyšší kvalitu dopravy. Naším cílem je vynést hodnoty tohoto indexu do mapy a barevně odlišit tři úrovně (hodnoty vyšší nebo rovno 59 zelená, pod 59 ale více jak 51 žlutá, méně nebo rovno 51 červená). A aby to vše nebylo málo, budeme chtít, aby se po rozkliknutí barevného puntíku města zobrazila samotná hodnota indexu. Databázi si můžete stáhnout níže.
+
+```{r fig.height=34}
+Mapa_leaflet <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Mapa_leaflet.csv")
+
+library("DT") 
+
+datatable(Mapa_leaflet, extensions = 'Buttons', options = list(
+  pageLength = 10,  
+  dom = 'Bfrtip',
+  buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+  language = list(
+    info = 'Celkový počet záznamů od _START_ do _END_',
+    paginate = list(previous = 'Zpět', `next` = 'Další'), 
+    lengthMenu = 'Zobraz _MENU_ záznamů', search = 'Najdi:')))
+```
+```{r, eval=F, echo=T}
+library(leaflet)
+
+data <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Mapa_leaflet.csv")
+
+mapa <- leaflet(data = data) %>%
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2) %>%
+  addCircleMarkers(lng = ~lng, 
+                   lat = ~lat, 
+                   radius = 15,
+                   color = ~ifelse(val >= 59, "#38CE23", 
+                            ifelse(val > 51 & val < 59, "#FFD900",
+                            ifelse(val =< 51, "#FF0000", "#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) 
+
+mapa
+```
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+data <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Mapa_leaflet.csv")
+
+mapa <- leaflet(data = data) %>%
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2) %>%
+  addCircleMarkers(lng = ~lng, 
+                   lat = ~lat, 
+                   radius = 15,
+                   color = ~ifelse(val >= 59,"#38CE23", 
+                            ifelse(val > 51 & val < 59,"#FFD900",
+                            ifelse(val <= 51,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) 
+
+mapa
+```
+
+### {.pozadi}
+
+Body na mapu jsme přidali pomocí příkazu `addCircleMarkers()`, ve kterém jsme nejdříve definovali zeměpisnou délku, šířku a přiblížení. Parametrem `radius` jsme určili velikost jednotlivých puntíků, abychom následně pomocí `color` stanovili barvy těchto bodů a parametrem `fillOpacity` jejich průsvitnost. Poslední parametr `popup` si vzal za úkol určit text zobrazující se po rozkliknutí daného bodu na mapě.
+
+Máte-li zájem se o Leafletu dozvědět mnohem víc, doporučím vám zejména následující <a href="https://rstudio.github.io/leaflet/" target="_blank">stránky</a>. Ty totož obsahují vzevrubné informace o tomto balíčku včetně konkrétních postupů, kterak například vytvořit následující mapu.
+
+```{r, eval=F, echo=T}
+cities <- read.csv(textConnection("
+City,Lat,Long,Pop
+Boston,42.3601,-71.0589,645966
+Hartford,41.7627,-72.6743,125017
+New York City,40.7127,-74.0059,8406000
+Philadelphia,39.9500,-75.1667,1553000
+Pittsburgh,40.4397,-79.9764,305841
+Providence,41.8236,-71.4222,177994
+"))
+
+mapa <- leaflet(cities) %>% addProviderTiles("Esri.WorldStreetMap") %>%
+  addCircles(lng = ~Long, lat = ~Lat, weight = 1,
+             radius = ~sqrt(Pop) * 30, popup = ~City)
+
+mapa
+```
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+cities <- read.csv(textConnection("
+City,Lat,Long,Pop
+Boston,42.3601,-71.0589,645966
+Hartford,41.7627,-72.6743,125017
+New York City,40.7127,-74.0059,8406000
+Philadelphia,39.9500,-75.1667,1553000
+Pittsburgh,40.4397,-79.9764,305841
+Providence,41.8236,-71.4222,177994
+"))
+
+mapa <- leaflet(cities) %>% addProviderTiles("Esri.WorldStreetMap") %>%
+  addCircles(lng = ~Long, lat = ~Lat, weight = 1,
+             radius = ~sqrt(Pop) * 30, popup = ~City)
+mapa
+```
+
+### {.pozadi}
+
+Další webová <a href="https://leaflet-extras.github.io/leaflet-providers/preview/" target="_blank">stránka</a>, která by vám neměla uniknout, obsahuje podrobný soupis všemožných mapových podkladů včetně jejich ukázek. V případě, že se vám totiž OpenStreetMapy nelíbí, naleznete zde jistě takový styl, se kterým budete spokojeni. Výběr je tu doopravdy široký. Sám za sebe mohu například zmínit podklad zobrazující železniční sítě v jednotlivých zemích světa. Na tomto místě je dobré též zdůraznit, že mapových podkladů můžete v Leafletu současně použít hned několik, jak to lze vidět v posledním skriptu této lekce. V něm bude první mapový podklad tvořit základní mapu a druhý dodá výše zmíněnou železniční síť. A aby toho nebylo málo, dovolil jsem si do skriptu přidat i tři zcela nové příkazy. První z nich se nazývá `addMiniMap()`, jenž přidává malou mapku do pravého dolního rohu (viz úvod každé kapitoly). Druhý z nich `addSearchOSM()` přidává vyhledávání měst a vesnic a poslední `addFullscreenControl()` umožňuje roztáhnutí mapy na celou obrazovku.
+
+```{r, eval=F, echo=T}
+library(leaflet)
+library(leaflet.extras)
+
+
+data <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Mapa_leaflet.csv")
+
+
+mapa <- leaflet(data = data) %>%
+  addProviderTiles("OpenStreetMap.Mapnik") %>%
+  addProviderTiles("OpenRailwayMap") %>% 
+  setView(lng = 15.335125, lat = 49.741807, zoom = 7)  %>%
+  addMiniMap(tiles = providers$Esri.WorldStreetMap,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM() %>%
+  addFullscreenControl(position = "topleft")
+
+mapa
+```
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+
+
+data <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Mapa_leaflet.csv")
+
+
+mapa <- leaflet(data = data) %>%
+  addProviderTiles("OpenStreetMap.Mapnik") %>%
+  addProviderTiles("OpenRailwayMap") %>% 
+  setView(lng = 15.335125, lat = 49.741807, zoom = 7)  %>%
+  addMiniMap(tiles = providers$Esri.WorldStreetMap,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM() %>%
+  addFullscreenControl(position = "topleft")
+
+mapa
+```
+
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Vytvořte mapu, která zobrazí město Brno na mapovém podkladu Esri.WorldImagery, který však bude obsahovat i místopisné údaje (tj. názvy měst, vesnic, silnice atd.).
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 16.598914, lat = 49.194289, zoom = 13) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  addPopups(lng = 16.598914, lat = 49.194289, 
+            '<center><a href="https://en.wikipedia.org/wiki/Brno" target="_blank">
+            Brno</a></center>',
+            options = popupOptions(closeButton = TRUE))
+
+mapa
+
+# Souřadnice v decimálním formátu můžete nalézt například tak,
+# že půjdete na stránky Wikipedie, kliknete v pravém panelu na 
+# souřadnice uvedené ve stupních, což vás přenese na stránky
+# GeoHack, kde již tyto informace uvidíte.
+
+# HTML příkaz <center> </center> zarovná text na střed.
+```
+
+### {.pozadi}
+
+> Příklad 2
+
+Znázorněte na mapě světa s mapovým podkladem Esri.NatGeoWorldMap veškerá hlavní města. Po rozkliknutí jednotlivých měst by se měl zobrazit následující text ve formátu: `Prague, country: Czech Republic, ISO CODE: CZ`.
+
+```{r fig.height=34}
+library(readxl)
+Countries <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Countries.xlsx")
+
+library("DT") 
+
+datatable(Countries, extensions = 'Buttons', options = list(
+  pageLength = 10,  
+  dom = 'Bfrtip',
+  buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+  language = list(
+    info = 'Celkový počet záznamů od _START_ do _END_',
+    paginate = list(previous = 'Zpět', `next` = 'Další'), 
+    lengthMenu = 'Zobraz _MENU_ záznamů', search = 'Najdi:')))
+```
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(readxl)
+library(tidyr)
+
+Countries <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Countries.xlsx")
+
+Countries <- Countries %>%
+  unite(Text, c("Město","Země"), sep=", country: ")  %>%
+  unite(Text, c("Text","Kód"), sep=", ISO CODE: ") 
+
+mapa <- leaflet(data = Countries) %>%
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2) %>%
+  addMarkers(~lng, ~lat, popup = Countries$Text)
+
+mapa
+```
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+Column {data-width=700}
+-----------------------------------------------------------------------
+
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+Vytvořte mapu, která zobrazí město Brno na mapovém podkladu Esri.WorldImagery, který však bude obsahovat i místopisné údaje (tj. názvy měst, vesnic, silnice atd.).
+
+```{r, eval=F, echo=T}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 16.598914, lat = 49.194289, zoom = 13) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  addPopups(lng = 16.598914, lat = 49.194289, 
+            '<center><a href="https://en.wikipedia.org/wiki/Brno" target="_blank">
+            Brno</a></center>',
+            options = popupOptions(closeButton = TRUE))
+
+mapa
+
+# Souřadnice v decimálním formátu můžete nalézt například tak,
+# že půjdete na stránky Wikipedie, kliknete v pravém panelu na 
+# souřadnice uvedené ve stupních, což vás přenese na stránky
+# GeoHack, kde již tyto informace uvidíte.
+
+# HTML příkaz <center> </center> zarovná text na střed.
+```
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+
+mapa <- leaflet() %>% 
+  setView(lng = 16.598914, lat = 49.194289, zoom = 13) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  addPopups(lng = 16.598914, lat = 49.194289, 
+            '<center><a href="https://en.wikipedia.org/wiki/Brno" target="_blank">
+            Brno</a></center>',
+            options = popupOptions(closeButton = TRUE))
+
+mapa
+```
+
+###  {.pozadi}
+
+> Příklad 2
+
+Znázorněte na mapě světa s mapovým podkladem Esri.NatGeoWorldMap veškerá hlavní města. Po rozkliknutí jednotlivých měst se bude zobrazovat následující text ve formátu: `Prague, country: Czech Republic, ISO CODE: CZ`.
+
+```{r fig.height=34}
+library(readxl)
+Countries <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Countries.xlsx")
+
+library("DT") 
+
+datatable(Countries, extensions = 'Buttons', options = list(
+  pageLength = 10,  
+  dom = 'Bfrtip',
+  buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+  language = list(
+    info = 'Celkový počet záznamů od _START_ do _END_',
+    paginate = list(previous = 'Zpět', `next` = 'Další'), 
+    lengthMenu = 'Zobraz _MENU_ záznamů', search = 'Najdi:')))
+```
+
+```{r, eval=F, echo=T}
+library(readxl)
+library(tidyr)
+
+Countries <- read_excel("C:/Users/.../Countries.xlsx")
+
+Countries <- Countries %>%
+  unite(Text, c("Město", "Země"), sep = ", country: ")  %>%
+  unite(Text, c("Text", "Kód"), sep = ", ISO CODE: ") 
+
+mapa <- leaflet(data = Countries) %>%
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2) %>%
+  addMarkers(~lng, ~lat, popup = Countries$Text)
+
+mapa
+```
+
+### {.mapa}
+
+```{r echo=FALSE, fig.height=5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(readxl)
+library(tidyr)
+
+Countries <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/8.kapitola/Countries.xlsx")
+
+Countries <- Countries %>%
+  unite(Text, c("Město","Země"), sep=", country: ")  %>%
+  unite(Text, c("Text","Kód"), sep=", ISO CODE: ") 
+
+mapa <- leaflet(data = Countries) %>%
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2) %>%
+  addMarkers(~lng, ~lat, popup = Countries$Text)
+
+mapa
+```
+
+
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+

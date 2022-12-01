@@ -1,0 +1,2271 @@
+---
+title: Pokračování dplyru a ggplot2
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 7**</p align="center">
+<p align="center">**POKRAČOVÁNÍ DPLYRU A GGPLOT2**</p align="center">
+
+V předchozích dvou kapitolách jsme se naučili pracovat s balíčky ggplot2 a dplyr. Balíček dplyr však obsahuje kromě nám už známých příkazů i několik dalších, kterým bude věnována právě tato kapitola. Jmenovitě se jedná o příkazy trubka, respektive group_by a summarise.
+
+S těmito třemi příkazy povýšíme naše skripty na zcela novou úroveň, jak sami brzy zjistíte. Jejich užitečnost oceníte nejen při analýze dat, ale i při tvorbě grafů. Pojďme na ně.
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 7**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**POKRAČOVÁNÍ DPLYRU A GGPLOT2**</p align="center"></font>
+
+<font color="white">
+V předchozích dvou kapitolách jsme se naučili pracovat s balíčky ggplot2 a dplyr. Balíček dplyr však obsahuje kromě nám už známých příkazů i několik dalších, kterým bude věnována právě tato kapitola. Jmenovitě se jedná o příkazy trubka, respektive group_by a summarise.
+
+S těmito třemi příkazy povýšíme naše skripty na zcela novou úroveň, jak sami brzy zjistíte. Jejich užitečnost oceníte nejen při analýze dat, ale i při tvorbě grafů. Pojďme na ně.
+</font>
+
+### {.mapa}
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/7.kapitola/7.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 121.023415, lat = 14.556586, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 134.230310, lat = 6.995505, 
+            '<h6><a href="https://www.rlandio.cz/cesta/7.kapitola.html#pipe" target="_blank" style="color:#014B7C">Peleliu</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 105.804817, lat = 21.028511, 
+            '<h6><a href="https://www.rlandio.cz/cesta/7.kapitola.html#bar-charts-2" target="_blank" style="color:#014B7C">Hanoj</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Trubka
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Peleliu: Trubka {.pozadi}
+
+Naše asijské dobrodružství začínáme poněkud zvláštně znějícím operátorem trubka (v angličtině pipe), který nám pomůže naše dlouhé zápisy ve skriptech zkrátit, a přitom zlepšit jejich čitelnost. Trubka se skládá ze tří znaků `%>%`, jež dokážeme vyvolat pomocí klávesové zkratky **Ctrl-Shift-M**. Ukažme si na příkladu, co vše trubka dovede. Vítejte na ostrově Peleliu.
+
+Naším prvním úkolem se stane vytvořit databázi Katan2, která bude obsahovat jedince mladší 26 let, kteří chodí do klubů deskových her. Z minulé kapitoly víme, že se nám pro řešení takového úkolu bude nejlépe hodit příkaz `filter()` z dplyru.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+
+Katan2 <- Katan %>%  
+  filter(
+    Věk <= 25,
+    Klub == "člen") 
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- Katan %>%  
+  filter(Věk <= 25,
+  Klub == "člen") 
+Katan2
+```
+
+Zápis předchozího skriptu je dosti odlišný od té podoby, se kterou jsme se seznámili v předchozí kapitole. Podívejme se proto na jejich srovnání v následujícím přehledu.
+
+```{r, eval=F, echo=T}
+# skript s trubkou
+Katan2 <- Katan %>%  
+  filter(
+    Věk <= 25,
+    Klub == "člen") 
+
+# skript bez trubky
+Katan2 <- 
+  filter(Katan, 
+    Věk <= 25,
+    Klub == "člen")
+```
+
+U trubky začínáme názvem databáze, se kterou chceme v příkazu `filter()` pracovat (pomineme-li samotný název databáze, do které výsledek vložíme, tj. Katan2). Následně přidáme symbol pro trubku a teprve až poté pokračujeme vlastním názvem funkce, v němž už název databáze neuvádíme. Jinými slovy, pomocí trubky vléváme data do příkazu `filter()`.
+
+Abychom si ukázali, že trubka nemusí fungovat pouze v rámci příkazů dplyr, uveďme si další příklad. V něm budeme chtít zjistit průměr proměnné Věk.
+
+```{r, eval=F, echo=T}
+# skript s trubkou
+Katan$Věk %>%
+	mean()
+
+# skript bez trubky
+mean(Katan$Věk)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Věk %>%
+	mean()
+```
+
+Jak je vidět, trubka funguje i u tak obyčejného příkazu, jako je třeba `mean()`. Jen si prosím vždy dávejte pozor na to, abyste nezapomněli na závorku u samotného příkazu. Ačkoliv je zde sice prázdná, je i tak naprosto nezbytná. Závorku si můžete představit jako nádrž, do které budete data vlévat. Bez ní se vám data rozlijí a skript nahlásí error.
+
+Vzhledem k předchozímu představení trubky kdekoho jistě napadne otázka, a k čemu je trubka vlastně užitečná? Jistě, u výše uvedených příkazů nám toho příliš mnoho nepřinesla, pokud vůbec. Až ale začneme tvořit v dalších částech této kapitoly složitější skripty, bude se nám velice hodit. Užitečnost trubky nicméně lze demonstrovat i u jednodušších příkazů, jako je třeba hned ten následující, ve kterém najednou použijeme příkazy `select()`, `filter()` a `rename()`.
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan %>%
+  select(Věk, Pohlaví) %>%
+  filter(Věk < 18) %>%
+  rename("Age" = Věk, "Gender" = Pohlaví)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- Katan %>%
+  select(Věk, Pohlaví) %>%
+  filter(Věk < 18) %>%
+  rename("Age" = Věk, "Gender" = Pohlaví)
+Katan2
+```
+
+Předchozí skript nejdříve vpouští databázi Katan pomocí trubky do příkazu `select()`, který ponechá pouze proměnné Věk a Pohlaví. Ty následně pošle do příkazu `filtr()`, jenž z nich vybere pouze ty řádky, u nichž je věk nižší než 18 let. V závěru ještě dojde k přejmenování proměnných Věk a Pohlaví na Age a Gender. Výsledná databáze se uloží pod názvem Katan2.
+
+Bez trubky bychom výše uvedený příkaz napsali následovně.
+
+```{r, eval=F, echo=T}
+# 1. verze (zkrácená)
+Katan2 <- rename((filter(select(Katan, Věk, Pohlaví), Věk < 18)), 
+                 "Age" = Věk, "Gender" = Pohlaví)
+# Všimněte si, že jednotlivé příkazy zapisujeme v opačném pořadí 
+# než u předchozího skriptu. Je to obdobné jako při běžné práci
+# se závorkami, např. (3 + (1 - (1 - 2)), u níž také budeme řešit 
+# závorky směrem od středu ven a nikoliv opačně.
+
+# 2. verze (nezkrácená)
+Katan2 <- 
+  select(Katan, 
+         Věk, Pohlaví)
+Katan3 <- 
+  filter(Katan2, 
+         Věk < 18)
+Katan4 <-
+  rename(Katan3, 
+         "Age" = Věk, "Gender" = Pohlaví)
+# Veškeré databáze by se mohli samozřejmě pojmenovat pouze jako Katan,
+# pro větší přehlednost však přidáváme k jednotlivým verzím čísla.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- rename((filter(select(Katan, Věk, Pohlaví),Věk< 18)), 
+                 "Age" = Věk, "Gender" = Pohlaví)
+Katan2
+```
+
+Primárním úkolem trubky je zlepšení čitelnosti kódu, jelikož jednotlivé příkazy s její pomocí můžeme zapisovat v jejich logickém pořadí. Pojďme se proto v následující části této kapitoly seznámit s dalšími příkazy dplyru, u nichž nám trubky plně odkryjí své kouzlo. Přesuňme se tudíž jako generál Čankajšek na Tchaj-wan, na němž nalezneme další lekci.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 1
+
+S pomocí trubky vytvořte datovou tabulku s názvem Data_z_trubky, která bude obsahovat proměnné Věk, Pohlaví, Vzdělání a Kouření. Názvy těchto proměnných následně přejmenujte na jejich anglické ekvivalenty. V dalších kroku zajistěte, aby v databázi byli zařazeni pouze jedinci ve věku 18 až 26 let (včetně). Na úplný závěr seřaďte hodnoty v proměnných podle věku, pohlaví, vzdělání a kouření v tomto pořadí. 
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/7.kapitola/7.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 134.230310, lat = 6.995505, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius = 15,
+                   color =~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 134.230310, lat = 6.995505, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Bitva_o_Peleliu" target="_blank" style="color:#014B7C">Peleliu</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Group_by a summarise
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Tchaj-pej: Group_by a summarise {.pozadi}
+Máte stále v živé paměti příkazy `tapply()` a `aggregate()` z Ria de Janeira? Ukažme si nyní v Tchaj-peji, jak lze tyto funkce obejít pomocí příkazů `group_by()` a `summrize()`. Přitom si též představíme praktické využití příkazu trubka. Podívejme se na následující příklad. V něm budeme chtít vypočítat průměr, medián, směrodatnou odchylku, minimum a maximum u proměnné Věk, a to vše podle pohlaví. 
+
+```{r, eval=F, echo=T}
+Katan %>% 
+  group_by(Pohlaví) %>%
+  summarise(průměr = mean(Věk),
+            sd = sd(Věk),
+            min = min(Věk),
+            max = max(Věk))
+# Výsledek nepřiřazujeme žádné databázi, proto píšeme pouze Katan %>%.
+# Pokud bychom ho chtěli uložit, stačí uvést např. Data <- Katan %>% ...,
+# kde databáze Data vznikne jako data frame.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan %>% 
+  group_by(Pohlaví) %>%
+  summarise(průměr = mean(Věk),
+            sd = sd(Věk),
+            min = min(Věk),
+            max = max(Věk))
+```
+
+V našem příkazu nejdříve začínáme trubkou, jelikož data z databáze Katan pomyslně přitečou do příkazu `group_by()`. Samotný příkaz `group_by()` nic nepočítá. Pouze vnitřně (neviditelně) rozdělí databázi Katan na dvě tabulky, a to podle proměnné Pohlaví. Kdybychom do závorky příkazu `group_by()` uvedli i další proměnnou, například Klub, `group_by()` by nám vytvořil čtyři pomyslné tabulky (žena_člen, žena_nečlen, muž_člen a muž_nečlen).
+
+Když už máme data připravena, využijeme znovu operátor trubka, kterým pošleme do `summarise()` naši upravenou a roztříděnou databázi Katan. V samotném příkazu `summarise()` uvedeme nejdříve libovolný název nové proměnné a za jejím rovnítkem teprve až samotnou funkci, tak jak už ji známe. Dolarový symbol nepoužíváme. Výsledkem celého skriptu se stane nová tabulka, jež bude obsahovat právě tolik proměnných, jako jich obsahují příkazy `group_by()` a `summarise()` dohromady. Počet řádků nové databáze se řídí počtem jednotlivých kombinací, kterých lze díky `group_by()` dosáhnout. Pokud tedy dělíme naše data pouze podle pohlaví, získáme dva řádky. Pokud je budeme dělit nejen podle pohlaví, ale například i podle proměnné Klub, získáme je čtyři (viz žena_člen, žena_nečlen, muž_člen a muž_nečlen).
+
+```{r, eval=F, echo=T}
+Katan %>% 
+  group_by(Pohlaví, Klub) %>%
+  summarise(průměr = mean(Věk),
+            sd = sd(Věk),
+            min = min(Věk),
+            max = max(Věk))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan %>% 
+  group_by(Pohlaví, Klub) %>%
+  summarise(průměr = mean(Věk),
+            sd = sd(Věk),
+            min = min(Věk),
+            max = max(Věk))
+```
+
+Ukažme si nyní složitější variantu úvodního příkladu. V něm budeme filtrovat data nejen podle pohlaví, ale též podle proměnné Práce. K tomu se u jednotlivých výpočtů průměru, směrodatné odchylky, minima a maxima zaměříme kromě proměnné Věk i na proměnnou Děti.
+
+```{r, eval=F, echo=T}
+Katan %>% 
+  group_by(Pohlaví, Práce) %>%
+  summarise(průměr_Věk = mean(Věk),
+            sd_Věk= sd(Věk),
+            min_Věk= min(Věk),
+            max_Věk= max(Věk),
+            průměr_Děti = mean(Děti),
+            sd_Děti = sd(Děti),
+            min_Děti = min(Děti),
+            max_Děti = max(Děti))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan %>% 
+  group_by(Pohlaví, Práce) %>%
+  summarise(průměr_Věk = mean(Věk),
+            sd_Věk= sd(Věk),
+            min_Věk= min(Věk),
+            max_Věk= max(Věk),
+            průměr_Děti = mean(Děti),
+            sd_Děti = sd(Děti),
+            min_Děti = min(Děti),
+            max_Děti = max(Děti))
+```
+
+Jak je vidět, není příliš praktické vypisovat jednotlivé statistické funkce a proměnné zvlášť pro každý výpočet. Proto se nyní podívejme na poněkud odlišný zápis pomocí funkce `summarise_each()`, který nám umožní najednou vypsat nejenom veškeré funkce, které budeme chtít použít (průměr, směrodatnou odchylku, minimum a maximum), ale i všechny proměnné (Věk a Děti), pro něž budeme chtít výpočty provést.
+
+```{r, eval=F, echo=T}
+Katan %>%
+  group_by(Pohlaví, Práce) %>%
+  summarise_each(funs(mean, sd, min, max), Věk, Děti)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan %>%
+  group_by(Pohlaví, Práce) %>%
+  summarise_each(funs(mean, sd, min, max), Věk, Děti)
+```
+
+Výše uvedený zápis je již mnohem stručnější a elegantnější. Problém však nastane, pokud nám v databázi budou chybět hodnoty. V takovém případě by se nám totiž ozval error. Jak jej odstranit? Pokud bychom chtěli vypočítat pouze průměr u proměnné Věk, volili bychom tento známý příkaz.
+
+```{r, eval=F, echo=T}
+mean(Katan$Věk, na.rm = TRUE)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+mean(Katan$Věk, na.rm = TRUE)
+```
+
+Možná by Vás proto napadlo předchozí skript přepsat do následující podoby.
+
+```{r, eval=F, echo=T}
+Katan %>%
+  group_by(Pohlaví, Práce) %>%
+  summarise_each(funs(mean(na.rm = TRUE), 
+                      sd(na.rm = TRUE), 
+                      min(na.rm = TRUE), 
+                      max(na.rm = TRUE)), 
+                      Věk, Děti)
+```
+
+Takovýto skript však nebude fungovat kvůli problému s trubkou. Příkazy `mean()`, `sd()`, `min()` a `max()` totiž nejsou příkazy z dplyru. Pokud tak používáme trubku, musíme tyto příkazy upravit do následující podoby.
+
+```{r, eval=F, echo=T}
+Katan$Věk %>%
+  mean(., na.rm = TRUE)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Věk %>%
+  mean(., na.rm = TRUE)
+```
+
+Všimněte si prosím tečky, která nám říká, na kterou pozici mají data z trubky přitéct. V našem případě se jedná o první pozici za závorkou (viz `mean(Katan$Vek, na.rm = TRUE)`). Tečka není nutná pouze tehdy, kdy je závorka prázdná, jako v následujícím příkazu či jedná-li se o příkaz z dplyru (např. `filter()`, `select()` atd.) nebo dalších balíčků (ggplot2, mapy v leafletu se kterými se seznámíme v příští kapitole).
+
+```{r, eval=F, echo=T}
+Katan$Věk %>%
+	mean()
+
+# respektive
+Katan %>%  
+  filter(Věk <= 25) 
+```
+
+Na druhou stranu i s tečkou budou příkazy bez problému fungovat.
+
+```{r, eval=F, echo=T}
+Katan$Věk %>%
+	mean(.)
+
+# respektive
+Katan %>%  
+  filter(., Věk <= 25) 
+```
+
+Výsledný skript našeho původního příkladu bude proto vypadat následovně.
+
+```{r, eval=F, echo=T}
+Katan %>%
+  group_by(Pohlaví, Práce) %>%
+  summarise_each(funs(mean(., na.rm = TRUE),
+                      sd(., na.rm = TRUE),
+                      min(., na.rm = TRUE),
+                      max(., na.rm = TRUE)),
+                      Věk, Děti)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan %>%
+  group_by(Pohlaví, Práce) %>%
+  summarise_each(funs(mean(., na.rm = TRUE),
+                      sd(., na.rm = TRUE),
+                      min(., na.rm = TRUE),
+                      max(., na.rm = TRUE)),
+                      Věk, Děti)
+```
+
+Ponechme na chvíli funkci `summarise_each()` stranou a podívejme se na další úkol. V něm nás nebudou zajímat informace získané pomocí `mean()`, `sd()`, `max()` či `min()`, jelikož se budeme zabývat prostou četností jevů. Chceme-li například zjistit, kolik máme můžu a žen v databázi, lze využít jednoduchou funkci `table(Katan$Pohlaví)`. Co když ale budeme chtít zjistit něco složitějšího? Představte si například, že máte za cíl vyzkoumat, jaký je procentuální podíl mužů a žen podle následujících věkových skupin (teenager do 18 let, dospělý od 18 do 26 let, dospělý od 26 do 65 let a důchodce od 65 let)?
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 65, 150),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 65 let", "důchodce od 65 let"))) %>%
+	group_by(Pohlaví, VěkSkupiny) %>%
+    summarise(
+      Četnost_abs = n(), 
+      Četnost_rel = (n()/nrow(Katan))*100)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 65, 150),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 65 let", "důchodce od 65 let"))) %>%
+	group_by(Pohlaví, VěkSkupiny) %>%
+    summarise(
+      Četnost_abs = n(), 
+      Četnost_rel = (n()/nrow(Katan))*100)
+Katan2
+```
+
+První část skriptu se zabývá vytvořením nové proměnné VěkSkupiny za přispění funkce `cut()`. Výsledná proměnná je připojena ke stávající databázi Katan díky `mutate()`. Ve druhé části skriptu `group_by()` rozdělí naši tabulku na pomyslných osm dílů podle proměnných Pohlaví a VěkSkupiny (2 pohlaví x 4 věkové skupiny = 8 variant). Takto rozdělená tabulka je pomocí trubky převedena do funkce `summarise()`, u které nejdříve vypočítáme absolutní četnost `n()` a poté i relativní četnost `(n()/nrow(Katan))*100`. Výslednou tabulku převedeme do nově vzniklého data frame s názvem Katan2.
+
+Máte pochybnosti o tom, zdali příkaz `n()` funguje správně a chtěli byste ho konfrontovat s příkazem `table()`? Žádný problém. Podívejme se na následující srovnání.
+
+```{r, eval=F, echo=T}
+# přístup dplyr
+Katan2 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 65, 150),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 65 let", "důchodce od 65 let"))) %>%
+	group_by(Pohlaví, VěkSkupiny) %>%
+    summarise(
+      Četnost_abs = n())
+
+# přístup table()
+Katan2 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 65, 150),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 65 let", "důchodce od 65 let")))
+table(Katan2$Pohlaví, Katan2$VěkSkupiny)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 65, 150),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 65 let", "důchodce od 65 let"))) %>%
+	group_by(Pohlaví, VěkSkupiny) %>%
+    summarise(
+    Četnost_abs=n())
+print("Přístup dplyr")
+Katan2
+
+Katan3 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 65, 150),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 65 let", "důchodce od 65 let")))
+print("Přístup table")
+table(Katan3$Pohlaví, Katan3$VěkSkupiny)
+```
+
+Výhodou přístupu z dplyr je zejména to, že výsledek obdržíme v přehledném formátu data frame, se kterým lze následně bez problémů pracovat.
+
+Abychom si vyzkoušeli `group_by()` a `summarise()` ještě trochu více do hloubky, nainstalujme si nyní balíček <a  href="https://cran.r-project.org/web/packages/hflights/index.html" target="_blank">hflights</a>, který obsahuje data z letecké přepravy. Ten stáhneme do R tak, jako by se jednalo o obyčejný balíček, podobně jako dplyr.
+
+```{r, eval=F, echo=T}
+install.packages("hflights")
+library(hflights)
+flights <- hflights
+# Databázi přejmenujeme na flights, tímto krokem ji navíc dostaneme
+# do pravého horního panelu.
+```
+
+Máme-li už databázi staženou, podívejme se se na následující příklad. V něm budeme chtít zjistit počty zrušených a nezrušených letů podle letiště.
+
+```{r, eval=F, echo=T}
+flights %>%
+group_by(Dest) %>%
+summarise(Cancelled = sum(Cancelled), 
+          Not_Cancelled = n()-sum(Cancelled)) 
+# proměnná Dest označuje kód cílového letiště 
+# proměnná Cancelled obsahuje nuly a jedničky (zrušený let)
+
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+flights %>%
+group_by(Dest) %>%
+summarise(Cancelled = sum(Cancelled), 
+Not_Cancelled = n()-sum(Cancelled)) 
+```
+
+Výše uvedený příklad lze vyřešit i bez `summarise()` a to díky `table()`. Všimněte si struktury následujícího skriptu. Nejdříve vybíráme proměnnou, podle které mají být data rozřazena. V našem případě se jedná o letecké destinace (proměnná Dest). V dalším kroku pomocí příkazu `select()` vybíráme jedinou proměnnou a to Cancelled, která zobrazuje jedničku pro zrušený let a nulu pro ten odbavený. Výsledný příkaz končí prázdnou závorkou příkazu `table()`, do níž přitečou data pomocí trubky.
+
+```{r, eval=F, echo=T}
+flights %>%
+  group_by(Dest) %>%
+  select(Cancelled) %>%
+  table() 
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+flights %>%
+  group_by(Dest) %>%
+  select(Cancelled) %>%
+  table() 
+```
+
+A co takhle použít pouze příkaz `table()`? Jistě, i to je možnost. Ale uznejte sami, nevypadal ten předchozí příkaz poněkud sofistikovaněji?
+
+```{r, eval=F, echo=T}
+table(flights$Dest, flights$Cancelled)
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+table(flights$Dest, flights$Cancelled)
+```
+
+Zdají se vám výše uvedené tři skripty naprosto srovnatelné a zaměnitelné? Je tomu tak pouze do určité míry. Rozdíly totiž nalezneme ve výsledných datových strukturách. Podívejme se proto na následující rekapitulaci. V té výsledky předchozích skriptů uložíme do tří proměnných Data1, Data2 a Data3.
+
+```{r, eval=F, echo=T}
+# přístup dplyr
+Data1 <- flights %>%
+group_by(Dest) %>%
+summarise(Cancelled = sum(Cancelled), 
+          Not_Cancelled = n()-sum(Cancelled)) 
+
+# přístup kombinace dplyr a table()
+Data2 <- flights %>%
+  group_by(Dest) %>%
+  select(Cancelled) %>%
+  table() 
+
+# přístup table()
+Data3 <- table(hflights$Dest, hflights$Cancelled)
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+
+# přístup dplyr
+Data1 <- flights %>%
+group_by(Dest) %>%
+summarise(Cancelled = sum(Cancelled), 
+          Not_Cancelled = n()-sum(Cancelled)) 
+
+# přístup kombinace dplyr a table()
+Data2 <- flights %>%
+  group_by(Dest) %>%
+  select(Cancelled) %>%
+  table() 
+
+# přístup table()
+Data3 <- table(hflights$Dest, hflights$Cancelled)
+
+class(Data1)
+class(Data2)
+class(Data3)
+```
+
+Poslední dva skripty za použití funkce `table()`, navzdory jejich jednoduchosti, obsahují jedno omezení. Výsledný formát dat, chceme-li jej uchovat a dále s ním pracovat, nebude uložen v datové struktuře data frame. Chceme-li s ním proto nakládat jako s běžnou datovou tabulkou, musíme jej převést na data frame pomocí příkazu `as.data.frame()`.
+
+```{r, eval=F, echo=T}
+# přístup kombinace dplyr a table()
+Data2 <- flights %>%
+  group_by(Dest) %>%
+  select(Cancelled) %>%
+  table() 
+Data2 <- as.data.frame(Data2)
+class(Data2)
+
+# přístup table()
+Data3 <- table(hflights$Dest, hflights$Cancelled)
+Data3 <- as.data.frame(Data3)
+class(Data3)
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+
+# přístup kombinace dplyr a table()
+Data2 <- flights %>%
+  group_by(Dest) %>%
+  select(Cancelled) %>%
+  table() 
+Data2 <- as.data.frame(Data2)
+class(Data2)
+
+# přístup table()
+Data3 <- table(hflights$Dest, hflights$Cancelled)
+Data3 <- as.data.frame(Data3)
+class(Data3)
+```
+
+To nám však nemusí stačit, jelikož formát výsledné tabulky bude při použití funkce `table()` stále odlišný od té podoby, které jsme dosáhli za pomoci příkazu `summarise()`. Zdali to bude pro vás výhoda či nevýhoda musíte posoudit již vy sami ve vaší konkrétní situaci (viz následující obrázek).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf12.png)](#group_by-a-summarise)</p align="center">
+
+Posuňme se v závěru této lekce ještě trochu kupředu. Funkci `group_by()` lze použít i ve spojitosti s dalšími příkazy z balíčku dplyr. Ukažme si je na následujícím příkladu. V něm budeme chtít zjistit, ve které tři dny v roce měli jednotliví dopravci nejdelší zpoždění.  
+
+```{r, eval=F, echo=T}
+flights %>%
+    group_by(UniqueCarrier) %>%
+    select(Month, DayofMonth, DepDelay) %>%
+    top_n(3, DepDelay) %>%
+    arrange(UniqueCarrier, desc(DepDelay))
+# UniqueCarrier: kód dopravce
+# DepDelay: zpoždění odletu v minutách
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+flights %>%
+    group_by(UniqueCarrier) %>%
+    select(Month, DayofMonth, DepDelay) %>%
+    top_n(3, DepDelay) %>%
+    arrange(UniqueCarrier, desc(DepDelay))
+```
+
+V první části skriptu pouštíme pomocí trubky data z databáze flights do příkazu `group_by()`, který nám údaje roztřídí podle dopravců. Následující příkaz `select()` nám z databáze vytřídí přebytečné proměnné a zanechá nám pouze měsíc, den, zpoždění (DepDelay) a označení pro dopravce (proměnná UniqueCarrier), které zůstane automaticky vzhledem k příkazu `group_by()`. Následující příkaz `top_n(3, DepDelay)` zobrazí tři nejvyšší hodnoty podle proměnné DepDelay. Poslední příkaz `arrange()` zařídí, aby byla veškerá výsledná data seřazena podle dopravce (UniqueCarrier) a následně dle zpoždění (DepDelay) v sestupném pořadí.
+
+Libí se vám zkratky místo skutečných názvů leteckých společností? Mně tedy vůbec ne. Z tohoto důvodu si stáhněte databázi <a href="https://www.rlandio.cz/Letecke_spolecnosti.xlsx" target="_blank">Letecke_spolecnosti</a>, která obsahuje dva sloupce: název letecké společnosti (proměnná Dopravce) a zkratku, pod kterou ji naleznete na letištních tabulích (proměnná Zkratka). Naším úkolem se stane přepsat skript tak, aby jeho výsledkem byla databáze Zpoždění, která bude zobrazovat skutečné názvy aerolinek.
+
+```{r, eval=F, echo=T}
+Letecke_spolecnosti <- read_excel("C:/Users/.../Letecke_spolecnosti.xlsx") 
+Letecke_spolecnosti$UniqueCarrier <- Letecke_spolecnosti$Zkratka
+# Tento příkaz tu je zde kvůli příkazu left_join(), tak abychom 
+# sjednotili názvy proměnných Zkratka a UniqueCarrier.
+
+Zpoždění <- flights %>%
+  group_by(UniqueCarrier) %>%
+  select(Month, DayofMonth, DepDelay) %>%
+  top_n(3, DepDelay) %>%
+  left_join(., Letecke_spolecnosti, by = "UniqueCarrier") %>%
+  select(Dopravce, Month, DayofMonth, DepDelay) %>%
+  rename("Zkratka" = UniqueCarrier, "Měsíc" = Month, 
+         "Den" = DayofMonth, "Zpoždění" = DepDelay)  %>%
+  arrange(desc(Zpoždění))
+```
+```{r echo=FALSE}
+library(hflights)
+flights <- hflights
+library(readxl)
+
+Letecke_spolecnosti <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Letecke_spolecnosti.xlsx") 
+Letecke_spolecnosti$UniqueCarrier <- Letecke_spolecnosti$Zkratka
+
+Zpoždění <- flights %>%
+  group_by(UniqueCarrier) %>%
+  select(Month, DayofMonth, DepDelay) %>%
+  top_n(3, DepDelay) %>%
+  left_join(Letecke_spolecnosti, by = "UniqueCarrier") %>%
+  select(Dopravce, Month, DayofMonth, DepDelay) %>%
+  rename("Zkratka" = UniqueCarrier, "Měsíc" = Month, 
+         "Den" = DayofMonth, "Zpoždění" = DepDelay)  %>%
+  arrange(desc(Zpoždění))
+Zpoždění
+```
+
+Na úplný závěr této lekce nás bude ještě zajímat celkový počet letů za každý měsíc včetně procentuální (i absolutní) změny oproti předchozímu měsíci.
+
+```{r, eval=F, echo=T}
+flights %>%
+  group_by(Month) %>%
+  summarise(Count_Flights = n()) %>%
+  mutate(abs_change = Count_Flights-lag(Count_Flights)) %>%
+  mutate(rel_change = (Count_Flights-lag(Count_Flights))/lag(Count_Flights)*100)
+  # Procentuální změny (i ty absolutní) vypočítáme pomocí funkce lag(), 
+  # která posune hodnoty v proměnné o jednu pozici při zanechání délky
+  # proměnné.
+  # Př. x <- c(1, 2, 3, 4, 5) => lag(x) => [1] NA  1  2  3  4
+
+  # Není vám zcela jasný rozdíl mezi summarise() a mutate()?
+  # Pokračujte do další lekce.
+```
+```{r echo=FALSE}
+library(hflights)
+library(dplyr)
+flights <- hflights
+flights %>%
+  group_by(Month) %>%
+  summarise(Count_Flights = n()) %>%
+  mutate(abs_change = Count_Flights-lag(Count_Flights)) %>%
+  mutate(rel_change = (Count_Flights-lag(Count_Flights))/lag(Count_Flights)*100)
+```
+
+Výše uvedený skript začínáme obligátním průtokem dat pomocí trubky do příkazu `group_by()`, který nám rozdělí data do jednotlivých měsíců. Poté následuje příkaz `summarise()`, který si klade za cíl spočítat počty letů podle jednotlivých měsíců. Výsledkem se stanou dva sloupce proměnných, které vidíte výše (proměnné Month a Count_Flights).  Tímto ale skript nekončí, jelikož pokračuje dvěma příkazy `mutate()`, které přidávají další dva sloupce. První z příkazů `mutate()` si klade za cíl vytvořit proměnnou abs_change, která bude sledovat rozdíl mezi počty odbavených letů mezi jednotlivými měsíci v absolutních číslech (např. rozdíl mezi únorem a lednem, jehož hodnota bude uvedena v řádku za únor). Druhý příkaz `mutate()` následně tytéž údaje převede na procenta (např. ((únor - leden) / leden) * 100).
+
+Ačkoliv byla nynější lekce v hlavním městě Čínské republiky (tak totiž zní oficiální název Tchaj-wanu) poněkud obsáhlá, neznamená to, že s příkazy `group_by()` a `summarise()` v této kapitole končíme. Věnovat se jim totiž budeme i v následujících dvou lekcích, které nás přesunou zpět k balíčku ggplot2.
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 2
+
+Zjistěte v následujících věkových skupinách (teenager do 18 let, dospělý od 18 do 26 let, dospělý od 26 do 35 let, dospělý od 35 do 65 let, dospělý 65 let a více) zastoupení mužů a žen a jejich průměrný počet partií na osobu. Ve skriptu využijte příkaz trubka.
+
+> Příklad 3
+
+Zjistěte průměr, medián a směrodatnou odchylku u proměnných Partie a Věk. Hodnoty určete pro skupiny rozřazené dle proměnných Vzdělání a Pohlaví (tj. ZŠ - muž, ZŠ - žena, SŠ - muž, SŠ - žena atd.). Ve skriptu využijte příkaz trubka.
+
+> Příklad 4
+
+V databázi <a  href="https://cran.r-project.org/web/packages/hflights/index.html" target="_blank">hflights</a> zjistěte největší zpoždění za jednotlivé měsíce v roce. Ve skriptu využijte příkaz trubka.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/7.kapitola/7.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 121.565414, lat = 25.032969, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 121.565414, lat = 25.032969, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Tchaj-pej" target="_blank" style="color:#014B7C">Tchaj-pej</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Line charts 2
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Hongkong: Liniové grafy 2 {.pozadi}
+
+Hongkong nás přivádí zpět k balíčku ggplot2, ve kterém si v liniových grafech vyzkoušíme použití trubky, `group_by()` a `summarise()`. Na pomoc si též přivoláme databázi <a href="https://www.rlandio.cz/Praha_Ostrava.xlsx" target="_blank">Praha_Ostrava</a>, která shromažďuje údaje o železničním spojení mezi Prahou a Ostravou mezi léty 2010 až 2018. S databází Katan v této a následující lekci nebudeme operovat z toho důvodu, jelikož vám chci ukázat práci s časem. 
+
+Seznamme se s proměnnými databáze Praha_Ostrava.
+
+```{r, eval=F, echo=T}
+# Rok: značí rok platnosti linky v jízdním řádu
+
+# Dopravce: značí konkrétního provozovatele linky (ČD: značí spoje ČD IC/EC/Ex, 
+#           ČD_SC: značí spoje ČD SC Pendolino, RJ: značí RegioJet, 
+#           LE: značí Leo Express)
+
+# Odjezd: značí odjezd vlaku ze zastávky Praha, hl.n.
+
+# Příjezd: značí příjezd vlaku do zastávky Ostrava, hl.n.
+
+# Čas: značí jízdní dobu vlaku
+
+# Frekvence: frekvence označuje jednotlivé dny v týdnu 
+#            (1 = pondělí,..., 7 = neděle), ve kterých je daný spoj vypravován, 
+#            číslo 1234567 můžeme tedy interpretovat tak, že vlak jezdí po celý 
+#            týden bez výjimky (státní svátky byly zanedbány)
+
+# Zastávky: značí celkový počet zastávek vlaku (včetně výchozí a cílové stanice)
+
+# Praha, hl.n. ~ Ostrava, hl.n.: proměnná nabývá hodnoty 1...vlak v dané stanici 
+#                                zastavuje a 0...vlak danou stanicí pouze projíždí
+```
+
+Úvod máme za sebou, podívejme se na první příklad. V něm nás bude zajímat, kterak vypadal kumulativní vývoj počtu spojů mezi Prahou a Ostravou mezi léty 2010 až 2018. Vývoj bude zobrazen v procentech a rok 2010 bude hrát roli počátečního období, vůči kterému budeme změny v následujících letech porovnávat. 
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok) %>%
+  summarise(Součet = sum(Pravidelnost)) %>%
+  mutate(Kumul = round((Součet/Součet[1]-1), 3))
+
+ggplot(Data, 
+  aes(x = Rok, y = Kumul)) + 
+  geom_line(colour= "#004990", size = 2) +
+  ggtitle(expression(atop(bold("Kumulativní vývoj počtu spojů"),
+                          atop("mezi léty 2010 až 2018"), ""))) +
+  theme_economist() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    # axis.title.x definuje grafickou podobu názvu osy x.
+    # My však vzhledem k příkazu labs(x = "", y = "") název nedefinujeme,
+    # proto je tento příkaz axis.title.x v zásadě zbytečný, obdobně i 
+    # axis.title.y.
+    axis.title.y = element_text(color = "black", size = 12),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank())
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf1.png)](#line-charts-2)</p align="center">
+
+Na železnici, dějou se věci, na dráze jsou zaměstnáni švarní mládenci. Alespoň tak o tom vypráví píseň s názvem <a href="https://www.youtube.com/watch?v=2wQZ26nf4CQ" target="_blank">Šel nádražák na mlíčí</a> z pera Járy Cimrmana. Tuto skutečnost potvrzuje i výše uvedený graf, který deklaruje, že se například v roce 2013 zvýšil počet spojů mezi Prahou a Ostravou o více než 80 % v porovnání s rokem 2010. Tento rok je zajímavý zejména z toho důvodu, jelikož v něm na trati Praha-Ostrava začal působit Leoš Novotný a jeho dálkové tramvaje pod značkou Leo Express. Jen pro upřesnění, Radim Jančura s RegioJetem vstoupil na trh již v září roku 2011. Konkurence na železnici proto bezpochyby zapříčinila výrazný nárůst počtu spojů mezi českou a moravskoslezskou metropolí.
+
+Graf našeho prvního příkladu se nesl vcelku v jednoznačném duchu. Co však jeho skript? Je ten dostatečně jasný a srozumitelný? V případě, že nikoliv, jistě uvítáte následující rozbor, ve kterém si vše vysvětlíme. První, co musíme při tvorbě grafu učinit, je nahrát do RStudia veškeré potřebné balíčky. Budeme potřebovat dplyr na práci s data frame a dále ggplot2 a ggthemes na tvorbu samotného grafu.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+```
+
+Krok číslo dvě je nejdůležitější. Abychom mohli vytvořit graf kumulativního vývoje počtu spojů, musíme k němu vytvořit odpovídající datovou tabulku, která bude tyto hodnoty zobrazovat. Takovouto tabulku přímo v databázi Praha_Ostrava nenalezneme, proto si ji musíme vytvořit. 
+
+Nejdříve musí vzniknout nová proměnná, která bude zobrazovat, kolikrát byl daný vlak za týden vypraven. V databázi Praha_Ostrava nalezneme proměnnou s názvem Frekvence, která tyto údaje do jisté míry obsahuje. V případě, že je v ní například uvedeno 12345, znamená to, že daný vlak jel v týdnu pětkrát. Číslo pět je právě tou hodnotou, kterou my potřebujeme přenést do nové proměnné. Jak ale tuto proměnnou stvoříme? K tomu nám poslouží příkaz `nchar()`, který sčítá počty znaků v daném pozorování (vzpomeňte si na databázi specdata ze čtvrté kapitoly). Číslo 12345 obsahuje pět znaků, proto se výsledkem stane pětka, respektive nová proměnná Pravidelnost, kterou připojíme k databázi Praha_Ostrava.
+
+```{r, eval=F, echo=T}
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)	
+Praha_Ostrava[ , c(1, 2, 6, 24)]
+# Aby se nám výsledná databáze vešla na obrazovku, 
+# omezíme výběr pouze na čtyři proměnné.
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)	
+Praha_Ostrava[, c(1,2,6, 24)]
+```
+
+Nyní jsme již připraveni vytvořit samotnou datovou tabulku kumulativního vývoje počtu spojů. Nejdříve trubkou pošleme data z databáze Praha_Ostrava do `group_by()`, který nám je pomyslně rozčlení dle jednotlivých let. Dalším krokem se stane součet hodnot z proměnné Pravidelnost za jednotlivé roky zvlášť (což nám zařídí právě `group_by()`). Posledním krokem bude výpočet procentuálních změn vůči předchozímu období (roku), jenž uvidíme v nově vytvořené proměnné Kumul v rámci data frame Data (`Součet/Součet[1]-1`). Jedničku odečítáme z toho důvodu, jelikož chceme na ose y začínat od nuly, a nikoliv od jedné (respektive ze 100 %). Výsledek na závěr ještě zaokrouhlíme na tři desetinná místa.
+
+```{r, eval=F, echo=T}
+Data <-  Praha_Ostrava %>%
+  group_by(Rok) %>%
+  summarise(Součet = sum(Pravidelnost)) %>%
+  mutate(Kumul = round((Součet/Součet[1]-1), 3))
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)	
+Data <-  Praha_Ostrava %>%
+  group_by(Rok) %>%
+  summarise(Součet = sum(Pravidelnost)) %>%
+  mutate(Kumul = round((Součet/Součet[1]-1), 3))
+Data
+```
+
+Některým z vás v této chvíli jistě nebude zcela jasný rozdíl mezi příkazy `summarise()` a `mutate()`. Struktura obou těchto příkazů totiž vypadá na první pohled velice podobně, jelikož oba tyto příkazy používáme při tvorbě nové proměnné. Příkazy nicméně zaměnitelné nejsou. `summarise()` totiž vytváří novou proměnnou (chcete-li nový sloupec) data frame a přitom vynechává všechny ostatní proměnné, kterou jsou ve zdrojové databázi přítomny. Jinými slovy, při tvorbě nové proměnné s názvem Součet s pomocí příkazu `summarise()` vynecháme veškeré proměnné databáze Praha_Ostrava a ponecháme pouze Rok (viz příkaz `group_by()`) a právě nově vytvořenou proměnnou Součet. 
+
+Pokud bychom příkaz `summarise()` vyměnili za `mutate()`, získali bychom též proměnnou Součet, ta by se ale stala součástí původní databáze Praha_Ostrava. Výsledná hodnota z proměnné Součet by se ovšem propsala do všech řádků, ve kterých je daný rok uveden. Ostatně podívejte se sami, jak by daný výsledek vypadal. Stačí se zaměřit na hodnotu 140, kterou nyní vidíme u všech vlaků vyjíždějících v roce 2010. Vzhledem k tomu, že jsme použili `mutate()` místo `summarise()`, bude mít výsledná databáze Data stejný počet řádků jako ta původní. U `summarise()` má naopak výsledná databáze takový počet řádků, jako je unikátních kombinací uvnitř `group_by()`.
+
+```{r, eval=F, echo=T}
+Data <- Praha_Ostrava %>%
+  group_by(Rok) %>%
+  mutate(Součet = sum(Pravidelnost))
+Data[ , c(1, 2, 3, 24, 25)]
+# Aby se nám výsledná databáze vešla na obrazovku, 
+# omezíme výběr pouze na pět proměnných.
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)	
+Data <- Praha_Ostrava %>%
+  group_by(Rok) %>%
+  mutate(Součet = sum(Pravidelnost))
+Data[,c(1,2,3,24,25)]
+```
+
+Při pohledu na data vás možná zarazí ještě jedna věc a tou je formát času. Proč je zde uveden 31. prosinec roku 1899? Ten je tu z toho důvodu, jelikož data pochází z excelové tabulky a Excel kóduje čas na numerický formát pomocí výchozího data 1. 1. 1990. Při převodu do R se ale toto datum převede na 31. prosinec roku 1899. Tématu času bude věnována pozornost zejména v následující lekci.
+
+Krok číslo tři je nejjednodušší. Spočívá v tvorbě samotného liniového grafu. Vzhledem k tomu, že na y-ové ose chceme vidět procenta, budeme muset využít příkaz `scale_y_continuous(labels = scales::percent_format(accuracy = 1))`. Výsledné hodnoty na ose budou díky parametru `accuracy = 1` bez desetinných míst (`accuracy = 0.1` značí jedno desetinné místo, `accuracy = 0.01` dvě atd.).
+
+```{r, eval=F, echo=T}
+ggplot(Data, 
+  aes(x = Rok, y = Kumul)) + 
+  geom_line(colour = "#004990", size = 2) +
+  ggtitle(expression(atop(bold("Kumulativní vývoj počtu spojů"),
+                          atop("mezi léty 2010 až 2018"), ""))) +
+  theme_economist() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust=0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank())
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf1.png)](#line-charts-2)</p align="center">
+
+První graf máme za sebou, přesuňme se proto ke grafu č. 2. Ten si klade za cíl zobrazit vývoj počtu zastávek podle jednotlivých dopravců na téže trase mezi Prahou a Ostravou v letech 2010 až 2018.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(median(., na.rm = TRUE)), Zastávky)
+
+ggplot(Data,
+  aes(x = Rok, y = Zastávky, colour = Dopravce)) +
+  geom_line(size = 2) +
+  ggtitle(expression(atop(bold("Vývoj počtu zastávek dopravců"),
+                          atop("mezi léty 2010 až 2018"), ""))) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1)) +
+  scale_y_continuous(breaks = seq(from = 5, to = 12, by = 1)) +
+  theme_economist() +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, 
+                              face = "bold", hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    # axis.title.x definuje grafickou podobu názvu osy x.
+    # My však vzhledem k příkazu labs(x = "", y = "") název nedefinujeme,
+    # proto je tento příkaz axis.title.x v zásadě zbytečný, obdobně i 
+    # axis.title.y.
+    axis.title.y = element_text(color = "black", size = 12),
+    
+    axis.text.x = element_text(hjust = 0.5),
+    # axis.text.x definuje grafickou podobu hodnot na ose x,
+    # zde však pouze zarovnání na střed, které je navíc defaultní,
+    # proto je tento řádek též v podstatě zbytečný.
+    
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    # fill definuje barvu pozadí v grafu, colour na jeho okraji
+    
+    legend.title = element_blank()) +
+    # před legendou nebude uveden název proměnné, tj. proměnné Dopravce
+  
+  scale_colour_manual(labels = c("ČD IC/EC/Ex", "ČD SC Pendolino", 
+                                "Leo Express", "RegioJet"), 
+                     values = c("#004990", "#668fcc", "#141414", "#FBBF20"))
+  # Dopravce rozlišujeme podle parametru colour, proto používáme 
+  # scale_colour_manual() a nikoliv scale_fill_manual() (viz příkaz aes()).
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf2.png)](#line-charts-2)</p align="center">
+
+Výše uvedený skript postupuje obdobně jako ten předchozí s několika drobnými úpravami. První rozdíl nalezneme hned v úvodní části skriptu, ve které tvoříme data frame s názvem Data, který zobrazuje počty zastávek pro jednotlivé dopravce v jednotlivých letech. V něm totiž pracujeme s příkazem `median()`, do kterého musíme uvést zápis `median(., na.rm = TRUE)`, v němž tečka symbolizuje pozici, do které mají data přitéct pomocí trubky z `group_by(Rok, Dopravce)`. 
+
+A proč tu vlastně používáme funkci medián? Zastavovací politika dopravců je taková, že drtivá většina linek téhož dopravce a jednoho typu služby (u ČD rozlišujeme dva druhy) zastavuje až na drobné výjimky pokaždé ve stejné stanici. Naším cílem proto je vyřadit ty linky, které se odchylují od drtivé většiny ostatních. Z tohoto důvodu volíme medián, který vyřadí linky s větším či menším počtem zastávek, než je obvyklé.
+
+```{r, eval=F, echo=T}
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(median(., na.rm = TRUE)), Zastávky)
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(median(., na.rm = TRUE)), Zastávky)
+Data
+```
+
+Druhý rozdíl se týká samotného grafu. Jelikož pracujeme s různými dopravci, chceme, aby jednotlivé křivky grafu byly zobrazeny ve firemních barvách daného dopravce. K tomu nám poslouží příkaz `scale_colour_manual()` či `scale_color_manual()` (není v nich žádný rozdíl), pomocí kterého nejdříve pojmenujeme jednotlivé křivky v legendě (viz labels) a těm následně přidělíme barvy v hexovém formátu.
+
+```{r, eval=F, echo=T}
+scale_colour_manual(labels = c("ČD IC/EC/Ex", "ČD SC Pendolino", 
+                              "Leo Express", "RegioJet"), 
+                    values = c("#004990", "#668fcc", 
+                               "#141414", "#FBBF20"))
+# V jakém pořadí označit jednotlivé dopravce? Podle abecedy.
+# levels(as.factor(Praha_Ostrava$Dopravce)), 
+# respektive levels(Praha_Ostrava$Dopravce)
+# [1] "ČD"    "ČD_SC" "LE"    "RJ"  
+```
+
+A to je z této lekce vše. Tedy skoro vše. V příkladech na vás totiž čekají dva úkoly, které do hloubky prověří vaše nově nabyté znalosti. Pusťte se do nich.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 5
+
+Vytvořte liniový graf kumulativního vývoje počtu spojů mezi Prahou a Ostravou mezi léty 2010 až 2018 pro veškeré spoje Českých drah. Z tohoto důvodu nezapomeňte, že se jedná nejen o spoje typu ČD IC/EC/Ex (označení ČD v proměnné Dopravce), ale i o spoje ČD SC Pendolino (označení ČD_SC v proměnné Dopravce). V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+> Příklad 6
+
+Vytvořte liniový graf mediánu jízdních dob mezi Prahou a Ostravou mezi léty 2010 až 2018 pro jednotlivé dopravce zvlášť. Rozlišujte prosím mezi spoji typu ČD IC/EC/Ex (označení ČD v proměnné Dopravce) a ČD SC Pendolino (označení ČD_SC v proměnné Dopravce). V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/7.kapitola/7.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 114.109497, lat = 22.396427, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 114.109497, lat = 22.396427, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Hongkong" target="_blank" style="color:#014B7C">Hongkong</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Bar charts 2
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Hanoj: Sloupcové grafy 2 {.pozadi}
+
+Stejně jako u liniových grafů, tak i u těch sloupcových nalezne významné uplatnění balíček dplyr, respektive jeho příkazy trubka, `group_by()` a `summarise()`. Podívejme se proto na následující příklad, ve kterém budeme jako v minulé lekci pracovat s databází Praha_Ostrava. Naším úkolem se stane vytvořit sloupcový diagram, který bude zobrazovat počty vlakových spojů jedoucích za celý týden mezi Prahou a Ostravou podle jednotlivých let bez ohledu na dopravce. A aby to nebylo tak jednoduché, zobrazíme uprostřed sloupců i samotné číselné hodnoty.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) 
+
+ggplot(Data,
+  aes(x = Rok, y = Pravidelnost)) + 
+  geom_bar(stat = "identity", fill = "#004990") +
+  # pomocí fill určíme barvu sloupců
+  
+  geom_text(aes(y = Pravidelnost, label = Pravidelnost), 
+            position =  position_stack(vjust = 0.5),
+  # Pomocí vjust určíme vertikální polohu čísel uvnitř sloupců: 
+  # 0.5 uprostřed, 1 na vrcholu, 0 dole.
+  # Všimněte si podobnosti s hjust, který používáme pro horizontální
+  # polohu.
+            size = 5, 
+            color = "white") +
+  ggtitle(expression(atop(bold("Vývoj počtu vypravených spojů"),
+                          atop("jedoucích za celý týden bez svátků"), ""))) +
+  theme_economist() +
+  scale_y_continuous(breaks = seq(from = 0, to = 280, by = 40)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    # pomocí fill definujeme pozadí grafu, pomocí colour jeho okraj
+    
+    legend.title = element_blank())
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf5.png)](#bar-charts-2)</p align="center">
+
+Začátek skriptu začínáme nám již známým příkazem `nchar()`, díky němuž zjistíme u daného řádku (vlaku) počet spojů za jednotlivý týden (ještě před tím nicméně nesmíte zapomenout načíst veškeré potřebné balíčky, pokud je ještě v rámci dané relace načtené nemáte).
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+```
+
+Krok číslo dvě spočívá ve vytvoření datové tabulky, z níž bude náš sloupcový graf čerpat své údaje. Vzhledem k tomu, že chceme sledovat údaje za jednotlivé roky, využijeme příkaz `group_by()`, který data rozdělí dle proměnné Rok. Příkaz `summarise_each()` poté sečte počty spojů za jednotlivá léta a vytvoří proměnnou Pravidelnost v rámci data frame Data.
+
+```{r, eval=F, echo=T}
+Data <- Praha_Ostrava %>%
+  group_by(Rok) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) 
+
+# V příkazu summarise_each() pracujeme s proměnnou Praha_Ostrava$Pravidelnost,
+# výsledná proměnná v databázi Data se bude jmenovat též Pravidelnost,
+# respektive Data$Pravidelnost.
+```
+```{r}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+Data <- Praha_Ostrava %>%
+  group_by(Rok) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) 
+Data
+```
+
+Krokem číslo tři se stane tvorba samotného grafu za pomoci příkazu `geom_bar(stat = "identity")`. Z jakého důvodu tu potřebujeme parametr `stat = "identity"`? Graf data na osu y přenáší přímo z proměnné Pravidelnost a nic přitom nepočítá. Opakem `stat = "identity"` je defaultně nastavený parametr `stat = "bin"`, který využíváme například při tvorbě grafů, jež vychází z faktorové proměnné (vzpomeňte si na tvorbu grafů četnosti mužů a žen v Harare).
+
+```{r, eval=F, echo=T}
+ggplot(Data,
+  aes(x = Rok, y = Pravidelnost)) + 
+  geom_bar(stat = "identity", fill = "#004990") +
+  # pomocí fill určíme barvu sloupců
+  
+  geom_text(aes(y = Pravidelnost, label = Pravidelnost), 
+            position =  position_stack(vjust = 0.5),
+  # Pomocí vjust určíme polohu čísel uvnitř sloupců: 0.5 uprostřed, 
+  # 1 na vrcholu, 0 dole.
+
+            size = 5, 
+            color = "white") +
+  ggtitle(expression(atop(bold("Vývoj počtu vypravených spojů"),
+                          atop("jedoucích za celý týden bez svátků"), ""))) +
+  theme_economist() +
+  scale_y_continuous(breaks = seq(from = 0, to = 280, by = 40)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    # pomocí fill definujeme pozadí grafu, pomocí colour jeho okraj
+
+    legend.title = element_blank())
+```    
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf5.png)](#bar-charts-2)</p align="center">
+
+Následující úkol bude již o trochu obtížnější, ale doopravdy jen o trochu. Skript bude vycházet z předchozího příkladu pouze s tím rozdílem, že v něm budeme chtít rozlišit dopravní špičku (v čase od 14:00 do 19:00 hodin) od zbytku dne.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 15:00:00 UTC" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 20:00:00 UTC","
+  Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Špička) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) 
+
+ggplot(Data,
+       aes(x = Rok, y = Pravidelnost, fill = Špička)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(y = Pravidelnost, label = Pravidelnost), 
+            position =  position_stack(vjust = 0.5), 
+            size = 5, 
+            color = "white") +
+  ggtitle(expression(atop(bold("Vývoj počtu vypravených spojů"),
+                          atop("jedoucích za celý týden bez svátků"), ""))) +
+  scale_y_continuous(breaks = seq(from = 0, to = 280, by = 40)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust=0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+  plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+  legend.title = element_blank()) +
+  scale_fill_manual(labels = c("Dopravní špička od 14:00 - 19:00", "Ostatní spoje"), 
+                    values = c("#004990", "#668fcc"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf6.png)](#bar-charts-2)</p align="center">
+
+Abychom úkol mohli vyřešit, museli jsme do předcházejícího skriptu doplnit nový příkaz `ifelse()`, díky němuž jsme v rámci databáze Praha_Ostrava vytvořili novou proměnnou s názvem Špička. Na příkazu `ifelse()` není vcelku nic zajímavého až na dva příkazy, které jemu předchází.
+
+```{r, eval=F, echo=T}
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+```
+
+S časy bývá někdy potíž, proto je dobré, pokud s nimi pracujeme, znovu nastavit jejich datový typ. Z jakého důvodu? Po výše uvedených příkazech pracujeme s příkazem `ifelse()`, který dělí čas na dvě období: na špičku a mimo ni. Tyto dvě období definujeme přesným časovým vymezením, a právě zde může nastat potíž kvůli časovému posunu. Jinými slovy, čas který vidíte v levém horním panelu po zadání příkazu `View(Praha_Ostrava)` může R interpretovat jinak a to s určitým, třeba hodinovým či delším posunem. Ostatně vyzkoušejte sami celý předchozí skript našeho druhého příkladu bez uvedení příkazů `as.character()`, respektive  `as.POSIXct()`. Je totiž velmi pravděpodobné, že následující kód:
+
+```{r, eval=F, echo=T}
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 14:00:00 UTC" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 19:00:00 UTC",
+  "Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Praha_Ostrava[c(2, 10, 18), c(1, 2, 3, 24)]
+# Aby se nám vše přehledně vešlo na obrazovku, provedeme
+# výběr vybraných řádků a sloupců.
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 14:00:00 UTC" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 19:00:00 UTC",
+  "Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Praha_Ostrava[c(2, 10, 18), c(1, 2, 3, 24)]
+```
+
+
+bude ve skutečnosti definovat špičku nikoliv jako čas mezi 14:00 - 19:00, ale jako čas mezi 13:00 - 18:00. Abychom se tomuto problému vyhnuli, změnili jsme nejdříve čas na datový typ character a ten následně zpět na čas. V případě, že bychom vynechali příkaz `as.character()` nedosáhli bychom žádné změny. Z tohoto důvodu, pokud pracujete s časy, vždy si své výsledky kontrolujte a nikdy nespoléhejte ani na zdánlivě správný a bezchybný skript, který žádný error nehlásí.
+
+```{r, eval=F, echo=T}
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 14:00:00 UTC" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 19:00:00 UTC",
+  "Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Praha_Ostrava[c(2, 10, 18), c(1, 2, 3, 24)]
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 14:00:00 UTC" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 19:00:00 UTC",
+  "Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Praha_Ostrava[c(2, 10, 18), c(1, 2, 3, 24)]
+```
+
+Na rozdíl od času, graf neukrývá již žádnou významnou překážku.
+
+```{r, eval=F, echo=T}
+ggplot(Data,
+       aes(x = Rok, y = Pravidelnost, fill = Špička)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(y = Pravidelnost, label = Pravidelnost), 
+            position =  position_stack(vjust = 0.5), 
+            size = 5, 
+            color = "white") +
+  ggtitle(expression(atop(bold("Vývoj počtu vypravených spojů"),
+                          atop("jedoucích za celý týden bez svátků"), ""))) +
+  scale_y_continuous(breaks = seq(from = 0, to = 280, by = 40)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+  plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+  legend.title = element_blank()) +
+  scale_fill_manual(labels = c("Dopravní špička od 14:00 - 19:00", "Ostatní spoje"), 
+                    values = c("#004990", "#668fcc"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf6.png)](#bar-charts-2)</p align="center">
+
+Třetí skript, který si tu v této lekci ukážeme, si klade ještě vyšší cíle. Budeme totiž chtít rozdělit údaje o počtech spojů jedoucích za celý kalendářní týden nejen podle let a odpolední špičky, ale i podle jednotlivých dopravců.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 14:00:00" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 19:00:00",
+  "Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Špička, Dopravce) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) 
+
+labels = c(ČD = "ČD IC/EC/Ex", ČD_SC = "ČD SC Pendolino", LE = "Leo Express", 
+            RJ = "RegioJet")
+
+ggplot(Data, 
+  aes(x = Rok, y = Pravidelnost, fill = Špička)) + 
+  facet_grid(cols = vars(Dopravce), labeller = labeller(Dopravce = labels)) +
+  geom_bar(stat = "identity") + 
+  geom_text(aes(y = Pravidelnost, label = Pravidelnost), 
+            position =  position_stack(vjust = 0.5), 
+            size = 3, 
+            color = "white") +
+  ggtitle(expression(atop(bold("Vývoj počtu spojů podle dopravců"), 
+                          atop("mezi léty 2010 až 2018"), ""))) +
+  theme_economist() +
+  scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 2), 
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, 
+                              face = "bold", hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_fill_manual(values = c("#004990", "#668fcc"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf7.png)](#bar-charts-2)</p align="center">
+
+Výše uvedený skript byl oproti předchozímu příkladu obohacen o jeden, respektive dva pokyny. Nejdříve bylo nutné vytvořit proměnnou labels s názvy jednotlivých dopravců tak, jak je budeme chtít vidět v samotném grafu.
+
+```{r, eval=F, echo=T}
+labels = c(ČD = "ČD IC/EC/Ex", ČD_SC = "ČD SC Pendolino", 
+           LE = "Leo Express", RJ = "RegioJet")
+```
+
+V následujícím kroku jsme přidali nám už dobře známý příkaz `facet_grid()`, díky čemuž jsme vytvořili čtyři vedle sebe stojící grafy. 
+
+```{r, eval=F, echo=T}
+facet_grid(cols = vars(Dopravce), labeller = labeller(Dopravce = labels)) +
+
+# nebo zkráceně
+facet_grid(~Dopravce, labeller = labeller(Dopravce = labels))
+
+# V jakém pořadí označit jednotlivé dopravce ve
+# výše uvedené proměnné labels? Podle abecedy.
+# levels(as.factor(Praha_Ostrava$Dopravce)), 
+# respektive levels(Praha_Ostrava$Dopravce)
+# [1] "ČD"    "ČD_SC" "LE"    "RJ"  
+
+# postup změny pořadí hodnot ve faktoru
+# množství <- factor(c("málo", "hodně", "hodně", "málo", "středně"))
+# množství
+#     [1] málo  hodně  hodně  málo  středně
+#     Levels: hodně středně málo
+
+# množství <- factor(množství, levels = c("málo", "středně", "hodně"))
+# množství
+#     [1] málo  hodně  hodně  málo  středně
+#     Levels: málo středně hodně
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf7.png)](#bar-charts-2)</p align="center">
+
+Poslední čtvrtý příklad bude na rozdíl od těch předcházejících trochu odlišný. Naším cílem totiž bude sestrojit sloupcových graf, jenž bude zobrazovat procentuální podíly jednotlivých dopravců měřenými počtem vypravených vlaků za kalendářní týden.
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) %>%
+  group_by(Rok) %>%
+  mutate(Dohromady = sum(Pravidelnost)) %>%
+  mutate(Podíl = Pravidelnost/Dohromady)
+
+ggplot(Data,
+       aes(x = Rok, y = Podíl, fill = Dopravce)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(y = Podíl, label = paste(round(Podíl,2)*100, "%")), 
+            position =  position_stack(vjust = 0.5),
+            size = 4, 
+            hjust = 0.5, 
+            color = "white") +
+  ggtitle("Procentuální zastoupení vypravených souprav") +
+  theme_economist() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1), 
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_fill_manual(labels = c("ČD IC/EC/Ex", "ČD SC Pendolino", 
+                               "Leo Express", "RegioJet"), 
+                    values = c("#004990", "#668fcc", "#141414", "#FBBF20"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf8.png)](#bar-charts-2)</p align="center">
+
+Nejobtížnější část tohoto skriptu se ukrývá hned na začátku během tvorby data frame. Projděme si jeho strukturu krok za krokem. Začátek je naprosto standardní jako u předchozích grafů, jelikož spočívá ve vytvoření proměnné Pravidelnost. Následně dojde k sečtení jednotlivých vlakových spojů podle let a dopravců. Výsledek příkazu `summarise_each()` poté pošleme trubkou do `group_by(Rok)`, který je následován dvěma příkazy `mutate()`. `mutate()` zde požíváme místo `summarise()` proto, jelikož chceme zachovat členění tabulky na roky a dopravce (viz  `group_by(Rok, Dopravce)`). Pokud bychom zvolili `summarise()`, zůstalo by nám rozdělení pouze na léta (viz příkaz `group_by(Rok)`). Pomocí prvního příkazu `mutate()` zjistíme celkový počet vypravených souprav bez ohledu na dopravce v daném roce. Poslední příkaz `mutate()` nám následně vytvoří proměnnou Podíl, která symbolizuje konečné podíly jednotlivých dopravců na trhu (měřenými počtem vypravených spojů, tj. nikoliv skutečnými tržními podíly).
+
+```{r, eval=F, echo=T}
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) %>%
+  group_by(Rok) %>%
+  mutate(Dohromady = sum(Pravidelnost)) %>%
+  mutate(Podíl = Pravidelnost/Dohromady)
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+
+Praha_Ostrava <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Praha_Ostrava.xlsx")
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) %>%
+  group_by(Rok) %>%
+  mutate(Dohromady = sum(Pravidelnost)) %>%
+  mutate(Podíl = Pravidelnost/Dohromady)
+Data
+```
+
+V závěru už jen stačí vytvořit standardní sloupcový graf, v němž opět nesmíme zapomenout na `geom_bar(stat = "identity")`. V případě, že vám ale formát výše zobrazeného grafu nevyhovuje a vy byste raději preferovali, aby jednotlivé sloupce stály vedle sebe a nebyly tudíž poskládány na sebe, využijte příkaz `position = "dodge"` v rámci příkazu `geom_bar()` pro samotnou podobu grafu a tentýž příkaz `position = "dodge"` pro `geom_text()` (tj. textové popisky v grafu).
+
+```{r, eval=F, echo=T}
+ggplot(Data,
+       aes(x = Rok, y = Podíl, fill = Dopravce)) + 
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(position = position_dodge(0.9), 
+            aes(label = (round(Podíl, 2))*100, y = Podíl), 
+            size = 3, 
+            hjust = 0.5, 
+            vjust = 2, 
+            color = "white") +
+  ggtitle(expression(
+    atop(bold("Procentuální zastoupení vypravených souprav"), ""))) +
+  theme_economist() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1), 
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust=0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", 
+                                   colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_fill_manual(labels = c("ČD IC/EC/Ex", "ČD SC Pendolino", 
+                               "Leo Express", "RegioJet"), 
+                    values = c("#004990", "#668fcc", "#141414", "#FBBF20"))
+```
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf13.png)](#bar-charts-2)</p align="center">
+
+Sedmá kapitola je za námi. S balíčkem tidyverse nicméně stále nekončíme, jelikož jím začneme i poslední osmou kapitolu. V ní se kromě jiného naučíme, jak naše krásné výtvory v R prezentovat světu ve formě graficky atraktivních webových stránek.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 7
+
+Vytvořte sloupcový graf, který bude zobrazovat počty spojů jedoucích veškeré pracovní dny (jeden spoj bude tudíž symbolizovat všech pět spojů v týdnu) bez ohledu na dopravce. Rozdělení proveďte podle jednotlivých let a denní špičky (mezi 14:00 - 19:00). V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+> Příklad 8
+
+Vytvořte sloupcový graf, který bude zobrazovat počty všech spojů jedoucích za celý týden mezi Prahou a Ostravou podle jednotlivých let bez ohledu na dopravce s rozdělením na ranní spoje (5:00 až 8:59), (do)polední spoje (9:00 až 12:59), odpolední spoje (13:00 až 16:59), večerní spoje (17:00 až 20:59) a noční spoje (21:00 až 4:59). V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+> Příklad 9
+
+K předchozímu příkladu 8 přidejte rozdělení podle jednotlivých dopravců. Oproti předchozímu příkladu však budeme chtít, aby hodnoty na y-ové ose zobrazovaly stejně jako v příkladu 7 pouze počty těch spojů, které jezdí po všechny pracovní dny. V případě potřeby se podívejte na výsledný graf v řešení, který je uveden hned za zadáním, tj. před výsledným skriptem.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/7.kapitola/7.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 105.804817, lat = 21.028511, zoom = 3.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 105.804817, lat = 21.028511, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Hongkong" target="_blank" style="color:#014B7C">Hanoj</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+S pomocí trubky vytvořte datovou tabulku s názvem Data_z_trubky, která bude obsahovat proměnné Věk, Pohlaví, Vzdělání a Kouření. Názvy těchto proměnných následně přejmenujte na jejich anglické ekvivalenty. V dalších kroku zajistěte, aby v databázi byli zařazeni pouze jedinci ve věku 18 až 26 let (včetně). Na úplný závěr seřaďte hodnoty v proměnných podle věku, pohlaví, vzdělání a kouření v tomto pořadí. 
+
+```{r, eval=F, echo=T}
+Data_z_trubky <- Katan %>%  
+  select(Věk, Pohlaví, Vzdělání, Kouření) %>%
+  rename("Age" = Věk, "Gender" = Pohlaví, 
+         "Education" = Vzdělání, "Smoke" = Kouření) %>%
+  filter(Age >= 18 & Age <= 26) %>%
+  arrange(Age, Gender, Education, Smoke)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Data_z_trubky <- Katan %>%  
+  select(Věk, Pohlaví, Vzdělání, Kouření) %>%
+  rename("Age" = Věk, "Gender" = Pohlaví, "Education" = Vzdělání, "Smoke" = Kouření) %>%
+  filter(Age >= 18 & Age <= 26) %>%
+  arrange(Age, Gender, Education, Smoke)
+Data_z_trubky
+```
+
+> Příklad 2
+
+Zjistěte v následujících věkových skupinách (teenager do 18 let, dospělý od 18 do 26 let, dospělý od 26 do 35 let, dospělý od 35 do 65 let, důchodce 65 let a více) zastoupení mužů a žen a jejich průměrný počet partií na osobu. Ve skriptu využijte příkaz trubka.
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan %>%
+	mutate(VěkSkupiny = cut(Věk,
+    breaks = c(0, 18, 26, 35, 65, 100),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 35 let", "dospělý od 35 do 65 let", 
+               "důchodce 65 let a více"))) %>%
+	group_by(Pohlaví, VěkSkupiny) %>%
+    summarise(Četnost_abs = n(), 
+              Průměr = mean(Partie))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Analýza <- Katan %>%
+	mutate(Skupiny = cut(Věk,
+    breaks = c(0, 18, 26, 35, 65, 100),
+    right = FALSE,
+    labels = c("teenager do 18 let", "dospělý od 18 do 26 let",
+               "dospělý od 26 do 35 let", "dospělý od 35 do 65 let", 
+               "důchodce 65 let a více"))) %>%
+	group_by(Pohlaví, Skupiny) %>%
+    summarise(Četnost_abs = n(), 
+              Průměr = mean(Partie))
+Analýza
+```
+
+> Příklad 3
+
+Zjistěte průměr, medián a směrodatnou odchylku u proměnných Partie a Věk. Hodnoty určete pro skupiny rozřazené dle proměnných Vzdělání a Pohlaví (tj. ZŠ - muž, ZŠ - žena, SŠ - muž, SŠ - žena atd.). Ve skriptu využijte příkaz trubka.
+
+```{r, eval=F, echo=T}
+Katan %>%
+  group_by(Vzdělání, Pohlaví) %>%
+  summarise_each(funs(mean, median, sd), Partie, Věk)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan %>%
+  group_by(Vzdělání, Pohlaví) %>%
+  summarise_each(funs(mean, median, sd), Partie, Věk)
+```
+
+> Příklad 4
+
+V databázi <a  href="https://cran.r-project.org/web/packages/hflights/index.html" target="_blank">hflights</a> zjistěte nejdelší zpoždění za jednotlivé měsíce v roce. Samotný výstup by měl obsahovat pouze proměnné Month, DepDelay a UniqueCarrier, které budou ve výsledné databázi s názvem Zpoždění pojmenovány českými ekvivalenty. Ve skriptu využijte příkaz trubka.
+
+```{r, eval=F, echo=T}
+Zpoždění <- flights %>%
+    group_by(Month) %>%
+    select(Month, DepDelay, UniqueCarrier) %>%
+    top_n(1, DepDelay) %>%
+    rename("Měsíc" = Month, "Zpoždění" = DepDelay, "Přepravce" = UniqueCarrier)
+```
+```{r echo=FALSE}
+library(hflights)
+Zpoždění <- hflights %>%
+    group_by(Month) %>%
+    select(Month, DepDelay, UniqueCarrier) %>%
+    top_n(1, DepDelay) %>%
+    rename("Měsíc" = Month, "Zpoždění" = DepDelay, "Přepravce" = UniqueCarrier)
+Zpoždění
+```
+
+> Příklad 5
+
+Vytvořte liniový graf kumulativního vývoje počtu spojů mezi Prahou a Ostravou mezi léty 2010 až 2018 pro veškeré spoje Českých drah. Z tohoto důvodu nezapomeňte, že se jedná nejen o spoje typu ČD IC/EC/Ex (označení ČD v proměnné Dopravce), ale i o spoje ČD SC Pendolino (označení ČD_SC v proměnné Dopravce).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf4.png)](#line-charts-2)</p align="center">
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 	
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Data <-  Praha_Ostrava %>%
+  filter(Dopravce == "ČD" | Dopravce == "ČD_SC" ) %>%
+  group_by(Rok) %>%
+  summarise(Součet = sum(Pravidelnost)) %>%
+  mutate(Kumul = round((Součet/Součet[1]-1),3))
+
+ggplot(Data, 
+  aes(x = Rok, y = Kumul)) + 
+  geom_line(colour = "#004990", size = 2) +
+  ggtitle(expression(
+    atop(bold("Kumulativní vývoj spojů Českých drah"), 
+    atop("mezi léty 2010 až 2018"), ""))) +
+  theme_economist() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust=0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank())
+```
+
+> Příklad 6
+
+Vytvořte liniový graf mediánu jízdních dob mezi Prahou a Ostravou mezi léty 2010 až 2018 pro jednotlivé dopravce zvlášť. Rozlišujte prosím mezi spoji typu ČD IC/EC/Ex (označení ČD v proměnné Dopravce) a ČD SC Pendolino (označení ČD_SC v proměnné Dopravce).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf3.png)](#line-charts-2)</p align="center">
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 
+
+Data <- Praha_Ostrava %>%
+  group_by(Rok, Dopravce) %>%
+  summarise_each(funs(median(., na.rm = TRUE)), Čas)
+
+ggplot(Data,
+  aes(x = Rok, y = Čas, colour = Dopravce)) +
+  geom_line(size = 2) +
+  ggtitle("Vývoj mediánové jízdní doby") +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1)) +
+  scale_y_datetime(date_breaks = "10 mins", date_labels='%H:%M') +
+  theme_economist() +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_color_manual(labels = c("ČD IC/EC/Ex", "ČD SC Pendolino", 
+                                "Leo Express", "RegioJet"), 
+                     values = c("#004990", "#668fcc", "#141414", "#FBBF20"))
+```
+
+> Příklad 7
+
+Vytvořte sloupcový graf, který bude zobrazovat počty spojů jedoucích veškeré pracovní dny (jeden spoj bude tudíž symbolizovat všech pět spojů v týdnu) bez ohledu na dopravce. Rozdělení proveďte podle jednotlivých let a denní špičky (mezi 14:00 - 19:00).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf9.png)](#bar-charts-2)</p align="center">
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Špička <- (ifelse(
+  Praha_Ostrava$Odjezd >= " 1899-12-31 15:00:00" &
+  Praha_Ostrava$Odjezd <= " 1899-12-31 20:00:00",
+  "Spoje mezi 14:00 až 19:00", "Ostatní spoje")) 
+
+Data <-  Praha_Ostrava %>%
+  filter(Frekvence == 12345 | Frekvence == 1234567 | 
+           Frekvence == 123456 | Frekvence == 123457)
+
+ggplot(Data, 
+       aes(x = Rok, fill = Špička)) + 
+  geom_bar() +
+  geom_text(stat = "count", position = position_stack(vjust = 0.5), 
+            aes(label = ..count.., y = ..count..), 
+            size = 5, 
+            color = "white") +
+  ggtitle(expression(
+    atop(bold("Vývoj počtu vypravených spojů"), 
+    atop("počítáno 1 x za veškeré pracovní dny"), ""))) +
+  theme_economist() +
+  scale_y_continuous(breaks = seq(from = 0, to = 35, by = 5)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1),
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold",
+                              hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_fill_manual(values = c("#004990", "#668fcc")) 
+```
+
+> Příklad 8
+
+Vytvořte sloupcový graf, který bude zobrazovat počty všech spojů jedoucích za celý týden mezi Prahou a Ostravou podle jednotlivých let bez ohledu na dopravce s rozdělením na ranní spoje (5:00 až 8:59), dopolední spoje (9:00 až 12:59), odpolední spoje (13:00 až 16:59), večerní spoje (17:00 až 20:59) a noční spoje (21:00 až 4:59).
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf10.png)](#bar-charts-2)</p align="center">
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Pravidelnost <- nchar(Praha_Ostrava$Frekvence)
+
+Praha_Ostrava$Doba <-  
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 05:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 08:59:59",
+    "ranní spoj",
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 9:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 12:59:59",
+    "dopolední spoj",
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 13:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 16:59:59",
+    "odpolední spoj",
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 17:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 20:59:59",
+    "večerní spoj","noční spoj"))))
+
+Data5 <- Praha_Ostrava %>%
+  group_by(Rok, Doba) %>%
+  summarise_each(funs(sum(., na.rm = TRUE)), Pravidelnost) 
+
+ggplot(Data5, 
+       aes(x = Rok, y = Pravidelnost, fill = Doba)) + 
+  geom_bar(stat = 'identity') +
+  geom_text(aes(y = Pravidelnost, label = Pravidelnost), 
+            position = position_stack(vjust = 0.5), size = 5, 
+            color = "white") +
+  ggtitle(expression(atop(bold("Vývoj počtu spojů"), 
+                          atop("jedoucích za celý týden podle denní doby"), ""))) +
+  theme_economist() +
+  scale_y_continuous(breaks = seq(from = 0, to = 280, by = 40)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 1), 
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_fill_manual(
+    labels = c("Ranní spoj", "Dopolední spoj", "Odpolední spoj", 
+               "Večerní spoj", "Noční spoj"), 
+    values = c("#060b13", "#192e4d", "#2d5086", "#3967ac", "#668fcc"))
+```
+
+> Příklad 9
+
+K předchozímu příkladu 8 přidejte rozdělení podle jednotlivých dopravců. Oproti předchozímu příkladu však budeme chtít, aby hodnoty na y-ové ose zobrazovaly stejně jako v příkladu 7 pouze počty těch spojů, které jezdí po všechny pracovní dny.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\7.kapitola\graf11.png)](#bar-charts-2)</p align="center">
+
+```{r, eval=F, echo=T}
+library(dplyr)
+library(ggplot2) 	
+library(ggthemes) 
+
+Praha_Ostrava$Odjezd <- as.character(Praha_Ostrava$Odjezd)
+Praha_Ostrava$Odjezd <- as.POSIXct(Praha_Ostrava$Odjezd)
+
+Praha_Ostrava$Doba <-  
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 05:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 08:59:59",
+    "ranní spoj",
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 9:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 12:59:59",
+    "dopolední spoj",
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 13:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 16:59:59",
+    "odpolední spoj",
+  ifelse(
+    Praha_Ostrava$Odjezd >= " 1899-12-31 17:00:00" &
+    Praha_Ostrava$Odjezd <= " 1899-12-31 20:59:59",
+    "večerní spoj","noční spoj"))))
+
+Data <-  Praha_Ostrava %>%
+  filter(Frekvence == 12345 | Frekvence == 1234567 | 
+         Frekvence == 123456 | Frekvence == 123457)
+
+labels = c(ČD = "ČD IC/EC/Ex", ČD_SC = "ČD SC Pendolino", 
+            LE = "Leo Express", RJ = "RegioJet")
+
+ggplot(Data, 
+       aes(x = Rok, fill = Doba)) + 
+  facet_grid(~Dopravce, labeller = labeller(Dopravce = labels)) +
+  geom_bar() + 
+  ggtitle(expression(atop(bold("Vývoj počtu spojů podle dopravců a denní doby"), 
+                          atop("počítáno 1 x za veškeré pracovní dny"), ""))) +
+  theme_economist() +
+  scale_y_continuous(breaks = seq(from = 0, to = 12, by = 2)) +
+  scale_x_continuous(breaks = seq(from = 2010, to = 2018, by = 2), 
+                     position = "bottom") +
+  labs(x = "", y = "") +
+  theme(
+    plot.title = element_text(color = "black", size = 20, face = "bold", hjust=0.5),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 0.5),
+    plot.background = element_rect(fill = "#DBE5F1", colour = "#DBE5F1"),
+    legend.title = element_blank()) +
+  scale_fill_manual(
+    labels = c("Ranní spoj", "Dopolední spoj", "Odpolední spoj", 
+               "Večerní spoj", "Noční spoj"), 
+    values = c("#060b13", "#192e4d", "#2d5086", "#3967ac", "#668fcc"))
+```
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------

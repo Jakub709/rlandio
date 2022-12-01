@@ -1,0 +1,1736 @@
+---
+title: Datové typy a struktury
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "http://rlandio.cz", align: right}
+---
+
+
+<style>
+
+.navbar {
+      background: rgb(40,58,132);
+      background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+      border-color: transparent;
+      font-size: 14px;
+      font-family: Helvetica;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-right: px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+}
+body, td {
+      text-align: justify;
+      font-family: Arial;
+      font-size: 16px;
+      background-image: url('night3.png');
+      background-color: transparent;
+      line-height: 150%;
+      webkit-border-radius: 0px;
+      moz-border-radius: 0px;
+      border-radius: 0px;
+      color: #000000;
+}
+h1 {
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: rgb(28,25,73);
+  background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+  margin-right: -5px;
+  margin-left: -4px;
+  line-height: 200%;
+  border-radius: 5px;
+}
+
+h2 {
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #2B3990;
+  margin-right: -5px;
+  margin-left: -4px;
+  line-height: 200%;
+  border-radius: 5px;
+}
+
+h3 {
+  color: #DD4B39;
+  font-size: 16px;
+  font-family: Arial;
+  font-weight: bold;
+  line-height: 150%;
+}
+
+.chart-body {
+border-color:#000000;
+}
+
+
+.chart-title {  /* chart_title  */
+   font-size: 18px;
+   margin-top: -1px;
+   margin-right: px;
+   margin-left: px;
+   text-align: center;
+   background: rgb(40,58,132);
+   background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+   border-color: #283A84;
+   color: #ffffff;
+   font-family: 'Open Sans', sans-serif;
+   font-weight: bold;
+   text-transform: uppercase;
+   border-top-right-radius: 5px;
+   border-top-left-radius: 5px;
+}  
+.navbar-nav li a:hover {
+  color: #ffffff !important;
+  font-weight: bold;
+  background-color:#EC0B8C !important;
+  border-color: #EC0B8C;
+  background-image: none !important;
+}
+
+.navbar-nav > .active > a {
+  color: #014B7C !important;
+  font-weight: bold;
+  background: rgb(255,200,68);
+  background: radial-gradient(circle, rgba(255,200,68,1) 0%, rgba(255,216,0,1) 100%);
+  border-color: #FFC844;
+}
+
+.navbar-brand {
+  font-size: 0px;
+  color: #EC0B8C !important;
+}
+
+.section.sidebar {
+  background-color: transparent;
+  border-color: transparent;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+.mapa {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.pozadi2 {
+  background-color: 
+  border-color: transparent;
+  border-top-right-radius: 42px;
+  border-top-left-radius: 42px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.prazdno {
+  background-color: transparent;
+  border-color: transparent;
+  border-top-right-radius: 42px;
+  border-top-left-radius: 42px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#demobox {
+  border-color: #E7E8EA;
+  background-color: #E7E8EA;
+  border-left: 3px solid #E7E8EA;
+  border-right: 3px solid #E7E8EA;
+  border-down: 20px solid #E7E8EA;
+  border-up: 10px solid #E7E8EA;
+  margin-left: -px;
+  border-radius: 5px;
+}  
+
+#numCode {
+  font-family: monaco, Consolas, "Lucida Console", monospace;
+  margin-right: px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #CDCDCD;
+  border-color: #283A84;
+  border: px solid #CDCDCD;
+  border-left: 5px solid #444444;
+}
+
+blockquote {
+    background: rgb(28,25,73);
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    border-left: ;
+    font-family: ;
+    font-weight: ;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+}
+backquote {
+    background-color: #ffffff;
+}
+
+code.r, code.cpp {
+   margin-left: -10px;
+   margin-top: -10px;
+   margin-bottom: -10px;
+   border-right: px;
+   border: px solid #E7E8EA;
+   white-space: pre-wrap;
+   background-color: #E7E8EA;
+   line-height: 150%;
+   font-size: 16px;
+   font-weight: bold;
+   margin-left: ;
+   margin-top: ;
+   margin-bottom: ;
+   border-radius: 5px;
+   font-family: monaco, Consolas, "Lucida Console", monospace;
+   border-left: 8px solid #1C1949;
+}  
+
+pre {	
+   margin-top: ;
+   margin-bottom: ;
+   margin-left: ;
+   border-left: ;
+   border: 0px solid #E7E8EA;
+   white-space: pre-wrap;
+   background-color: #E7E8EA;
+   line-height: 150%;
+   font-size: 16px;
+   font-weight: bold;
+   margin-left: ;
+   margin-top: ;
+   margin-bottom: ;
+   font-family: monaco, Consolas, "Lucida Console", monospace;
+   border-radius: 5px;
+}
+
+pre code {
+   white-space: pre-wrap;
+   line-height: 150%;
+   border-left: ;
+   display: block; padding: 0.5em;
+   font-family: monaco, Consolas, "Lucida Console", monospace;
+   border-radius: 5px;
+}
+
+.menu_item:hover {
+  background-color: #000000; 
+  color: #ffffff;
+}
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+.leaflet-container{
+    border-radius: 5px;
+}
+
+@media only screen and (max-width: 1280px) {
+.navbar {
+      font-size: 10px;
+}
+
+.navbar-brand {
+  font-size: 14px;
+  color: #ffffff !important
+}
+  
+.tabletmod {
+        display: none;
+} 
+.et_mobile_menu {   
+    overflow-y:scroll!important;
+    max-height:80vh!important;
+    -overflow-scrolling:touch!important;
+    -webkit-overflow-scrolling:touch!important;
+}
+}
+</style>
+
+# ESF MU {.sidebar .tabletmod}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\Zaciname\datacamp.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 1**</p align="center">
+<p align="center">**DATOVÉ TYPY A STRUKTURY**</p align="center">
+
+Prozatím jsme v R pracovali pouze s vektory. Vyzkoušeli jsme si, že mohou obsahovat nejenom čísla, ale i písmena a celá slova. Tím se pomalu dostáváme k tématu datových typů a datových struktur, se kterými se v následujícím textu seznámíme. 
+
+Ač tedy bude nynější kapitola zejména ve svém počátku poněkud teoretická, je nezbytné ji pro další mnohem zábavnější práci absolvovat. Pojďme na to. 
+
+<div id="footer">© 2019 **RLANDIO** S.R.O.</div>
+
+
+
+# Úvod
+
+### {.mapa .tabletmod}
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+Mapa <- read_excel("C:/Users/jsoln/OneDrive/Desktop/Vsehochut/skola-seminarky/Mapa.xlsx")
+
+
+m=leaflet(data = Mapa) %>% addProviderTiles("Esri.WorldImagery") %>%
+  addCircleMarkers(~long, ~lat, 
+                  radius=10,
+                  color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   popup = ~as.character(name)
+  ) 
+
+m %>%  
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addFullscreenControl(m, position = "topleft") %>%
+  addEasyButton(easyButton(
+    icon="fa-globe", title="Zoom to Level 1",
+    onClick=JS("function(btn, map){ map.setZoom(2); }"))) %>%
+  addSearchOSM() 
+```
+
+# Datové typy
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Datové typy {.pozadi2}
+
+Základních datových typů máme v R dohromady pět. Jedná se o **integer, numeric, complex, character** a **logical**. Ve své podstatě jde o to, že datový typ charakterizuje formát dat (čímž máme na mysli čísla, písmena atd.), ze kterého se příslušný vektor (či proměnná databáze) skládá. První vektor, který si tu představíme, nese hodnoty od mínus jedné do pěti.
+
+```{r, eval=F, echo=T}
+x <- -1:5	# vzorový vektor
+class(x)	# pomocí příkazu class zjistíme datový typ 
+```
+```{r}
+x <- -1:5
+class(x)
+```
+
+V R se můžeme setkat se třemi číselnými datovými typy. Tím prvním je integer, který označuje celá čísla (např. -2, -1, 0, 1, 2 a podobně). Ne vždy ale budeme pracovat s hodnotami bez desetinných míst (pozor na to, že v R používáme desetinnou tečku místo čárky), proto nám R nabízí i datový typ numeric. Ten obsahuje veškerá reálná čísla, mezi která patří nejenom ta, jež můžeme zapsat pomocí zlomku (racionální čísla), ale i čísla iracionální jako např. pí. Chcete-li se mimochodem o pí dozvědět více a myslíte si přitom, že matematikům nikdy rozumět nebudete, podívejte se na toto <a  href="https://www.youtube.com/watch?v=4AnrsunJ9tQ">video</a> a jistě změníte svůj názor.
+
+```{r, eval=F, echo=T}
+x <- seq(from = 1, to = 3, by = 1/3) + pi # vzorový vektor
+class(x)
+```
+```{r}
+x <- seq(from = 1, to = 3, by = 1/3) + pi
+class(x)
+```
+
+Posledním číselným datovým typem je complex. Ten bude použit tehdy, je-li ve vektoru uvedeno <a  href="https://www.youtube.com/watch?v=RwFylphT1bw&list=PL3RyK-lDdkMCLme7GQG-lrp1ryR-7kE-M">komplexní číslo</a>. S ním však v této učebnici až na naprosté výjimky pracovat nebudeme. Přesto je dobré alespoň vědět, že tento datový typ existuje.
+
+```{r, eval=F, echo=T}
+x <- c(1+2i, 3.14) 
+class(x)
+```
+```{r}
+x <- c(1+2i, 3.14) 
+class(x)
+```
+
+Čtvrtým datovým typem je character. S ním už jsme se obdobně jako s numeric setkali již v předchozí kapitole.
+
+```{r, eval=F, echo=T}
+x <- c("ČR", "SR", "VB", "NSR")	# vzorový vektor
+# u slov a písmen nikdy nezapomínejte na uvozovky či apostrofy
+class(x)
+```
+```{r}
+x <- c("ČR", "SR", "VB", "NSR")
+class(x)
+```
+
+Co když se ale vektor skládá jak z písmen, tak i číslic? I na tuto otázku už bychom měli být schopni správně odpovědět na základě znalostí z předchozí kapitoly. 
+
+```{r, eval=F, echo=T}
+x <- c(1, 5, "ano", "ne") # vzorový vektor
+```
+```{r}
+x <- c(1, 5, "ano", "ne")
+x
+class(x)
+```
+
+Vektor se stane opět textovým (tj. character), i když obsahuje, byť jen jedno písmeno. Čísla proto též obdrží formát textových popisků pomocí uvozovek, jak to lze vidět u předchozího výstupu.
+
+Posledním datovým typem je logical, který nabývá hodnot TRUE a FALSE (či jen zkráceně T a F).
+
+```{r, eval=F, echo=T}
+x <- c("TRUE", "FALSE", "TRUE") # vzorový vektor
+class(x)
+```
+```{r}
+x <- c("TRUE", "FALSE", "TRUE") 
+class(x)
+```
+
+Ptáte se, kde se stala chyba? Vektor x obsahuje písmena, proto ho R může vyhodnotit nejenom jako logical, ale i jako character. V takovém případě se může občas stát, vyžaduje-li to například určitý příkaz, že budeme muset datový typ změnit. Toho docílíme pomocí příkazu, který je uveden níže. 
+
+```{r, eval=F, echo=T}
+x <- c("TRUE", "FALSE", "TRUE") # vzorový vektor
+x <- as.logical(x) # změna na datový typ logical
+class(x)
+```
+```{r}
+x <- c("TRUE", "FALSE", "TRUE")  
+x <- as.logical(x)
+class(x)
+```
+
+Princip změny datového typu je velice prostý. Vlevo od zobáčku uvedeme název budoucí proměnné (jak vidíte, může být nezměněn) a vpravo zapíšeme příkaz as.logical (popřípadě numeric, integer, complex nebo character) plus do závorky připojíme název proměnné, u které datový typ měníme.
+
+Co však nastane v případě, bude-li vektor obsahovat pouze hodnoty, jako například muž a žena či různá hodnocení jako skvělý, průměrný, nepoužitelný? Bude mít tvar logical či character? Překvapím vás. Nejvhodnější pro naši práci bude speciální datový typ s názvem faktor, který si představíme ve třetí podkapitole. Ten se totiž používá právě pro práci s <a  href="https://iastat.vse.cz/typy_promennych.html">kategoriálními proměnnými</a>. Ani datový typ character však nemusíte nijak zavrhovat, protože i ten by nám u těchto hodnot ve většině případů posloužil stejně dobře jako faktor. Pouze typ logical by nám příliš nepomohl, jelikož může obsahovat pouze hodnoty TRUE a FALSE.
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Příklady {.pozadi2}
+
+> Příklad 1
+
+Vytvořte vektor s hodnotami od jedné do sta a zjistěte její datový typ. Následně v této proměnné změňte hodnotu na 51. pozici za číslo 51,01. Poté opět zjistěte datový typ proměnné.
+
+> Příklad 2
+
+Vytvořte vektor ve tvaru -10, -9,5, -9 ... 10, jehož čísla se v tomto pořadí zopakují pětkrát. Jaký datový typ bude nabývat tato proměnná? 
+
+> Příklad 3
+
+Vytvořte náhodný vektor, který bude obsahovat sto hodnot Jakub a David a následně zjistěte její datový typ.
+
+> Příklad 4
+
+Vytvořte vektor ve tvaru -100, -98, -96 ... 100 a změňte její datový typ na character. Po této změně zkuste tento vektor vynásobit číslem dvě. Je to možné?
+
+### {.mapa .tabletmod}
+```{r echo=FALSE, fig.height=5.3, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+Mapa <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Mapy/Boston.xlsx")
+
+
+m=leaflet(data = Mapa) %>% addProviderTiles("Esri.WorldImagery") %>%
+  setView(lng = -71.0589, lat = 42.3601, zoom = 3) %>%
+  addCircleMarkers(~long, ~lat, 
+                  radius=10,
+                  color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   popup = ~as.character(name)
+  ) 
+
+m %>%  
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addFullscreenControl(m, position = "topleft") %>%
+  addSearchOSM() 
+```
+
+# Datové struktury
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Datové struktury {.pozadi2}
+
+> Seznámení s datovými strukturami
+
+Data, která bývají předmětem zkoumání, povětšinou nejsou tvořena pouze volně stojícími hodnotami či vektory, jelikož obvykle obsahují různé proměnné (čímž máme na mysli sloupce hodnot). V R nalezneme pět hlavních datových struktur, obdobně jako datových typů. Liší se jak svou homogenitou (homogenní = všechny proměnné datového souboru mají stejný datový typ, heterogenní = proměnné databáze se skládají z různých datových typů), tak i počtem dimenzí (tj. zdali datová struktura obsahuje řádky, sloupce či ještě jednu dimenzi navíc). 
+
+V nadcházejících kapitolách budeme pracovat v drtivé většině s datovou tabulkou (data frame) a vektory, v nepatrné části s maticemi a seznamy. S poli zde pracovat prakticky nebudeme. Proto se alespoň v následujícím přehledu podívejme, jak tato datová struktura vypadá. Začněme však postupně, a to datovou strukturou, kterou již všichni důvěrně známe.
+
+<h2>Vektory</h2>
+Vektor obsahuje vždy pouze jeden datový typ, jednu dimenzi, tj. jeden sloupec s hodnotami.
+
+```{r, eval=F, echo=T}
+x <-  c("vektor", "obsahuje", "jednu", "dimenzi", "a", "datový", "typ")
+```
+```{r}
+x <-  c("vektor", "obsahuje", "jednu", "dimenzi", "a", "datový", "typ")
+x
+```
+
+<h2>Matice (Matrix)</h2>
+Matice jistě znáte z matematiky. V R však může taková matice obsahovat nejenom číslice, ale i další datové typy, jako character či logical. V každém případě obsahuje vždy pouze jeden datový typ. Na rozdíl od vektorů nicméně obsahuje dvě dimenze, tj. řádky a sloupce.
+
+```{r, eval=F, echo=T}
+x <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+y <- matrix(c("a","b","c","d", "e","f","g","h","ch"), nrow = 3, byrow = TRUE)
+```
+```{r}
+x <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+y <- matrix(c("a","b","c","d", "e","f","g","h","ch"), nrow = 3, byrow = TRUE)
+x
+y
+```
+
+<h2>Pole (Array)</h2>
+Pole jsou velice podobná maticím s tím rozdílem, že na rozdíl od matic obsahují tři dimenze. Jak ale taková třetí dimenze může vypadat? Stačí se podívat na následující příkaz.
+
+```{r, eval=F, echo=T}
+x <- array(1:18, dim = c(3,3,2))
+```
+```{r}
+x <- array(1:18, dim = c(3,3,2))
+x
+```
+
+<h2>Seznam (List)</h2>
+Seznam je nejkomplexnější formou z datových struktur. Obvykle obsahuje více než dvě dimenze hodnot (teoreticky však může obsahovat i jen jeden sloupec hodnot jako vektor) a na rozdíl od polí (array) může disponovat i více než jedním datovým typem. Jednotlivé sloupce ze seznamu navíc nemusí být stejně dlouhé a mohou dokonce současně zahrnovat více datových struktur. 
+
+```{r, eval=F, echo=T}
+x <- list(c("Leden","Únor","Březen"), matrix(c(3,9,5,1,-2,8), nrow = 2),
+          array(1:18, dim = c(3,3,2)))
+```
+```{r}
+x <- list(c("Leden","Únor","Březen"), matrix(c(3,9,0,0,-3,-9), nrow = 2),
+          array(1:18, dim = c(3,3,2)))
+x
+```
+
+<h2>Datová tabulka (Data Frame)</h2>
+Data frame je spolu s vektory bezpochyby nejdůležitější datovou strukturou v R. Obsahuje dvě dimenze hodnot (řádky a sloupce) a jeden či více datových typů, které se mohou lišit mezi jednotlivými sloupci (proměnnými databázemi). V určitém slova smyslu by šlo říci, že datová tabulka je soubor několika vektorů (jednoho či více), které mají stejnou délku s možností rozdílnosti datových typů. V případě nestejné délky by šlo o seznam (list). Z tohoto důvodu lze data frame popsat i jako speciální případ seznamu.
+
+```{r, eval=F, echo=T}
+zaměstnanci <- data.frame(
+  ID = c (1:5),
+  jméno = c("Jakub","David","Věra","Petr","Anna"),
+  kancelář = c(642, 535, 681, 739, 925),
+  nástup = as.Date(
+    c("2013-02-04", "2017-06-21", "2012-11-14", "2018-05-19","2016-03-25")))
+```
+```{r}
+zaměstnanci <- data.frame(
+  ID = c (1:5),
+  jméno = c("Jakub","David","Věra","Petr","Anna"),
+  kancelář = c(642, 535, 681, 739, 925))
+zaměstnanci
+```
+
+V data frame s názvem zaměstnanci byl použit datový typ, se kterým jsme se ještě neseznámili. Jedná se o čas. Na jeho bližší představení si však ještě chvíli počkejme. Budeme se mu totiž pečlivě věnovat v páté kapitole, jež je věnována tvorbě grafů.
+
+> Načítání dat do R STUDIA
+
+Abychom si nějaký pořádný data frame mohli ukázat, musíme se nejdříve naučit, jak jej v R STUDIU otevřít. Nejdříve si však na svůj počítat uložte následující excelový soubor, který obsahuje údaje ze spotřebitelského průzkumu tykající se hry Osadníci z Katanu. Osadníci z Katanu jsou deskovou hrou pro 3-4 hráče, ve které osidlujete ostrov s názvem Katan, stavíte silnice, vesnice, města a mnoho dalšího. V samotné databázi naleznete 200 řádků pozorování pro celkově devět proměnných. 
+
+Máte-li už databázi uloženou na svém PC, podívejte se do pravého horního panelu, v němž uvidíte záložku Import Dataset. Klikněte na ni a z nabídky zvolte From Excel. Nejdříve se vám automaticky do R Studia nainstaluje rozšiřující balíček readxl, jehož instalace však potrvá pouze několik sekund. Poté budete moci již bez problému  načítat jakékoli Excelové soubory z vašeho počítače (soubory jako txt, csv šlo v Import Dataset načítat i bez balíčku readxl).
+
+```{r, eval=F, echo=T}
+View(Katan)
+# Seznamme se s proměnnými databáze Katan
+
+# Partie: označuje počet sehraných partií deskové hry 
+#         Osadníci z Katanu za měsíc
+
+# Věk: označuje věk hrače Osadníků, který se zapojil do průzkumu
+
+# Pohlaví: označuje pohlaví jedince
+
+# Vzdělání: ZŠ znamená, že jedinec stále chodí do základní školy, 
+#           nebo že je ZŠ jeho nejvyšším dosaženým vzděláním;
+#           SŠ znamená, že SŠ je jeho nejvyšším dosaženým vzděláním;
+#           Bc - VŠ znamená, že jedinec má bakalářský titul;
+#           VŠ znamená, že jedinec má magisterský titul
+
+# Kolej: označuje, zda-li člověk bydlí na VŠ koleji
+# Práce: označuje, zda-li člověk chodí pravidelně do práce
+
+# Děti: označuje počet dětí
+
+# Kouření: označuje pravidelné kouření
+
+# Klub: označuje, jestli daný jedinec alespoň jednou měsíčně chodí 
+#       do klubu deskových her
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+head(Katan)
+```
+
+Data lze do R načítat i pomocí konzole. Ostatně po načtení xlsx souboru v R STUDIU pomocí volby Import Dataset (From Excel) se do ní podívejte. Uvidíte v ní dva příkazy.
+
+```{r, eval=F, echo=T}
+library(readxl) 
+# Nejdříve je nutné načíst balíček.
+# Balíček je nutné načíst vždy po každém spuštění R STUDIA,
+# za předpokladu, chcete-li načítat data zápisem příkazu
+# do konzole.
+# Více o balíčcích v páté kapitole.
+Katan <- read_excel("C:/Users/.../Katan.xlsx")
+# Poté použijete příkaz read_excel z balíčku readxl
+# a uvedete do něj přesnou cestu k souboru.
+```
+
+Po načtení souboru (ať už pomocí pomocí R STUDIA či přímo konzole) se nezapomeňte podívat na názvy jednotlivých proměnných. Pod nimi totiž naleznete takové drobné zobáčky, pomocí kterých lze před samotným načtením dat jednoduše změnit datové typy proměnných. Datové typy lze nicméně měnit i později (viz modrý box v další části této podkapitoly). V této chvíli je to však nejrychlejší. Přitom se též setkáte ještě s datovým typem double (viz obrázek). S ním si však žádnou hlavu nedělejte a mějte ho jednoduše za numeric. Není mezi nimi totiž žádný rozdíl. 
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\Data\obrazek.jpg)]()</p align="center">
+
+> Zjišťování datové struktury proměnných
+
+Po načtení databáze Katan došlo v R k drobné změně. Doposud jsme totiž v pravém horním panelu viděli pouze sekci Values, pod kterou jsme měli zobrazeny všechny doposud vytvořené vektorové proměnné. S načtením databáze Katan se nám zde ale objevila nová sekce Data. Co vyjadřuje? Sekce Data funguje naprosto totožně jako sekce Values a ukazuje nám všechny zavedené proměnné, které jsou však na rozdíl od Values vícerozměrné (obsahují řádky a sloupce). Uvidíme zde tak všechny matice, data frame, seznamy či pole.
+
+Jak ale zjistíme, jakou datovou strukturu (neplést s datovým typem) daná proměnná obsahuje? Opět budeme muset využít příkaz class(). Vezměme si kupříkladu, že pracujeme s databází Katan a napíšeme tento příkaz.
+
+```{r, eval=F, echo=T}
+class(Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+class(Katan)
+```
+
+Logika funkce class je následující. Pokud se ptáme na vektor (nebo na proměnnou v rámci data frame, např. na Věk v databázi Katan), vrátí nám tato funkce datový typ (numeric, character atd.). V případě, že se však ptáme na vícerozměrnou proměnnou typu matice, data frame, seznam či pole, vrátí nám příkaz class název této datové struktury. 
+
+```{r, eval=F, echo=T}
+class(Katan$Věk)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+class(Katan$Věk)
+```
+
+```{r, eval=F, echo=T}
+x <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)  
+# vzorová matice
+class(x)
+```
+```{r}
+x <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)  
+class(x)
+```
+
+Zvídavého studenta nyní jistě napadne otázka, zdali a případně jak lze změnit datovou strukturu třeba takového vektoru na data frame či matici? Žádný problém. Využijeme totiž stejného postupu, jako když měníme datový typ vektoru. Zapišme si postupně následující tři řádky příkazů, a přitom změňme vektor na matici a poté na data frame.
+
+```{r, eval=F, echo=T}
+a = 1:9
+class(a)
+```
+```{r}
+a = 1:9
+class(a)
+```
+
+```{r, eval=F, echo=T}
+a = as.matrix(a)
+class(a)
+```
+```{r}
+a = as.matrix(a)
+class(a)
+```
+
+```{r, eval=F, echo=T}
+a = as.data.frame(a)
+class(a)
+```
+```{r}
+a = as.data.frame(a)
+class(a)
+```
+
+Jak je vidět, to že například data frame obvykle obsahuje několik sloupců s různými datovými typy ještě neznamená, že je tomu tak vždy. Klidně se může jednat o jeden sloupec čísel podobně jako vektor. 
+
+Otázek není nikdy dost, proto si uveďme i následující. Jak lze změnit datový typ proměnné (sloupce) v rámci data frame? Na tuto otázku nalezneme odpověď v modrém boxu.
+
+<div id="demobox">
+
+<h2>Box: Změna datového typu v data frame</h2>
+Pomocí prvního příkazu se nám podaří změnit datový typ u proměnné Pohlaví z character na factor.
+
+```{r, eval=F, echo=T}
+class(Katan$Pohlaví)
+Katan$Pohlaví <- as.factor(Katan$Pohlaví)
+class(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+class(Katan$Pohlaví)
+Katan$Pohlaví <- as.factor(Katan$Pohlaví)
+class(Katan$Pohlaví)
+```
+
+Ve druhém příkazu najednou změníme datové typy u dvou proměnných.
+
+```{r, eval=F, echo=T}
+Katan <- transform(Katan, Kouření = as.factor(Kouření), Práce = as.factor(Práce))
+class(Katan$Kouření)
+class(Katan$Práce)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan <- transform(Katan, Kouření = as.factor(Kouření), Práce = as.factor(Práce))
+class(Katan$Kouření)
+class(Katan$Práce)
+```
+***
+</div>
+
+Na závěr této podkapitoly se ještě seznamme s několika užitečnými příkazy. Tím prvním bude příkaz ls(), pomocí kterého vypíšeme do konzole názvy všech proměnných, jež máme v R otevřené.
+
+```{r, eval=F, echo=T}
+ls()
+```
+
+Příkaz ls() lze využít i pro smazání všech aktuálně vytvořených proměnných v R STUDIU.
+
+```{r, eval=F, echo=T}
+rm(list = ls())
+# příkaz odstraní všechny proměnné z relace R (samotný 
+# pokyn list=ls() vytvoří proměnnou list, jejíž součástí 
+# budou všechny ostatní proměnné v databázi)
+```
+
+Mnohem častěji však budeme chtít smazat pouze jednu z proměnných, kterou máme v R vytvořenou. K tomu využijeme příkaz rm(), se kterým jsme se seznámili již v minulé kapitole. Příkaz rm lze využít nejen pro mázání vektorů, ale i vícerozměrných dat (data frame, matice, list, array). Pozor však na to, že tento příkaz nelze využít pro mazání jednotlivých proměnných v rámci databáze (např. Věk v souboru Katan). Zjednodušeně řečeno příkaz rm lze použít pro smazání jakékoli databáze či vektoru, jehož název vidíte v pravém horním panelu.
+
+Posledním příkazem, který se v této podkapitole naučíme používat, je příkaz str(). Ten nám pomůže zejména tehdy, chceme-li rychle zjistit datové typy všech proměnných v databázi.
+
+```{r, eval=F, echo=T}
+str(Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+str(Katan)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Příklady {.pozadi2}
+
+> Příklad 5
+
+Stáhněte do svého počítače databázi <a  href="https://github.com/Kiwon/useworld.r/raw/master/ex/data/LungCapData.xls">LungCapData</a> a zjistěte, zda-li se jedná o data frame.
+
+> Příklad 6
+
+Zjistěte datový typ proměnné Smoke v databázi LungCapData a proměnné Vzdělání v databázi Katan.
+
+> Příklad 7
+
+Vytvořte vektor s hodnotami jedna až deset a změňte ho na data frame a zase zpět.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+Mapa <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Mapy/Boston.xlsx")
+
+
+m=leaflet(data = Mapa) %>% addProviderTiles("Esri.WorldImagery") %>%
+  setView(lng = -71.0589, lat = 42.3601, zoom = 3) %>%
+  addCircleMarkers(~long, ~lat, 
+                  radius=10,
+                  color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   popup = ~as.character(name)
+  ) 
+
+m %>%  
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addFullscreenControl(m, position = "topleft") %>%
+  addSearchOSM() 
+```
+
+# Faktor
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Faktor {.pozadi2}
+
+Faktory jsou textové proměnné, které slouží k uchování kategoriálních proměnných. Kategoriální proměnné mohou být buď ordinální (záleží na pořadí, např. u hodnocení kvality jídel ve školní jídelně: “nepoživatelné”, “poživatelné”, “s trochou fantazie i chutná”) nebo neordinální (nezáleží na pořadí, např. pohlaví, otázka kouření atd.).
+
+Textové popisky u kategoriálních proměnných lze samozřejmě nahradit celými čísly: např. muž bude 0 a žena 1 či “nepoživatelné” jídlo bude 0, “poživatelné” 1 a “s trochou fantazie i chutná” 2. Toto řešení by nám však přineslo více problémů nežli užitku. Hned ten první problém spočívá v tom, zdali nezapomeneme, že zrovna muž je nula a žena je jednička. 
+
+Další potíž tkvý v tom, že ačkoliv vám v jídelně včera možná trochu chutnalo (“s trochou fantazie i chutná”, 2), nelze říci, že vám chutnalo dvakrát lépe než včera, kdy jste jídlo ohodnotili jako “poživatelné” (číslo 1, už jen toto číslo je silně zavádějící).
+
+Proto tu máme faktory, které naše problémy vyřeší. Faktory totiž dávají jednotlivým hodnotám v proměnné tzv. nálepky (kouří, nekouří), které nám sdělují jejich význam a při tom v R nezapomínají, že se jedná o kategoriální proměnné.
+
+Jak takovou proměnnou typu faktor vytvořit se naučíme až v příští kapitole, nyní si pouze ve stručnosti ukážeme, jak pracovat s již existujícím faktorem v data frame. Pojďme se znovu podívat na naši oblíbenou databázi Katan, u které nám příkaz str(Katan) prozradil, že by proměnná Gender měla být výše diskutovaného datového typu. Jaké jsou úrovně této proměnné?
+
+```{r, eval=F, echo=T}
+levels(Katan$Pohlaví)  
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+levels(Katan$Pohlaví) 
+```
+
+Že vám příkaz nefunguje a hlásí `Null`? Zkuste tento. 
+
+```{r, eval=F, echo=T}
+class(Katan$Pohlaví)  
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+class(Katan$Pohlaví) 
+```
+
+Byl váš výsledek character a nikoliv factor? Dávejte si vždy pozor, s jakým datovým typem pracujete. U některých příkazů sice může být jedno, jestli je daná proměnná datového typu character či factor. U většiny však nikoliv. To samé platí o datových strukturách. Na první pohled sice může tabulka vypadat, jako jasný data frame, při použití funkce class však můžete zjistit něco jiného. 
+
+Pokud vám tedy v budoucnu nebude fungovat nějaký příkaz a vy budete skálopevně přesvědčeni, že v něm chybu nemáte, zkuste se podívat na jednotlivé datové typy a struktury, se kterými právě pracujete. Velice často totiž poznáte, že právě zde je zakopaný pes. Vraťme se však zpět k faktorům a k příkazu levels, který Vám v tuto chvíli již určitě funguje.
+
+```{r, eval=F, echo=T}
+Katan$Pohlaví <- as.factor(Katan$Pohlaví)
+levels(Katan$Pohlaví)  
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Pohlaví <- as.factor(Katan$Pohlaví)
+levels(Katan$Pohlaví) 
+```
+
+Co když ale budeme chtít muže a ženy přejmenovat na anglická slova male a female? Použijte následující příkaz.
+
+```{r, eval=F, echo=T}
+levels(Katan$Pohlaví) <- c("male","female")
+# pozor na pořadí, ve kterém hdnoty udáváte
+levels(Katan$Pohlaví)  
+```
+```{r}
+levels(Katan$Pohlaví) <- c("male","female")
+# pozor na pořadí, ve kterém hdnoty udáváte
+levels(Katan$Pohlaví)  
+```
+
+U většiny proměnných nám bude nebude vadit, jestli kategoriální proměnná bude mít datový typ character či vektor. U některých příkazů však nikoliv. Na tyto příkazy však budete v této učebnici upozorněni. Nebojte se však, není jich mnoho.
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Příklady {.pozadi2}
+
+> Příklad 8
+
+Vytvořte faktory z proměnných Vzdělání a Pohlaví.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=19, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+Mapa <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Mapy/Boston.xlsx")
+
+
+m=leaflet(data = Mapa) %>% addProviderTiles("Esri.WorldImagery") %>%
+  setView(lng = -71.0589, lat = 42.3601, zoom = 3) %>%
+  addCircleMarkers(~long, ~lat, 
+                  radius=10,
+                  color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   popup = ~as.character(name)
+  ) 
+
+m %>%  
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addFullscreenControl(m, position = "topleft") %>%
+  addSearchOSM() 
+```
+
+# Matice
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+### Matice {.pozadi2}
+Je doopravdy nutné matice blíže představovat? Pokud jste se v hodinách matematiky alespoň několikrát omylem vzbudili a pamatujete si přinejmenším obdélníkový či čtvercový vzhled matic plný čísel, bude vám tato znalost naprosto stačit. Pokud však absolutně netušíte, o čem tu je řeč, podívejte se třeba na krátké video na YouTube. Pro lepší přehled se vám jeho zhlédnutí bude jistě hodit.
+
+Dále ještě doplním, že značnou část příkazů, které si nyní u matic ukážeme, budeme používat i pro data frame. Není divu. Jediný rozdíl mezi maticemi a data frame je totiž ten, že matice se skládají pouze z jednoho datového typu a data frame z více datových typů (obsahuje například sloupce s textovými popisky, poté sloupce s čísly, faktory atd.).
+
+Jistě v tuto chvíli přemýšlíte nad otázkou, k čemu mi jsou matice vlastně dobré? Abych byl upřímný, je-li vaším hlavním cílem pracovat s datovými tabulkami (data frame), znalosti z tvorby matic vám nebudou až na drobné výjimky (žádná mě v tuto chvíli nenapadá) užitečné. Z tohoto důvodu si rozdělíme podkapitolu na dvě části. První z nich se bude zabývat příkazy zaměřenými čistě na tvorbu matic a ta druhá na práci s nimi, která však bude užitečná i pro data frame.
+
+> Tvorba matic
+
+První příkaz, který si tu ukážeme, si klade za cíl vytvořit jednotkovou matici. Jediným parametrem tohoto příkazu je číslice uvnitř závorky, jež označuje počet řádků (sloupců) této matice.
+
+```{r, eval=F, echo=T}
+diag(3)
+```
+```{r}
+diag(3)
+```
+
+Chceme-li však vytvořit matici složitější, než byla ta předchozí, využijeme příkazu matrix s parametry nrow a byrow. 
+
+```{r, eval=F, echo=T}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+# byrow = TRUE znamená, že čísla 1 až 9 jdou postupně po řádcích, 
+# FALSE znamená, že čísla jdou po sloupcích, pomocí transpozice 
+# matice lze její rozložení změnit i u již existující matice 
+# t(matice), příkaz t() lze teoreticky využít i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+matice
+```
+
+Po vytvoření matice si můžeme zobrazit její diagonálu pomocí příkazu diag a tu třeba následně uložit do proměnné Diagonála.
+
+```{r, eval=F, echo=T}
+Diagonála <- diag(matice)
+```
+```{r}
+Diagonála <- diag(matice)
+Diagonála
+```
+
+Matici lze velice jednoduše vytvořit i z vektoru a to tím, mu určíme počet řádků a sloupců pomocí parametru dim. 
+
+```{r, eval=F, echo=T}
+matice_z_vektoru <- 1:12
+class(matice_z_vektoru) # příkaz class nám u vektoru zobrazí jeho datový typ
+dim(matice_z_vektoru) <- c(3, 4)
+class(matice_z_vektoru)
+```
+```{r}
+matice_z_vektoru <- 1:12
+matice_z_vektoru
+class(matice_z_vektoru) # příkaz class nám u vektoru zobrazí jeho datový typ
+dim(matice_z_vektoru) <- c(3, 4)
+matice_z_vektoru
+class(matice_z_vektoru)
+```
+
+Na závěr se ponořme trochu do matematiky. Zkusme si například výše uvedenou matici vynásobit dvěma, čímž mám na mysli to, že každý prvek v matici vynásobíme číslem dvě.
+
+```{r, eval=F, echo=T}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), nrow = 3, byrow = FALSE)
+matice2 <- matice*2
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), nrow = 3, byrow = FALSE)
+matice2 <- matice*2
+matice2
+```
+
+Pokud bychom chtěli vynásobit matici maticí a to po sloužkách, použili bychom opět prostý operátor násobení. V případě maticového násobení však budeme muset využít operátor %*%. Přitom si dávejme pozor, aby oba činitelé byli odpovídajících rozměrů (vnitřní rozměry matic musí být shodné). Ukažme si vše na následujících příkladech.
+
+```{r, eval=F, echo=T}
+# násobení po složkách
+A <- matrix(c(1,2,3,4,5,6), nrow = 3, byrow = TRUE)
+B <- matrix(c(1,2,3,4,5,6), nrow = 3, byrow = TRUE)
+výsledek <- A*B
+
+# maticové násobení
+A <- matrix(c(1,2,3,4,5,6), nrow = 3, byrow = TRUE)
+B <- matrix(c(1,2,3,4,5,6), nrow = 2, byrow = TRUE)
+výsledek <- A%*%B
+```
+```{r}
+# násobení po složkách
+A <- matrix(c(1,2,3,4,5,6), nrow = 3, byrow = TRUE)
+B <- matrix(c(1,2,3,4,5,6), nrow = 3, byrow = TRUE)
+print("matice A")
+A
+print("matice B")
+B
+výsledek <- A * B
+print("výsledek")
+výsledek
+
+# maticové násobení
+A <- matrix(c(1,2,3,4,5,6), nrow = 3, byrow = TRUE)
+B <- matrix(c(1,2,3,4,5,6), nrow = 2, byrow = TRUE)
+print("matice A")
+A
+print("matice B")
+B
+výsledek <- A%*%B
+print("výsledek")
+výsledek
+```
+
+
+> Práce s maticemi (a data frame)
+
+Vytvářet matice není složité. Pojďme si proto vyzkoušet další příkazy, které nám práci s nimi obohatí. Začněme tím, že si pozměníme názvy sloupců. Před tím si však vytvořme vzorovou matici, se kterou budeme pracovat.
+
+```{r, eval=F, echo=T}
+# matice pro následující příklady
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+```
+
+```{r, eval=F, echo=T}
+colnames(matice) <- c("C1","C2","C3")   	
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+colnames(matice) <- c("C1","C2","C3")
+matice
+```
+
+Pokud ve výše uvedeném příkazu použijete méně názvů než obsahuje matice sloupců, ohlásí se vám následující chyba.
+
+```{r, eval=F, echo=T}
+colnames(matice) <- c("C1","C2") 
+```
+
+<h3>Error in dimnames(x) <- dn : 
+  length of 'dimnames' [2] not equal to array extent</h3>
+
+U data frame se však na rozdíl od matic error neohlásí. Nepřejmenované sloupce nicméně zůstanou beze jména, i když před tím svůj název měly. Ukažme si to na příkladu naší databáze Katan.
+
+```{r, eval=F, echo=T}
+colnames(Katan) <- c("C1","C2","C3")
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+colnames(Katan) <- c("C1","C2","C3")
+head(Katan)
+```
+
+Máme-li naši matici (data frame) pojmenovaný dle našich potřeb (jak přejmenovat pouze jeden sloupec si ukážeme v příští podkapitole), můžeme si nechat do konzole vypsat veškeré názvy sloupců pomocí samotného příkazu colnames s názvem matice uvnitř závorky.
+
+```{r, eval=F, echo=T}
+colnames(matice) # platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+colnames(matice)
+matice
+```
+
+U matic se nám v teoretické rovině může někdy hodit přejmenovat i samotné řádky. K tomu bude sloužit obdobný příkaz rownames.
+
+```{r, eval=F, echo=T}
+rownames(matice) <- c("R1","R2","R3") 	
+# totožná problematika jako u výše diskutovaného příkazu colnames
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+rownames(matice) <- c("R1","R2","R3") 
+matice
+```
+
+Stejně jako u colnames, tak i pomocí rownames si můžeme nechat vypsat do konzole názvy jednotlivých řádků (jsou-li ovšem přejmenovány z původního číselného označení, v opačném případě se nám totiž ozve výstup NULL). Přejmenovávat řádky u matic však povětšinou nedává žádný smysl a u data frame už vůbec ne. Veškeré hodnoty je totiž vždy lépe mít uložené jako samostatný sloupec, se kterým lze pracovat. Z tohoto důvodu je nejpraktičtější ponechat automatické číselné označení řádků jak u matic, tak u data frame.
+
+```{r, eval=F, echo=T}
+rownames(matice) <- c("R1","R2","R3") 
+rownames(matice) # platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+rownames(matice) <- c("R1","R2","R3") 
+rownames(matice) 
+```
+
+Pracujeme-li s rozsáhlou maticí či data frame, bude nezřídka kdy velice užitečné zobrazit pouze horní nebo dolní část takovéto databáze. Představte si například, že databáze obsahuje milion řádků a vaším cílem je získat pouze obecný přehled o datech a jejich struktuře. Pro takový případ tu jsou připraveny příkazy head a tail.
+
+```{r, eval=F, echo=T}
+head(matice)  		
+# příkaz zobrazí hodnoty v prvních šesti řádcích matice 
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+head(matice)  		
+```
+
+```{r, eval=F, echo=T}
+head(matice, n = 3)	
+# příkaz pomocí parametru n zobrazí první tři řádky matice
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+head(matice, n = 3)	
+```
+
+```{r, eval=F, echo=T}
+tail(matice)  		
+# příkaz zobrazí hodnoty v posledních šesti řádcích matice 
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+tail(matice)  		
+```
+
+```{r, eval=F, echo=T}
+tail(matice, n = 3)	
+# příkaz pomocí parametru n zobrazí poslední tři řádky matice
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+tail(matice, n = 3)	
+```
+
+S výše zobrazenými příkazy úzce souvisí i ty následující, které nám sdělí údaje o počtu sloupců a řádků matice či data frame.
+
+```{r, eval=F, echo=T}
+nrow(matice) 
+# příkaz určí, kolik má matice řádků
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+nrow(matice) 
+```
+
+```{r, eval=F, echo=T}
+ncol(matice) 
+# příkaz určí, kolik má matice sloupců
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+ncol(matice) 
+```
+
+```{r, eval=F, echo=T}
+dim(matice) 
+# příkaz zobrazí počet řádků a sloupců matice 
+# platí i pro data frame
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+dim(matice)
+```
+
+Poslední příkaz, který si tu ukážeme, nese název length. Jak již název napovídá, bude opět označovat délku matice. Příkaz length však lze použít nejen pro matice a data frame, ale i pro vektory či jednotlivé proměnné data frame. Zatímco však u matic označuje počet všech prvků matice (počet řádků * počet sloupců), u data frame označuje pouze počet sloupců. U vektorů a jednotlivých proměnných data frame pak zobrazuje obdobně jako u matic počet jejich prvků. Ukažme si všechny varianty příkazu length postupně na následujících čtyřech příkladech.
+
+```{r, eval=F, echo=T}
+# vektor
+jména <- c("Jakub","David")
+length(jména)
+```
+```{r}
+jména <- c("Jakub","David")
+length(jména)
+```
+
+```{r, eval=F, echo=T}
+# matice
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = FALSE)
+length(matice)
+```
+```{r}
+matice <- matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = FALSE)
+length(matice)
+```
+
+```{r, eval=F, echo=T}
+# data frame
+length(Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+length(Katan)
+```
+
+```{r, eval=F, echo=T}
+# sloupec (proměnná data frame)
+length(Katan$Partie)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+length(Katan$Partie)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Příklady {.pozadi2}
+
+> Příklad 9
+
+Vytvořte matici s čtyřmi řadami a sloupci, která bude obsahovat hodnoty 1, 3, 5 atd. až 31. Následně vytvořte druhou matici, která bude obsahovat hodnoty 1, 6, 11 atd. až 76. Tyto matice poté vynásobne jak po složkách, tak i pomocí maticového násobení.
+
+> Příklad 10
+
+Z databáze Katan zobrazte pouze prvních deset řádků a ty následně uložte do nové proměnné Katan2.
+
+> Příklad 11
+
+Pomocí příkazu length zjistěte, kolik řádků má v databázi Katan proměnná Pohlaví.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=6, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+Mapa <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Mapy/Boston.xlsx")
+
+
+m=leaflet(data = Mapa) %>% addProviderTiles("Esri.WorldImagery") %>%
+  setView(lng = -71.0589, lat = 42.3601, zoom = 3) %>%
+  addCircleMarkers(~long, ~lat, 
+                  radius=10,
+                  color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   popup = ~as.character(name)
+  ) 
+
+m %>%  
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addFullscreenControl(m, position = "topleft") %>%
+  addSearchOSM() 
+```
+
+# Data frame
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+### Data frame {.pozadi2}
+
+Data frame je asi nejvyužívanější datovou strukturou v R. Z tohoto důvodu bude tato podkapitola věnována pouze nejzákladnějším příkazům, jelikož vlastní práci s data frame budou věnovány veškeré následující kapitoly této učebnice.
+
+> Tvorba data frame
+
+Ačkoliv budeme datové tabulky do R nejčastěji stahovat ve fromě excelových či textových souborů, pojďme si nejdříve ukázat, jak lze data frame vytvořit přímo v prostředí jazyka R. Následující skript nám vytvoří tabulku o dvou sloupcích po pěti řádcích. Vzhledem však k tomu, že příkaz je již poněkud delší, je mnohem přehlednější ho spustit pomocí skriptu a nikoliv konzole.
+
+```{r, eval=F, echo=T}
+knihy <- data.frame(
+  nazev = c("RLandio", "1984", "Farma zvířat", "Vladař", "Kámen a bolest"), 
+  autor = c("Solnička", "Orwell", "Orwell", "Machiavelli", "Schulz"))
+```
+```{r}
+knihy <- data.frame(
+  nazev = c("RLandio", "1984", "Farma zvířat", "Vladař", "Kámen a bolest"), 
+  autor = c("Solnička", "Orwell", "Orwell", "Machiavelli", "Schulz"))
+knihy
+```
+
+Při tvorbě data frame lze postupovat i jiným směrem, a to tím, že si nejdříve vytvoříme jednotlivé vektory s hodnotami a ty následně spojíme do sebe opět s pomocí příkazu data.frame.
+
+```{r, eval=F, echo=T}
+jmena <- c("Adam", "Eva", "Petr", "Pavel")
+vek <- c(33, 19, 27, 48)
+vyska <- c(1.81, 1.77, 1.66, 2.03)	 # pozor na desetinnou tečku
+lide <- data.frame(jmena,vek,vyska)
+```
+```{r}
+jmena <- c("Adam", "Eva", "Petr", "Pavel")
+vek <- c(33, 19, 27, 48)
+vyska <- c(1.81, 1.77, 1.66, 2.03)	 # pozor na desetinnou tečku
+lide <- data.frame(jmena,vek,vyska)
+```
+
+> Výběr hodnot z data frame (matice)
+
+Pamatujete si na výběr hodnot z vektoru pomocí hranatých závorek? Při výběru hodnot z data frame respektive matic budeme postupovat velice podobným způsobem. Každý data frame (matice) se skládá z řádků a sloupců, to už jsme snad všichni postřehli. Pokud proto máme na mysli výběr určitých hodnot, musíme jejich pozici definovat v obou těchto dimenzích. Ukažme si vše na následujících příkladech. Před tím si však prosím načtěte databázi Katan.
+
+```{r, eval=F, echo=T}
+Katan[1, 3] 	
+# příkaz zobrazí hodnotu v databázi Katan na 1. řádku a ve 3. sloupci
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[1, 3] 	
+```
+
+```{r, eval=F, echo=T}
+Katan [1:3, 3] 	
+# příkaz zobrazí hodnoty v databázi Katan na 1. až 3. řádku a ve 3. sloupci
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan [1:3, 3] 	
+```
+
+```{r, eval=F, echo=T}
+Katan [c(1,3), 3] 	
+# příkaz zobrazí hodnoty v databázi Katan na 1. a 3. řádku a ve 3. sloupci
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan [c(1,3), 3] 
+```
+
+```{r, eval=F, echo=T}
+Katan [1, ] 		
+# příkaz zobrazí hodnoty v databázi Katan na 1. řádku a ve všech sloupcích
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan [1, ]
+```
+
+V případě výběru hodnot pomocí hranatých závorek u data frame a matice nesmíme nikdy zapomenout na čárku uvnitř. U vektorů žádná čárka nebyla, jelikož hodnoty tvořily pouze jeden sloupec (jednu dimenzi). Zde však pracujeme s vícerozměrnými databázemi.
+
+```{r, eval=F, echo=T}
+Katan [ ,1]				
+# příkaz zobrazí v databázi Katan všechny řádky prvního sloupce
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan [ ,1]	
+```
+
+```{r, eval=F, echo=T}
+Katan[-1, ]			
+# příkaz zobrazí v databázi Katan všechny hodnoty kromě těch v 1. řádku
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[-1, ]
+```
+
+```{r, eval=F, echo=T}
+Katan[-(1:3), ]	
+# příkaz zobrazí v databázi Katan všechny hodnoty kromě těch v 1. až 3. řádku
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[-(1:3), ]	
+```
+
+```{r, eval=F, echo=T}
+Katan[1:5, ]	
+# příkaz zobrazí v databázi Katan hodnoty v 1. až 5. řádku
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[1:5, ]
+```
+
+```{r, eval=F, echo=T}
+Katan[Katan[, 1] >= 5, ]  	
+# příkaz zobrazí všechny řádky, ve kterých je prvek v prvním sloupci >= 5
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[Katan[, 1] >= 5, ]  
+```
+
+Podobně jako u vektorů, i u data frame a matic lze pomocí příkazu v hranatých závorkách změnit jednotlivé hodnoty.
+
+```{r, eval=F, echo=T}
+Katan[1,1] <- 7
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[1,1]
+```
+
+<div id="demobox">
+
+<h2>Box: Rychlá změnu hodnot v databázi</h2>
+
+Potřebujete změnit ve vašem data frame poněkud více hodnot a nechce se vám kvůli každé změně psát výše uvedený příkaz? Použijte následující příkaz edit a budete schopni upravovat soubor stejně jednoduše jako v excelu.
+
+```{r, eval=F, echo=T}
+Katan <- edit(Katan)	
+# příkaz zobrazí tabulku, ve které můžeme jednoduše měnit hodnoty proměnných
+```
+***
+</div>
+
+Máme-li rozsáhlý data frame (statisíce až miliony řádků) a my si přitom chceme určité funkce pouze vyzkoušet (a šetřit čas při náročných a dlouhotrvajících výpočtech), lze vytvořit náhodný vzorek, který bude obsahovat např. 50 řádků z databáze Katan.
+
+```{r, eval=F, echo=T}
+SampleKatan <- sample_n(Katan, 50)
+```
+
+
+> Práce s proměnnou v data frame
+
+Prozatím jsme s data frame pracovali povětšinou ve formě celého souboru. Co když ale chceme použít nějakou funkci, např. průměr a s ní operovat pouze v rámci určité proměnné (určitého sloupce)? Možná již trochu tušíte jak na to, jelikož si jistě vzpomínáte z počátku této kapitoli, kterak jsme zjišťovali datový typ proměnné uvnitř data frame či jak jsme používali příkaz length v předchozí podkapitole.
+
+```{r, eval=F, echo=T}
+mean(Katan$Věk)
+# příkaz mean(Katan$Věk, trim = 0.1) vypočítá věkový průměr, 
+# který nebude obsahovat horních a dolních 10 % nejodlehlejších měření
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+mean(Katan$Věk)
+```
+
+V případě, že chceme v rámci databáze vybrat určitou proměnnou pro práci s funkcí, nestačí ji pouze označit jejím jménem. Před název této proměnné je totiž nezbytné zapsat název datového souboru, ze kterého daná proměnná pochází a k němu připojit symbolu dolaru ($). Jinými slovy nelze použít např. příkaz mean(Věk). Pokud ovšem nepoužijeme jednu velice šikovnou funkci pod názvem attach.
+
+```{r, eval=F, echo=T}
+attach(Katan)	
+# příkaz lze použít pouze u data frame a listu
+# attach zrušíme funkcí detach(Katan)
+```
+
+Nyní již můžeme pracovat s názvy proměnných jako by se jednalo o volně stojící vektory. Jinými slovy v tuto chvíli můžeme bezstarostně zapsat do konzole příkaz mean(Věk) či jen samotný příkaz Věk, chceme-li vypsat hodnoty této proměnné do konzole.
+
+S funkcí attach je avšak nutné pracovat velice opatrně. Může se totiž jednoduše stát, že zapomenete, u které databáze máte zrovna attach zapnut, a to zejména v případě, budete-li pracovat s různými variacemi téže databáze, což se bude stávat jistě velice často. Ve skriptech bych ji nepoužíval vůbec, protože zhoršuje čitelnost a přehlednost takového kódu zejména třetí straně. Pro hrátky v konzoli je však k nezaplacení.
+
+> Přejmenování proměnných v data frame
+
+Povětšinou budeme pracovat při práci v R s cizími databázemi. Z tohoto důvodu nám občas může pomoci si názvy jednotlivých proměnných přejmenovat dle našeho přání. Ukažme si nejdříve, jak lze současně změnit veškeré názvy sloupců v data frame.
+
+```{r, eval=F, echo=T}
+names(Katan) <- 
+c("Games", "Age", "Education", "Dormitory", "Children", "Smoke", "Club", "Gender") 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+names(Katan) <- 
+c("Games", "Age", "Gender", "Education", "Dormitory", "Job", "Children", "Smoke", "Club") 
+head(Katan)
+```
+
+Pokud bychom uvedli do příkazu méně jmen, než má databáze sloupců, nepřejmenované sloupce budou automaticky přejmenovány na <NA> (viz příkaz colnames probíraný na počátku této kapitoly). Je-li však naším cílem přejmenovat pouze vybranou proměnnou, použijeme jeden z následujících dvou příkazů. Pomocí nich tu změníme název druhého sloupce v databázi Katan na Stáří, respektive se nám podaří přepsat název proměnné Kouření na Milovník nikotinu.
+
+```{r, eval=F, echo=T}
+colnames(Katan)[2] <- "Stáří"	
+# příkaz změní název druhého sloupce v databázi Katan na Age
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+colnames(Katan)[2] <- "Stáří"	
+head(Katan)
+```
+
+```{r, eval=F, echo=T}
+names(Katan)[names(Katan) == "Kouření"] = "Milovník_nikotinu"		
+# příkaz změní název sloupce Kouření na Milovník_nikotinu
+
+# dávejte si pozor na to, že před tento příkaz nepíšeme 
+# název nové proměnné, jako například Katan <- names(...
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+names(Katan)[names(Katan) == "Kouření"] = "Milovník_nikotinu"	
+head(Katan)
+```
+
+Zajímá Vás, co dokáže samostatný příkaz names? Vyzkoušejme si ho. Vypíše nám názvy všech proměnných v databázi.
+
+```{r, eval=F, echo=T}
+names(Katan)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+names(Katan)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Příklady {.pozadi2}
+
+> Příklad 11
+
+Vytvořte novou databázi, která bude obsahovat pouze 51. až 61. řádek z databáze Katan.
+
+> Příklad 12
+
+Vytvořte novou databázi, která bude obsahovat pouze 1. až 10. řádek z databáze Katan pro proměnné Partie, Věk a Pohlaví.
+
+> Příklad 13
+
+Zkuste vypočítat průměr hodnot v proměnné Věk, a přitom vynechte proměnnou mean.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=6, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+Mapa <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Mapy/Boston.xlsx")
+
+
+m=leaflet(data = Mapa) %>% addProviderTiles("Esri.WorldImagery") %>%
+  setView(lng = -71.0589, lat = 42.3601, zoom = 3) %>%
+  addCircleMarkers(~long, ~lat, 
+                  radius=10,
+                  color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   popup = ~as.character(name)
+  ) 
+
+m %>%  
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addFullscreenControl(m, position = "topleft") %>%
+  addSearchOSM() 
+```
+
+# Řešení
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+### {.prazdno}
+
+
+
+Column {data-width=700}
+-----------------------------------------------------------------------
+### Řešení {.pozadi2}
+
+> Příklad 1
+
+Vytvořte proměnnou s hodnotami od jedné do sta a zjistěte její datový typ. Následně v této proměnné změňte hodnotu na 51. pozici za číslo 51,01. Poté opět zjistěte datový typ proměnné.
+
+```{r, eval=F, echo=T}
+x <-  1:100
+class(x)
+x[51] <- 51.01
+class(x)
+```
+```{r}
+x <-  1:100
+class(x)
+x[51] <- 51.01
+class(x)
+```
+
+> Příklad 2
+
+Vytvořte vektor ve tvaru -10, -9,5, -9 až 10, jehož čísla se v tomto pořadí takto zopakují pětkrát. Jaký datový typ bude nabývat tato proměnná? 
+
+```{r, eval=F, echo=T}
+x = rep(seq(from = -10, to = 10, by = 1/2), times = 5)
+class(x)
+```
+```{r}
+x = rep(seq(from = -10, to = 10, by = 1/2), times = 5)
+class(x)
+```
+
+> Příklad 3
+
+Vytvořte náhodný vektor, který bude obsahovat sto hodnot Jakub nebo David (se stejnou pravděpodobností výskytu) a následně zjistěte její datový typ.
+
+```{r, eval=F, echo=T}
+JD <- sample(c("Jakub", "David"), size = 100, replace = TRUE)
+class(JD)
+```
+```{r}
+JD <- sample(c("Jakub", "David"), size = 100, replace = TRUE)
+class(JD)
+```
+
+> Příklad 4
+
+Vytvořte proměnnou ve tvaru -100, -98, -96 až 100 a změňte její datový typ na character. Po této změně zkuste tento vektor vynásobit číslem dvě. Je to možné?
+
+```{r, eval=F, echo=T}
+x = seq(from = -100, to = 100, by = 2)
+x <- as.character(x)
+y*2
+```
+```{r}
+x = seq(from = -100, to = 100, by = 2)
+x <- as.character(x)
+```
+
+<h3>Error in y * 2 : non-numeric argument to binary operator</h3>
+
+> Příklad 5
+
+Stáhněte do svého počítače databázi <a  href="https://github.com/Kiwon/useworld.r/raw/master/ex/data/LungCapData.xls">LungCapData</a> a zjistěte, zda-li se jedná o data frame.
+
+```{r, eval=F, echo=T}
+class(LungCapData)
+```
+```{r}
+library(readxl)
+LungCapData <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/LungCapData.xlsx")
+class(LungCapData)
+```
+
+> Příklad 6
+
+Zjistěte datový typ proměnné Smoke v databázi LungCapData a proměnné Vzdělání v databázi Katan.
+
+```{r, eval=F, echo=T}
+class(LungCapData)
+```
+```{r}
+library(readxl)
+LungCapData <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/LungCapData.xlsx")
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+class(LungCapData$Smoke)
+class(Katan$Vzdělání)
+```
+
+> Příklad 7
+
+Vytvořte vektor s hodnotami jedna až deset a změňte ho na data frame a zase zpět.
+
+```{r, eval=F, echo=T}
+x <- 1:10
+x <- as.data.frame(x)
+class(x)
+x <- as.vector(x)
+class(x)
+```
+```{r}
+x <- 1:10
+x <- as.data.frame(x)
+class(x)
+x <- as.vector(x)
+class(x)
+```
+
+> Příklad 8
+
+Vytvořte faktory z proměnných Vzdělání a Pohlaví.
+
+```{r, eval=F, echo=T}
+class(LungCapData)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan <- transform(Katan, Vzdělání = as.factor(Vzdělání), Pohlaví = as.factor(Pohlaví))
+class(Katan$Vzdělání)
+class(Katan$Pohlaví)
+```
+
+> Příklad 9
+
+Vytvořte matici s čtyřmi řadami a sloupci, která bude obsahovat hodnoty 1, 3, 5 atd. až 31. Následně vytvořte druhou matici, která bude obsahovat hodnoty 1, 6, 11 atd. až 76. Tyto matice poté vynásobne jak po složkách, tak i pomocí maticového násobení.
+
+```{r, eval=F, echo=T}
+A <- matrix(seq(from = 1, to = 31, by = 2), nrow = 4, byrow = TRUE)
+B <- matrix(seq(from = 1, to = 76, by = 5), nrow = 4, byrow = TRUE)
+A*B
+A%*%B
+```
+```{r}
+A <- matrix(seq(from = 1, to = 31, by = 2), nrow = 4, byrow = TRUE)
+B <- matrix(seq(from = 1, to = 76, by = 5), nrow = 4, byrow = TRUE)
+A*B
+A%*%B
+```
+
+> Příklad 10
+
+Z databáze Katan zobrazte pouze prvních deset řádků a ty následně uložte do nové proměnné Katan2.
+
+```{r, eval=F, echo=T}
+Katan2 <- head(Katan, n = 10)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- head(Katan, n = 10)
+Katan2
+```
+
+> Příklad 11
+
+Pomocí příkazu length zjistěte, kolik řádků má v databázi Katan proměnná Pohlaví.
+
+```{r, eval=F, echo=T}
+length(Katan$Pohlaví)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+length(Katan$Pohlaví)
+```
+
+> Příklad 12
+
+Vytvořte novou databázi, která bude obsahovat pouze 51. až 61. řádek z databáze Katan.
+
+```{r, eval=F, echo=T}
+Katan[51:61, ]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[51:61, ]
+```
+
+> Příklad 13
+
+Vytvořte novou databázi, která bude obsahovat pouze 1. až 10. řádek z databáze Katan pro proměnné Partie, Věk a Pohlaví.
+
+```{r, eval=F, echo=T}
+Katan[1:10, c(1:3)]
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan[1:10, c(1:3)]
+```
+
+> Příklad 14
+
+Zkuste vypočítat průměr hodnot v proměnné Věk, a přitom vynechte proměnnou mean.
+
+```{r, eval=F, echo=T}
+sum(Katan$Věk)/length(Katan$Věk)
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+sum(Katan$Věk)/length(Katan$Věk)
+```
+
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+### {.prazdno}

@@ -1,0 +1,1944 @@
+---
+title: Práce s daty 2
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 6**</p align="center">
+<p align="center">**PRÁCE S DATY 2**</p align="center">
+
+V minulé kapitole jsme se seznámili s tidyverse, který kromě balíčku ggplot2 obsahuje i několik dalších balíčků velice užitečných pro práci v R. Jedním z nich je i dplyr, jenž nám zjednoduší naši dosavadní práci zejména s data frame.
+
+dplyr nám pomůže data třídit, přeskupovat, všemožně modifikovat či nad nimi provádět různé početní a statistické operace. Pojďme si proto tyto příkazy postupně představit. Před tím si však nezapomeňte načíst do RStudia samotný balíček tidyverse (popřípadě pouze dplyr).
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo3.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 6**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**PRÁCE S DATY 2**</p align="center"></font>
+
+<font color="white">
+V minulé kapitole jsme se seznámili s tidyverse, který kromě balíčku ggplot2 obsahuje i několik dalších balíčků velice užitečných pro práci v R. Jedním z nich je i dplyr, jenž nám zjednoduší naši dosavadní práci zejména s data frame.
+
+dplyr nám pomůže data třídit, přeskupovat, všemožně modifikovat či nad nimi provádět různé početní a statistické operace. Pojďme si proto tyto příkazy postupně představit. Před tím si však nezapomeňte načíst do RStudia samotný balíček tidyverse (popřípadě pouze dplyr).
+</font>
+
+### {.mapa}
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 115.860458, lat = -9.4438, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 115.860458, lat = -31.950527, 
+            '<h6><a href="https://www.rlandio.cz/cesta/6.kapitola.html#filter" target="_blank" style="color:#014B7C">Perth</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 147.180267, lat = -9.4438, 
+            '<h6><a href="https://www.rlandio.cz/cesta/6.kapitola.html#join" target="_blank" style="color:#014B7C">Port Moresby</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Filter
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Perth: Filter {.pozadi}
+Naše australské tažení dplyrem začíná v Perthu, v jehož okolí nenalezneme nic jiného než poušť. Navzdory tomu ale v této kapitole nalezneme velice úrodné prostředí, ze kterého vzejde velké množství vysoce užitečných příkazů pro práci s daty. Pojďme se s nimi seznámit.
+
+Příkaz `filter()` nám pomůže, jak již samotný název napovídá, při filtraci dat s cílem vytvoření nové databáze. Představte si například, že pracujeme s našimi oblíbenými Osadníky a chceme z nich vytvořit zcela nový data frame, který bude obsahovat pouze hráče do 25 let včetně, kteří nejsou registrováni v žádném klubu deskových her, a to ani v Austrálii. Jak to provést? Buďto lze oprášit naše staré znalosti z předchozích kapitol (rozpomeňme se na hranaté závorky), či se naučit pracovat s velice jednoduchým a intuitivním příkazem `filter()`. 
+
+Jeho struktura je taková, že za pojmenováním příkazu v závorce následuje název databáze, z níž budeme data vybírat. Poté do závorky uvedeme jednotlivé podmínky, jež jsou vždy odděleny čárkou. Pro větší přehlednost je lépe tyto podmínky uvádět na samostatném řádku, jak to lze vidět u následujícího skriptu. Výslednou databázi můžeme vypsat přímo do konzole či ji vložit do nově vzniklé proměnné, v našem případě Katan2.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  filter(Katan, 
+  Věk <= 25,
+  Klub != "ano" ) 
+# Jelikož máme v proměnné Klub pouze dvě varianty hodnot, 
+# lze napsat přímo Klub == "ne".
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  filter(Katan, 
+  Věk <= 25,
+  Klub != "ano")
+Katan2
+```
+
+Ačkoliv je výše uvedený příkaz velice intuitivní, mohla by nám uniknout jedna drobná maličkost. U názvů proměnných v rámci příkazů dplyr neuvádíme název databáze spojený s dolarem `(tj. Katan$Věk, respektive Katan$Klub)`, obdobně jako v rámci příkazů ggplot2. Tato připomínka se týká všech příkazů dplyr, které si v této kapitole ukážeme. 
+
+<div id="demobox">
+
+<h2>BOX: Opakování</h2>
+
+Pamatujete si, jak bychom bez dplyru zvládli vyřešit předchozí příklad?
+
+```{r, eval=F, echo=T}
+Katan[Katan$Věk <= 25 & Katan$Klub != "ano", ]
+```
+
+Ačkoliv je tento typ příkazu oproti dplyru hůře čitelný, zvláště tehdy, budeme-li naše podmínky zesložiťovat, bylo by velice dobré, abychom ani na tento styl zápisu nezapomněli a nepřestali mu rozumět. Může se nám to hodit zejména tehdy, budeme-li pracovat se skripty cizích analytiků.
+
+</div>
+
+V příkazu `filter()` lze využít i další logické operátory jako je **nebo** (`svislá čára |`) či **a zároveň** (`ampersand &`). Ukažme si je na příkladu, ve kterém budeme chtít vybrat pouze ženy od 26 do 30 let včetně, které mají bakalářské nebo magisterské vzdělání.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  filter(Katan, 
+  Pohlaví == "žena", 
+  Věk >= 26 & Věk <= 30,
+  Vzdělání == "Bc - VŠ" | Vzdělání == "VŠ")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  filter(Katan, 
+  Pohlaví == "žena", 
+  Věk >= 26 & Věk <= 30,
+  Vzdělání == "Bc - VŠ" | Vzdělání == "VŠ")
+Katan2
+```
+
+Naše proměnná Vzdělání obsahuje pouze čtyři varianty hodnot. Představme si ale, že disponuje kupříkladu dvaceti různými variantami výstupu a my chceme vybrat třeba jen dvanáct z nich. V takovém případě by nebylo příliš praktické a vhodné použít příkaz ve formátu `Proměnná == "hodnota" | Proměnná == "hodnota"` atd., který by byl velice dlouhý a nepřehledný. Pro tento případ tu totiž máme operátor `%in%`. Ukažme si ho na stejném příkladu s proměnnou Vzdělání, pomocí něhož vypíšeme do konzole všechna pozorování pro bakaláře a magistry.
+
+```{r, eval=F, echo=T}
+filter(Katan, 
+  Vzdělání %in% c("Bc - VŠ", "VŠ"))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+filter(Katan, 
+  Vzdělání %in% c("Bc - VŠ", "VŠ"))
+```
+
+Nejen pro faktorové, ale i pro numerické proměnné lze nabídnout jedno zjednodušení. V tomto případě nese název `between()`. Abychom nemuseli psát příkaz ve tvaru `Věk >= 26 & Věk <= 30`, můžeme do skriptu uvést pouze následující pokyn, díky němuž vypíšeme do konzole všechna pozorování pro jednice od 26 do 30 let včetně.
+
+```{r, eval=F, echo=T}
+filter(Katan, 
+  between(Věk, 26, 30))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+filter(Katan, 
+between(Věk, 26, 30))
+```
+
+V závěru představení příkazu `filter()` se ještě podívejme na jeden příklad. Ten se nám bude hodit zejména tehdy, bude-li databáze obsahovat chybějící proměnné. Osadníkům však žádné hodnoty nechybí, proto si tu nějaké vytvoříme. Nejjednodušší bude využít příkaz `edit()`, který nám umožní editovat data podobně jako v tabulkovém kalkulátoru (tento příkaz jsme si představili již v Panamě).
+
+```{r, eval=F, echo=T}
+Katan2 <- edit(Katan)
+```
+
+Poté, co jsme například v proměnné Věk vytvořili několik chybějících hodnot (zkráceně NA - Not Available), budeme chtít zjistit jejich počet. K tomu se nám bude nejlépe hodit příkaz `is.na()`, který by nám též neměl být neznámý.
+
+```{r, eval=F, echo=T}
+filter(Katan, 
+  is.na(Věk))
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan$Věk[1:3] <- NA
+filter(Katan, 
+  is.na(Věk))
+```
+Pokud bychom však do konzole chtěli vypsat pozorování bez chybějících hodnot, použili bychom vykřičník. Takový příkaz můžeme vidět níže. V něm nám skript vytvoří datovou tabulku Katan2, která bude obsahovat pouze ženy s jedním až třemi dětmi, u nichž nechybí informace o věku.
+
+```{r, eval=F, echo=T}
+Katan2 <- filter(Katan, 
+  !is.na(Věk),
+  Pohlaví == "žena", 
+  between(Děti, 1,3))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- filter(Katan, 
+  !is.na(Věk),
+  Pohlaví == "žena", 
+  between(Děti, 1,3))
+Katan2
+```
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Vytvořte databázi Katan2, která bude obsahovat pouze muže starší 26 let, kteří nemají vysokoškolské vzdělání. 
+
+> Příklad 2
+
+Vytvořte databázi Katan2, která bude obsahovat pouze ženy mladší 26 let, které mají vysokoškolské vzdělání a zároveň mají děti.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 115.860458, lat = -31.950527, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 115.860458, lat = -31.950527, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Perth" target="_blank" style="color:#014B7C">Perth</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Slice
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Alice Springs: Slice {.pozadi}
+Další příkaz, který si probereme téměř uprostřed australského kontinentu, nese název `slice()`. Ten použijeme tehdy, chceme-li vytvořit novou databázi s vybranými řádky nikoliv podle určitého filtru proměnných, ale podle jejich pořadí v data frame (např. pokud je naším cílem vybrat 1. až 50. řádek databáze).
+
+Struktura příkazu je zpočátku obdobná jako u příkazu `filter()`. Opět začínáme klíčovým slovesem (v tomto případě slice), za kterým bude v závorce uveden název databáze, již budeme pomyslně krájet. Následně uvedeme čísla řádků, které chceme přiřadit do nově vytvořené databáze. 
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  slice(Katan, 1:50)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  slice(Katan, 1:50)
+Katan2
+```
+
+<div id="demobox">
+
+<h2>BOX: Opakování</h2>
+
+Pamatujete si, jak bychom bez dplyru zvládli vyřešit předchozí příklad?
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan[1:50, ]
+```
+
+Obdobně jako minule, i zde využijeme nesmírnou variabilitu hranatých závorek.
+</div>
+
+Chceme-li však vybrat několik nenavazujících úseků pozorování, například řádky 1 až 50 a řádky 151 až 200, není tu nic jednoduššího než využít služeb starého dobrého příkazu `c()`.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  slice(Katan, c(1:50, 151:200))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  slice(Katan, c(1:50, 151:200))
+Katan2
+```
+
+Příkaz `slice()` není příliš komplikovaný. Přesuňme se proto k příkazu `select()`, jehož popis bude lehce obsáhlejší. 
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+
+> Příklad 3
+
+Vytvořte databázi, která bude obsahovat pouze prvních a posledních šest pozorování z databáze Katan.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=15, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 133.882675, lat = -23.700552, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 133.882675, lat = -23.700552, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Alice_Springs" target="_blank" style="color:#014B7C">Alice Springs</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Select
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Adelaide: Select {.pozadi}
+Příkaz `select()` nám na rozdíl od funkce `filter()` pomůže při výběru a přeskupení celých sloupců. Představme si třeba, že chceme vytvořit novou databázi, která bude obsahovat pouze proměnné Věk a Partie. K tomu nám bude stačit do R zapsat následující příkaz.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	select(Katan, 
+	       Věk, Partie)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	select(Katan, 
+	       Věk, Partie)
+Katan2
+```
+
+<div id="demobox">
+
+<h2>BOX: Opakování</h2>
+
+Pamatujete si, jak bychom bez dplyru zvládli vyřešit předchozí příklad?
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan[, c("Věk", "Partie")]
+```
+
+Hranaté závorky i v tomto případě zůstávají na scéně, pouze se v jejich útrobách přesouváme na pravou stranu od čárky, a to z logiky filozofie fungování těchto závorek (levá strana vybírá řádky, pravá strana definuje sloupce).
+
+Možná se v tuto chvíli zamýšlíte nad tím, proč se vlastně učit všechny ty příkazy `filter()`, `slice()` a `select()`, když tu veškerou práci za ně zvládnou hranaté závorky, a to bez potřeby načítat nějaký balíček? Důvod tu existuje, i když jej prozatím ještě nevidíte. Málo kdy totiž budeme příkazy jako `filter()`, `slice()` či `select()` používat samostatně, jelikož je budeme chtít různě kombinovat v mnohem složitější podobě, než prozatím dovedeme. V takové případě (a stane se tomu v následující kapitole) se nám příkazy z balíčku dplyr budou velice hodit. Uvidíte sami. Proto žádné výmluvy a zpět do práce.
+
+</div>
+
+Máme-li v naší databázi více proměnných, které obsahují určité slovo, ale i písmeno nebo číslo, které chceme v nové databázi zachovat, využijeme příkazu `contains()`. 
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	select(Katan, 
+	       contains("e"))
+# Databáze Katan2 bude obsahovat veškeré proměnné z databáze Katan, 
+# které mají ve svém názvu obsaženo písmeno „e“ bez ohledu na velká 
+# a malá písmena.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	select(Katan, contains("e"))
+Katan2
+```
+
+Příkaz `select()` lze využít i v případě, chceme-li pouze změnit pořadí jednotlivých proměnných v databázi. 
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	select(Katan, 
+	       Věk, Partie, Kolej, Kouření, Klub, Práce, Vzdělání, Děti)
+# Příkaz vytvoří proměnnou Katan2, která bude obsahovat vybrané 
+# proměnné z databáze Katan ve výše uvedeném pořadí.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	select(Katan, Věk, Partie, Kolej, Kouření, Klub, Práce, Vzdělání, Děti)
+Katan2
+```
+
+Máme-li však za cíl pouze přesunout určitou proměnnou na první pozici, není nutné ručně vypisovat názvy ostatních sloupců, jelikož si můžeme vypomoci příkazem `everything()`.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	select(Katan, 
+	       Věk, everything())
+# Příkaz vytvoří databázi Katan2, kde na prvním místě bude zobrazena 
+# proměnná Věk a poté všechny ostatní podle jejich pořadí z původní 
+# databáze Katan.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	select(Katan, Věk, everything())
+Katan2
+```
+
+S příkazem `select()` lze proměnné nejenom přeskupovat, ale i mazat. Pokud jich k odstranění máme víc, není to též žádná komplikace, jelikož lze použít nám dobře známý operátor dvojtečka.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	select(Katan, 
+	       -Vzdělání, -(Práce:Pohlaví))
+# Příkaz odstraní proměnnou Vzdělání a dále všechny proměnné mezi sloupci 
+# Práce a Pohlaví (včetně těchto dvou) z databáze Katan. 
+
+# lze zapsat i pomocí příkazu c(): select(Katan, -c(Vzdělání, Práce:Pohlaví))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	select(Katan, -Vzdělání, -(Práce:Pohlaví))
+Katan2
+```
+
+Nechce se vám stále vypisovat jednotlivé názvy proměnných? Zkuste použít jejich číselné pořadí z původní databáze.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	select(Katan, 
+	       -3, -(5:9))
+# Příkaz odstraní proměnnou Vzdělání a dále všechny proměnné mezi sloupci 
+# Práce a Pohlaví (včetně těchto dvou) z databáze Katan. 
+
+# lze zapsat i pomocí příkazu c(): select(Katan, -c(3, 5:9))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	select(Katan, -3, -(5:9))
+Katan2
+```
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+
+> Příklad 4
+
+Vytvořte databázi, která bude na prvních dvou místech obsahovat proměnné Věk a Práce a na dalších pozicích veškeré ostatní proměnné z databáze Katan v jejich původním pořadí.
+
+> Příklad 5
+
+Vytvořte databázi, která bude obsahovat pouze poslední čtyři proměnné z databáze Katan.
+
+> Příklad 6
+
+Vytvořte databázi, která na prvním místě bude obsahovat proměnnou Pohlaví a dále pak všechny ostatní proměnné databáze Katan kromě proměnných Partie a Klub.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 138.600739, lat = -34.928497, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 138.600739, lat = -34.928497, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Adelaide" target="_blank" style="color:#014B7C">Adelaide</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Rename
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Melbourne: Rename {.pozadi}
+Ze druhé kapitoly si možná pamatujete na jeden dosti krkolomný příkaz, pomocí něhož jsme se naučili přejmenovat proměnnou v rámci data frame. Není divu, proč byl krkolomný. Učili jsme se o něm v chudé americké Panamě, zatímco nyní se nacházíme v Melbourne, které bylo časopisem The Economist považováno za nejlepší místo k životu mezi léty 2010 - 2017. Pro milovníky dopravy též zmíním i fakt, že v Melbourne nalezneme nejdelší tramvajovou síť na světě.
+
+```{r, eval=F, echo=T}
+names(Katan)[names(Katan) == "Věk"] <- "Age"
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+names(Katan)[names(Katan) == "Věk"] = "Age"
+Katan
+```
+
+Jak je vidět, panamský příkaz není z nejjednodušších a lépe se bude určitě pamatovat ten následující z balíčku dplyr, pomocí kterého přejmenujeme proměnné Vzdělání a Partie na Education a Games.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	rename(Katan, "Education" = Vzdělání, 
+	              "Games" = Partie)
+# Všimněte si, že nejdříve píšeme nový název proměnné a teprve až za 
+# rovnítko zapíšeme původní název proměnné, v našem případě Vzdělání a Partie.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	rename(Katan, "Education" = Vzdělání, "Games" = Partie)
+Katan2
+```
+
+<div id="demobox">
+
+<h2>BOX: Opakování</h2>
+
+Pamatujete si, jak bychom bez dplyru zvládli přejmenovat všechny proměnné?
+
+```{r, eval=F, echo=T}
+names(Katan) <- 
+c("Games", "Age", "Gender", "Education", "Dormitory", 
+  "Job", "Children", "Smoke", "Club") 
+```
+```{r}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+names(Katan) <- 
+c("Games", "Age", "Gender", "Education", "Dormitory", 
+  "Job", "Children", "Smoke", "Club")
+Katan
+```
+
+Chceme-li však přejmenovat pouze jednu proměnnou a nechceme přitom využít ani dplyr a ani příkaz, který byl uveden na úvod, můžeme použít následující pokyn.
+
+```{r, eval=F, echo=T}
+colnames(Katan)[2] <- "Age"
+# Číslo dvě v hranaté závorce symbolizuje pořadí proměnné, u které 
+# název měníme.
+```
+</div>
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 7
+
+V databázi Katan změňte název proměnné Práce a Děti na Job a Children.
+
+> Příklad 8
+
+V databázi Katan změňte názvy všech proměnných na názvy dle vašeho uvážení bez použití příkazu `rename()`.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 144.963058, lat = -37.813629, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 144.963058, lat = -37.813629, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Melbourne" target="_blank" style="color:#014B7C">Melbourne</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Add_rownames
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Sydney: Add_rownames {.pozadi}
+Představme si, že jsme v největším australském městě nalezli přebohatou žílu dat, která má však pojmenované řádky (ty třeba obsahují názvy států, jména, zkrátka cokoliv). My však z těchto pojmenování chceme vytvořit další proměnnou a místo těchto názvů zanechat obvyklé číselné označení řádků, jež je nejen pro práci s data frame mnohem praktičtější. Jak to provedeme? Použijeme příkaz `add_rownames()`.
+
+Abychom si však výše uvedený příkaz mohli názorně představit, musíme se nejdříve naučit pravý opak. Prvně si tedy vytvoříme vektor jmen hráčů pro naši databázi Katan, který následně použijeme pro pojmenování řádků v databázi. Teprve až poté si ukážeme, jak funguje samotný příkaz `add_rownames()`, který z našich jmen učiní další proměnnou databáze. Buďme nicméně alespoň trochu kreativní a vytvořme si vektor se skutečnými jmény. K tomu budeme potřebovat balíček pod názvem randomNames. Nainstalujme ho, spusťme a vytvořme vektor 200 jmen.
+
+```{r, eval=F, echo=T}
+install.packages("randomNames")
+library(randomNames)
+Jména <- randomNames(200)
+
+head(Jména)
+```
+```{r echo=FALSE}
+library(randomNames)
+Jména <- randomNames(200)
+head(Jména)
+```
+
+Chceme-li si s příkazem randomNames trochu pohrát, máme možnost vybrat si jména dokonce i podle pohlaví či etnicity (více naleznete <a href="https://centerforassessment.github.io/randomNames/reference/randomNames.html" target="_blank">zde</a>).
+
+```{r, eval=F, echo=T}
+Jména <- randomNames(200,
+            	ethnicity = 5,
+          		which.names = "both",
+          		name.order = "last.first",
+          		name.sep = ", ",
+          		sample.with.replacement = TRUE,
+          		return.complete.data = FALSE)
+
+head(Jména)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+library(randomNames)
+Jména <- randomNames(200,
+            	ethnicity = 5,
+          		which.names="both",
+          		name.order="last.first",
+          		name.sep=", ",
+          		sample.with.replacement=TRUE,
+          		return.complete.data=FALSE)
+head(Jména)
+```
+
+Výsledný vektor Jména nyní můžeme pomocí následujícího příkazu spojit s databází Katan, u níž získáme pojmenované řádky.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  data.frame(Katan, row.names = Jména)
+
+head(Katan2)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+library(randomNames)
+Jména <- randomNames(200,
+            	ethnicity = 5,
+          		which.names="both",
+          		name.order="last.first",
+          		name.sep=", ",
+          		sample.with.replacement=TRUE,
+          		return.complete.data=FALSE)
+Katan2 <- 
+  data.frame(Katan, row.names = Jména)
+head(Katan2)
+```
+
+V tuto chvíli jsme konečně připraveni použít příkaz `add_rownames()`, kvůli kterému jsme proměnnou Jména vytvářeli. Ten nám názvy řádků převede do nově vytvořené proměnné JménaHráčů, která se stane součástí databáze Katan3.
+
+```{r, eval=F, echo=T}
+Katan3 <-
+	add_rownames(Katan2, "JménaHráčů")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+library(randomNames)
+Jména <- randomNames(200,
+            	ethnicity = 5,
+          		which.names="both",
+          		name.order="last.first",
+          		name.sep=", ",
+          		sample.with.replacement = TRUE,
+          		return.complete.data = FALSE)
+Katan2 <- 
+  data.frame(Katan, row.names = Jména)
+Katan3 <-
+	add_rownames(Katan2, "JménaHráčů")
+Katan3
+```
+
+A to bylo vše. S dplyrem ale ještě zdaleka nekončíme, neboť nás v této kapitole čeká ještě šest příkazů.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 9
+
+Vytvořte proměnnou Kód, která bude obsahovat 200 unikátních kódů složených pouze z písmen. Kód by měl vždy obsahovat celkově pět náhodných písmen spojených dohromady (a to kvůli anonymizaci dat vzhledem k GDPR). Následně z těchto kódových označení vytvořte pojmenované řádky v rámci databáze Katan. Poté tyto kódy převeďte do nově vzniklé proměnné Kódová_označení, která se stane součástí databáze Katan tak, aby samotné řádky získaly zpět číselné označení.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.5.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 151.20929, lat = -33.86882, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 151.20929, lat = -33.86882, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Sydney" target="_blank" style="color:#014B7C">Sydney</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Mutate a Transmute
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Auckland: Mutate a Transmute {.pozadi}
+
+Víte, co se v roce 1993 stalo v Aucklandu? Dva muži ve středním věku neměli co dělat, a proto začali věnovat svůj čas něčemu, co nemohli nazvat horším názvem než písmenem R. Zapamatujte si dobře jejich tváře. V případě jakýchkoli stížností na tento programovací jazyk se proto neobracejte na Rlandio, nýbrž přeneste svůj hněv na tyto dva pány, jejichž jména jsou **R**oss Ihaka a **R**obert Gentleman.
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\6.kapitola\wanted.jpg)](#mutate-a-transmute)</p align="center">
+
+Pro tuto chvíli se však uklidněme a vraťme se zpět k dplyru. Chceme-li v rámci databáze vytvořit novou proměnnou (či aktualizovat nějakou původní), lze též využít balíčku dplyr, respektive příkazu `mutate()`. Řekněme třeba, že naše databáze Katan slaví své první narozeniny a my ji chceme aktualizovat tím, že věk hráčů zvýšíme též o jeden rok a přitom vytvoříme novou proměnnou VěkPlus. V takovém případě původní proměnná Věk zůstane zachována. Pokud bychom nicméně chtěli původní proměnnou Věk pouze přepsat novými hodnotami a žádnou novou proměnnou nevytvářet, stačilo by v následujícím skriptu pouze změnit název proměnné VěkPlus na Věk.
+
+```{r, eval=F, echo=T}
+# chceme-li vytvořit novou proměnnou
+Katan2 <-
+	mutate(Katan, 
+         VěkPlus = Věk + 1)
+# V případě, že bychom měli v proměnné Věk chybějící hodnoty (NA),
+# zůstane i nová hodnota v proměnné VěkPlus jako NA a 
+# nikoliv jako 1, tj. NA + 1 != 1, ale stále NA.
+
+
+# chceme-li přepsat stávající proměnnou
+Katan2 <-
+	mutate(Katan, 
+         Věk = Věk + 1)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	mutate(Katan, 
+  VěkPlus = Věk + 1)
+Katan2
+```
+
+Pokud nově vzniklou proměnnou či proměnné nechceme připojit ke stávající databázi (v našem případě Katan), ale chceme je uchovávat samostatně (jako vektor), využijeme místo `mutate()` příkaz `transmute()`. 
+
+```{r, eval=F, echo=T}
+NováDatabáze <-
+	transmute(Katan, 
+            VěkPlus = Věk + 1)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+NováDatabáze <-
+	transmute(Katan, 
+  VěkPlus = Věk + 1)
+NováDatabáze
+```
+
+<div id="demobox">
+
+<h2>BOX: Opakování</h2>
+
+Pamatujete si, jak bychom bez dplyru zvládli vyřešit předchozí příklad?
+
+```{r, eval=F, echo=T}
+# chceme vytvořit novou proměnnou
+Katan$VěkPlus <- Katan$Věk + 1
+
+# chceme přepsat stávající proměnnou
+Katan$Věk <- Katan$Věk + 1
+```
+</div>
+
+Příkaz `mutate()` (respektive `transmute()`) může obsahovat i složitější funkce, jako například `if_else()`. Příkaz `ifelse()` už ale známe, nicméně bez podtržítka, tak jaký je mezi nimi vlastně rozdíl? Veskrze žádný. Jeden drobný tu však přeci jenom existuje. Funkce `if_else()` z balíčku dplyr pracuje mnohem rychleji než obyčejné `iflese()`, takže pokud pracujeme s doopravdy velkým množstvím dat (statisíce až miliony řádků), je tato funkce z výpočetního hlediska mnohem výhodnější.
+
+Vyzkoušejme si příkaz `if_else()` a `mutate()` pomocí příkladu, u kterého budeme chtít vytvořit v rámci databáze Katan novou proměnnou s názvem VěkSkupiny. Ta by měla náš soubor dat rozdělit do následujících čtyř skupin (dospělá žena, dospělý muž, nezletilá slečna, nezletilý kluk).
+
+```{r, eval=F, echo=T}
+Katan2 <-
+  mutate(Katan, 
+  VěkSkupiny = 
+    if_else(
+      Katan$Věk >= 18 & 
+      Katan$Pohlaví == "žena","dospělá žena",
+    if_else( 
+      Katan$Věk>=18 & 
+      Katan$Pohlaví == "muž", "dospělý muž",
+    if_else(
+      Katan$Věk<18 & 
+      Katan$Pohlaví == "žena", "nezletilá slečna",
+    if_else( 
+      Katan$Věk<18 & 
+      Katan$Pohlaví == "muž", "nezletilý kluk", "NA")))))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+  mutate(Katan, 
+  VěkSkupiny = 
+    if_else(
+      Katan$Věk >= 18 & 
+      Katan$Pohlaví == "žena","dospělá žena",
+    if_else( 
+      Katan$Věk>=18 & 
+      Katan$Pohlaví == "muž", "dospělý muž",
+    if_else(
+      Katan$Věk<18 & 
+      Katan$Pohlaví == "žena", "nezletilá slečna",
+    if_else( 
+      Katan$Věk<18 & 
+      Katan$Pohlaví == "muž", "nezletilý kluk", "NA")))))
+Katan2
+```
+
+Příkaz `if_else()` je velice intuitivní. Přesto ale obdobně jako u `ifelse()` nezapomeňte u posledního řádku na NA, které tu je pro případ, že by zde ve skriptu nastala situace, při které by řádek databáze nevyhovoval ani jedné z podmínek. V takovém případě by byla hodnota proměnné pojmenována právě jako NA.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 10
+
+Vytvořte v rámci databáze Katan novou proměnnou Gambler, která bude rozdělovat hráče do čtyř skupin podle proměnné Partie na příležitostný hráč (jedna až dvě partie za měsíc), častý hráč (tři až čtyři partie za měsíc), deskový gambler (pět až šest partií za měsíc) a král osadníků (více jak sedm partií za měsíc).
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.6.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 174.763336, lat = -36.848461, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 174.763336, lat = -36.848461, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Auckland" target="_blank" style="color:#014B7C">Auckland</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Distinct
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Suva: Distinct {.pozadi}
+Příkaz `distinct()` si klade za cíl zobrazovat unikátní hodnoty v proměnné. Pracujeme-li proto například s faktory, ukáže nám tato funkce jednotlivé názvy hodnot, kterých daná proměnná v databázi alespoň jednou nabývá. Příkaz `distinct()` nicméně lze použít i u numerických proměnných, zkrátka u všech.
+
+```{r, eval=F, echo=T}
+Věk2 <- distinct(Katan, Věk)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Věk2 <- distinct(Katan, Věk)
+Věk2
+```
+
+V rámci příkazu `distinct()` lze do příkazu zapsat i více proměnných. Pokud tak chceme zjistit počet unikátních kombinací počtu let a pohlaví, využijeme následující formy příkazu.
+
+```{r, eval=F, echo=T}
+Věk2 <- distinct(Katan, Věk, Pohlaví)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Věk2 <- distinct(Katan, Věk, Pohlaví)
+Věk2
+```
+
+Podíváme-li se na nově vzniklou proměnnou Věk2, zjistíme, že obsahuje 60 unikátních variant věku a pohlaví. Jak však zjistit konkrétní počty těchto jednotlivých kombinací?  Není nic jednoduššího než použít příkaz `table()`. Ačkoliv je sice dplyr plný různých příkazů, není všemocný, proto tudíž nezapomínejme ani na ostatní příkazy mimo něj. 
+
+```{r, eval=F, echo=T}
+table(Katan$Věk, Katan$Pohlaví)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+table(Katan$Věk, Katan$Pohlaví)
+```
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 11
+
+Zjistěte, kolik unikátních kombinací počtu dětí a vzdělání obsahuje databáze Katan.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=15, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.7.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 178.450073, lat = -18.124809, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 178.450073, lat = -18.124809, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Suva" target="_blank" style="color:#014B7C">Suva</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Arrange
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Honiara (Guadalcanal): Arrange {.pozadi}
+Předposlední příkaz nynější kapitoly si probereme v místech jedné z nejhorších bitev 2. sv. války v Pacifiku, tj. v místech bitvy o Guadalcanal. Navzdory hrozivému umístění této lekce se však žádných děsivých scén nebojte, neboť příkaz `arrange()` je velice mírumilovný, neškodný a též užitečný. S jeho pomocí totiž dokážeme seřadit data podle určité proměnné, v našem následujícím příkladu podle proměnné Věk, respektive Pohlaví.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	arrange(Katan, 
+	        Věk, Pohlaví)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	arrange(Katan, Věk, Pohlaví)
+Katan2
+```
+
+Chceme-li data seřadit od nejvyšších hodnot po ty nejnižší, přidáme před název proměnné parametr desc (`desc(Věk)`).
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	arrange(Katan, desc(Věk), Pohlaví)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	arrange(Katan, desc(Věk), Pohlaví)
+Katan2
+```
+
+<div id="demobox">
+
+<h2>BOX: Opakování</h2>
+
+Pamatujete si, jak bychom bez dplyru zvládli vyřešit předchozí příklad?
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan[order(Katan$Věk), ]
+```
+
+Pokud chceme data seřadit od nejstarších hráčů po ty nejmladší, použijeme parametr `decreasing = TRUE`.
+
+```{r, eval=F, echo=T}
+Katan2 <- Katan[order(Katan$Věk, decreasing = TRUE), ]
+```
+
+</div>
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 12
+
+Seřaďte databázi Katan podle proměnné Věk (vzestupně), následně Děti (sestupně) a na závěr podle proměnné Pohlaví.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=12, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.8.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 159.950516, lat = -9.44202, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 159.950516, lat = -9.44202, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Bitva_o_Guadalcanal" target="_blank" style="color:#014B7C">Honiara</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Join
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Port Moresby: Join {.pozadi}
+V Port Moresby nás čeká poslední příkaz této kapitoly s názvem `join()`. Nezřídka kdy se nám v naší práci bude stávat, že bychom potřebovali pracovat s různými kombinacemi rozdílných datových tabulek. K tomu nám pomůže právě funkce `join()`. Variant této funkce je však tolik, že bude lépe si je nejdříve ukázat v následujícím přehledu. Teprve až poté se podíváme na praktické úlohy.
+
+<div id="demobox">
+
+<h2>Box: Kombinace data frame</h2>
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\6.kapitola\joingraf.png)](#join)</p align="center">
+
+<br>
+</div>
+
+Kombinací je doopravdy hodně. Ukažme si proto alespoň dva příklady. Řekněme, že máme dvě databáze Katan_01 a Katan_02, které mají společnou jednu proměnnou s názvem Pořadí a my chceme, aby se tyto tabulky spojily právě podle této proměnné. Abychom si příklad mohli ukázat, musíme si nejdříve tyto databáze vytvořit.
+
+```{r, eval=F, echo=T}
+Katan_01 <- mutate(Katan, 
+                   Pořadí = 1:200)
+Katan_01 <- select(Katan_01, c(10, 1:5))
+
+Katan_02 <- mutate(Katan, 
+                   Pořadí = sample(1:200, size = 200, replace = FALSE))
+Katan_02 <- select(Katan_02, 6:10)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan_01 <- Katan %>%
+	mutate(Pořadí = 1:200) %>%
+  select(10, 1:5)
+Katan_02 <- Katan %>%
+  mutate(Pořadí = sample(1:200, size = 200, replace = FALSE)) %>%
+  select(10, 6:9)
+print("Katan_01")
+Katan_01
+print("Katan_02")
+Katan_02
+```
+
+Databáze jsou vytvořené, jejich společným jmenovatelem je proměnná Pořadí. Nyní budeme chtít, aby se proměnné z databáze Katan_02 připojily k databázi Katan_01. Výsledek by měl být následně přiřazen do databáze Katan_03.
+
+```{r, eval=F, echo=T}
+Katan_03 <- 
+  left_join(Katan_01, Katan_02, by = "Pořadí")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan_03 <- 
+  left_join(Katan_01, Katan_02, by = "Pořadí")
+Katan_03
+```
+
+V případě, že bychom chtěli připojit proměnné z databáze Katan_01 k databázi Katan_02, použili bychom příkaz nikoliv `left_join()`, ale `right_join()`.
+
+Co když ale chceme, abychom z databáze Katan_02 použili jen dvě proměnné, dejme tomu Klub a Děti? Buďto můžeme nepotřebné proměnné z Katan_2 vymazat už předem či tak učinit až v průběhu funkce `join()`, jak je to ukázáno v následujícím skriptu. Stačí využít dalšího příkazu z balíčku dplyr, konkrétně příkazu `select()`.
+
+```{r, eval=F, echo=T}
+Katan_04 <- 
+  left_join(Katan_01, select(Katan_02, 1, 4:5), by = "Pořadí")
+
+# Nezapomeňte do příkazu select() vložit též proměnnou, podle které se
+# spojení databází provede, tj. proměnná Pořadí (1).
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Katan_01 <- Katan %>%
+	mutate(Pořadí = 1:200) %>%
+  select(10, 1:5)
+Katan_02 <- Katan %>%
+  mutate(Pořadí = 1:200) %>%
+  select(10, 6:9)
+
+Katan_04 <- 
+  left_join(Katan_01, select(Katan_02, 1, 4:5), by = "Pořadí")
+Katan_04
+```
+
+Kromě příkazu `select()` by samozřejmě šlo využít i hranatých závorek jako v následujícím pokynu.
+
+```{r, eval=F, echo=T}
+Katan_04 <- 
+  left_join(Katan_01, Katan_02[, c(1, 4:5)], by = "Pořadí")
+```
+```{r}
+Katan_04 <- 
+  left_join(Katan_01, Katan_02[, c(1, 4:5)], by = "Pořadí")
+Katan_04
+```
+
+A to je z šesté kapitoly vše. pokud se vám však již v tuto chvíli stýská nejen po dplyru, ale hlavně po ggplot2, nevěšte hlavu. V následující kapitole se s nimi totiž opětovně shledáme. Přesouváme se do Asie.
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+### Příklady {.pozadi}
+
+> Příklad 13
+
+Představte si, že máte dvě databáze, které chcete vzájemně propojit. První tabulka například obsahuje jméno, příjmení studenta a jeho číslo v třídním výkazu. Ta druhá zahrnuje známky z chemie, fyziky a též číslo studenta (ID), které je pojítkem obou databází. Vaším cílem je spojit tyto databáze do jedné, jež bude obsahovat celkem pět sloupců (jméno, příjmení, ID, chemie a fyzika).
+
+```{r, eval=F, echo=T}
+data_01 <- 
+ data.frame(
+  ID = c(23, 45, 50, 60, 70, 
+           89, 40, 65, 44, 77),
+  jméno = c("Jakub", "Ondřej", "Jana", 
+            "Eva", "David", "Franta", 
+            "Filip", "Magda", "Bára", 
+            "Jakub"),
+  příjmení = c("Chini", "Špetík", 
+               "Nováková", "Dvořáková", 
+               "Svoboda", "Novotný", 
+               "Černý", "Svobodová", 
+               "Procházková", "Kučera")) 
+
+data_02 <- 
+  data.frame(
+    ID = c(23, 45, 50, 60, 70, 
+           89, 40, 65, 44, 77),
+    chemie = c(2, 1, 2, 3, 4, 
+               5, 3, 1, 2, 2),
+    fyzika = c(2, 1, 2, 4, 1, 
+               5, 1, 1, 3, 1)) 
+```
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/6.kapitola/6.9.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 147.180267, lat = -9.4438, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 147.180267, lat = -9.4438, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Port_Moresby" target="_blank" style="color:#014B7C">Port Moresby</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+Vytvořte databázi Katan2, která bude obsahovat pouze muže starší 26 let, kteří nemají vysokoškolské vzdělání.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  filter(Katan, 
+  Pohlaví == "muž", 
+  Věk > 26,
+  !(Vzdělání == "Bc - VŠ"  | Vzdělání == "VŠ"))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  filter(Katan, 
+  Pohlaví == "muž", 
+  Věk > 26,
+  !(Vzdělání == "Bc - VŠ"  | Vzdělání == "VŠ"))
+Katan2
+```
+
+> Příklad 2
+
+Vytvořte databázi Katan2, která bude obsahovat pouze ženy starší 26 let, které mají vysokoškolské vzdělání a zároveň mají děti.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  filter(Katan, 
+  Pohlaví == "žena", 
+  Věk > 26,
+  (Vzdělání == "Bc - VŠ"  | Vzdělání == "VŠ") & Děti != 0)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  filter(Katan, 
+         Pohlaví == "žena", 
+         Věk > 26,
+         (Vzdělání == "Bc - VŠ"  | Vzdělání == "VŠ") & Děti != 0)
+Katan2
+```
+
+> Příklad 3
+
+Vytvořte databázi, která bude obsahovat pouze prvních a posledních šest pozorování z databáze Katan.
+
+```{r, eval=F, echo=T}
+Katan2 <- 
+  slice(Katan, c(1:6, 155:200))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- 
+  slice(Katan, c(1:6, 195:200))
+Katan2
+```
+
+> Příklad 4
+
+Vytvořte databázi, která bude na prvních dvou místech obsahovat proměnné Věk a Práce a na dalších pozicích veškeré ostatní proměnné z databáze Katan v jejich původním pořadí.
+
+```{r, eval=F, echo=T}
+Katan2 <- select(Katan, Věk, Práce, everything())
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- select(Katan, Věk, Práce, everything())
+Katan2
+```
+
+
+> Příklad 5
+
+Vytvořte databázi, která bude obsahovat pouze poslední čtyři proměnné z databáze Katan.
+
+```{r, eval=F, echo=T}
+Katan2 <- select(Katan, 6:9)
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- select(Katan, 6:9)
+Katan2
+```
+
+
+> Příklad 6
+
+Vytvořte databázi, která na prvním místě bude obsahovat proměnnou Pohlaví a dále pak všechny ostatní proměnné databáze Katan kromě proměnných Partie a Klub.
+
+```{r, eval=F, echo=T}
+Katan2 <- select(Katan, Pohlaví, everything(), -Partie, -Klub)
+# Dávejme veliký pozor na pořadí jednotlivých proměnných v příkazu select().
+# Dle zadání, jako první zapisujeme proměnnou Pohlaví. Dále pak volíme
+# příkaz everything (), který však do nově vytvořené databáze Katan2 přidá
+# i proměnné Partie a Klub, což nechceme. Z tohoto důvodu jsou na dalších 
+# místech v příkazu select zapsány tyto dvě proměnné s mínusovým znaménkem. 
+# Kdybychom však zaměnili pořadí proměnných za -Partie, -Klub, everything(), 
+# staly by se proměnné Partie a Klub součástí databáze Katan2.
+```
+```{r echo=FALSE}
+library(readxl)
+library(dplyr)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <- select(Katan, Pohlaví, everything(), -Partie, -Klub)
+Katan2
+```
+
+> Příklad 7
+
+V databázi Katan změňte název proměnné Práce a Děti na Job a Children.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	rename(Katan, "Job" = Práce, "Children" = Děti)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	rename(Katan, "Job" = Práce, "Children" = Děti)
+Katan2
+```
+
+
+> Příklad 8
+
+V databázi Katan změňte názvy všech proměnných na názvy dle vašeho uvážení bez použití příkazu `rename()`.
+
+```{r, eval=F, echo=T}
+names(Katan) <- 
+c("Games", "Age", "Education", "Hall_of_residence", "Job", 
+  "Children", "Smoke", "Club", "Gender") 
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+names(Katan) <- 
+c("Games", "Age", "Education", "Hall_of_residence", "Job", "Children", "Smoke", "Club", "Gender") 
+Katan
+```
+
+> Příklad 9
+
+Vytvořte proměnnou Kód, která bude obsahovat 200 unikátních kódů složených pouze z písmen. Kód by měl vždy obsahovat celkově pět náhodných písmen spojených dohromady (a to kvůli anonymizaci dat vzhledem k GDPR). Následně z těchto kódových označení vytvořte pojmenované řádky v rámci databáze Katan. Poté tyto kódy převeďte do nově vzniklé proměnné Kódová_označení, která se stane součástí databáze Katan tak, aby samotné řádky získaly zpět číselné označení.
+
+```{r, eval=F, echo=T}
+Jména <- 
+  replicate(200, 
+    paste(sample(LETTERS, 5, replace = TRUE), 
+          collapse = ""))
+Katan2 <- 
+  data.frame(Katan, row.names = Jména)
+
+Katan2 <-
+	add_rownames(Katan2, "JménaHráčů")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Jména <- 
+  replicate(200, 
+    paste(sample(LETTERS, 5, replace = TRUE), 
+          collapse = ""))
+Katan2 <- 
+  data.frame(Katan, row.names = Jména)
+Katan2 <-
+	add_rownames(Katan2, "JménaHráčů")
+Katan2
+```
+
+> Příklad 10
+
+Vytvořte v rámci databáze Katan novou proměnnou Gambler, která bude rozdělovat hráče do čtyř skupin podle proměnné Partie na příležitostný hráč (jedna až dvě partie za měsíc), častý hráč (tři až čtyři partie za měsíc), deskový gambler (pět až šest partií za měsíc) a král osadníků (více jak sedm partií za měsíc).
+
+```{r, eval=F, echo=T}
+Katan2 <-
+  mutate(Katan, 
+  VěkSkupiny = 
+    if_else(
+      Katan$Partie >= 0 & 
+      Katan$Partie < 3, "příležitostný hráč",
+    if_else( 
+      Katan$Partie >= 3 & 
+      Katan$Partie < 5, "častý hráč",
+    if_else(
+      Katan$Partie >= 5 & 
+      Katan$Partie < 7, "deskový gambler",
+    if_else( 
+      Katan$Partie >= 7, "král osadníků", "NA")))))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+  mutate(Katan, 
+  VěkSkupiny = 
+    if_else(
+      Katan$Partie >= 0 & 
+      Katan$Partie < 3,"příležitostný hráč",
+    if_else( 
+      Katan$Partie >= 3 & 
+      Katan$Partie < 5, "častý hráč",
+    if_else(
+      Katan$Partie >= 5 & 
+      Katan$Partie < 7, "deskový gambler",
+    if_else( 
+      Katan$Partie >= 7, "král osadníků","NA")))))
+Katan2
+```
+
+> Příklad 11
+
+Zjistěte, kolik unikátních kombinací počtu dětí a vzdělání obsahuje databáze Katan.
+
+```{r, eval=F, echo=T}
+Kombinace <- distinct(Katan, Děti, Vzdělání)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Kombinace <- distinct(Katan, Děti, Vzdělání)
+Kombinace
+```
+
+> Příklad 12
+
+Seřaďte databázi Katan podle proměnné Věk (vzestupně), následně Děti (sestupně) a na závěr podle proměnné Pohlaví.
+
+```{r, eval=F, echo=T}
+Katan2 <-
+	arrange(Katan, Věk, desc(Děti), Pohlaví)
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+Katan2 <-
+	arrange(Katan, Věk, desc(Děti), Pohlaví)
+Katan2
+```
+
+> Příklad 13
+
+Představte si, že máte dvě databáze, které chcete vzájemně propojit. První tabulka obsahuje známky z chemie, fyziky a číslo studenta ve třídním výkazu. Ta druhá zahrnuje jméno, příjmení a též číslo studenta (ID), které je pojítkem obou databází. Vaším cílem je spojit tyto databáze do jedné, jež bude obsahovat celkem pět sloupců (jméno, příjmení, ID, chemie a fyzika) v tomto pořadí.
+
+```{r, eval=F, echo=T}
+data_01 <- 
+  data.frame(
+    ID = c(23, 45, 50, 60, 70, 
+           89, 40, 65, 44, 77),
+    chemie = c(2, 1, 2, 3, 4, 
+               5, 3, 1, 2, 2),
+    fyzika = c(2, 1, 2, 4, 1, 
+               5, 1, 1, 3, 1)) 
+
+data_02 <- 
+ data.frame(
+  ID = c(23, 45, 50, 60, 70, 
+           89, 40, 65, 44, 77),
+  jméno = c("Petr", "Ondřej", "Jana", 
+            "Eva", "David", "Franta", 
+            "Filip", "Magda", "Bára", 
+            "Jakub"),
+  příjmení = c("Všetečka", "Kubalík", 
+               "Nováková", "Dvořáková", 
+               "Svoboda", "Novotný", 
+               "Černý", "Svobodová", 
+               "Procházková", "Kučera")) 
+
+Data_známky <- 
+  left_join(data_02, data_01, by = "ID")
+# Chceme připojit tabulku data_01 k tabulce data_02,
+# proto nejdříve zapíšeme název tabulky data_02, jejíž
+# proměnné mají být nejdříve.
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+data_01 <- 
+  data.frame(
+    ID = c(23, 45, 50, 60, 70, 
+           89, 40, 65, 44, 77),
+    chemie = c(2, 1, 2, 3, 4, 
+               5, 3, 1, 2, 2),
+    fyzika = c(2, 1, 2, 4, 1, 
+               5, 1, 1, 3, 1)) 
+
+data_02 <- 
+ data.frame(
+  ID = c(23, 45, 50, 60, 70, 
+           89, 40, 65, 44, 77),
+  jméno = c("Petr", "Ondřej", "Jana", 
+            "Eva", "David", "Franta", 
+            "Filip", "Magda", "Bára", 
+            "Jakub"),
+  příjmení = c("Všetečka", "Kubalík", 
+               "Nováková", "Dvořáková", 
+               "Svoboda", "Novotný", 
+               "Černý", "Svobodová", 
+               "Procházková", "Kučera")) 
+
+Data_známky <- 
+  left_join(data_02, data_01, by = "ID")
+Data_známky
+```
+
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------

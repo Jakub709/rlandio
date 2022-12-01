@@ -1,0 +1,1824 @@
+---
+title: Podmínky a cykly
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    highlight: tango
+    Color: "black"
+    navbar:
+      - { icon: "fa-home", href: "https://www.rlandio.cz/kolem-sveta/", align: right}
+---
+
+
+<style>
+
+.navbar {
+    background: linear-gradient(90deg, rgba(40,58,132,1) 50%, rgba(42,36,91,1) 100%);
+    border-color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-nav > .active > a {
+    background: radial-gradient(circle, rgba(255,217,0,1) 0%, rgba(255,217,0,1) 100%);
+    color: #014B7C !important;
+}
+
+.navbar-nav li a:hover {
+    background-color: #EC0B8C !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    display: none;
+}
+
+body {
+    background-image: url('https://www.rlandio.cz/night10.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    border-color: transparent;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+h1 {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 45%, rgba(219,219,255,1) 100%); 
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h2 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -2.5px;
+    margin-left: -2px;
+    border-radius: 5px;
+    line-height: 200%;
+}
+
+h3 {
+    color: #DD4B39;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 150%;
+}
+
+h4 {
+    background-color: #2B3990;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 200%;
+    border-radius: 5px;
+}
+
+h5 {
+    color: #000000;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 150%;
+}
+
+h6 {
+    background-color: #FFD900;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-top: -14px;
+    margin-bottom: -14px;
+    border-radius: 4px;
+    line-height: 300%;
+}
+
+h7 {
+    font-size: 13px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: justify;
+    line-height: 150%;
+}
+
+.section.sidebar {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    color: #ffffff;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.mapa {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+}
+
+.leaflet-container{
+    border-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+.pozadi {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: rgba(0,0,0,0);
+}
+
+#demobox {
+    border-color: #E7E8EA;
+    background-color: #E7E8EA;
+    border-left: 3px solid #E7E8EA;
+    border-right: 3px solid #E7E8EA;
+    border-down: 20px solid #E7E8EA;
+    border-up: 10px solid #E7E8EA;
+    border-radius: 5px;
+}
+
+blockquote {
+    background: linear-gradient(87deg, rgba(28,25,73,1) 20%, rgba(80,67,152,1) 100%); 
+    border-left: 10px solid #1c1949;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+code.r, code.cpp {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    border: px solid #E7E8EA;
+    white-space: pre-wrap;
+    background-color: #E7E8EA;
+    line-height: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-left: 8px solid #1C1949;
+}  
+
+pre {	
+    background-color: #E7E8EA;
+    line-height: 75%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+    border: 0px solid #E7E8EA;
+    white-space: pre-wrap;
+}
+
+pre code {
+    white-space: pre-wrap;
+    line-height: 75%;
+    display: block; 
+    padding: 0.5em;
+    font-family: monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 5px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  
+  .navbar {
+    background: linear-gradient(90deg, rgba(61,74,153,1) 0%, rgba(38,40,109,1) 50%);
+    border-color: rgba(0,0,0,0);
+    font-size: 11px;
+    display: block;
+  }
+  
+  .navbar-brand {
+    display: none;
+  }
+  
+  .chart-title {
+    background: linear-gradient(90deg, rgba(42,36,91,1) 50%, rgba(40,58,132,1) 100%);
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: -2px;
+    margin-right: -1px;
+    margin-left: -1px;
+  }
+  
+  body {
+    background-image: url('https://www.rlandio.cz/linearbackground.png');
+    color: #000000;
+    text-align: justify;
+    line-height: 150%;
+  }
+  
+  .pozadi3 {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+  }
+  
+  .tabletmod {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+  
+}
+
+</style>
+
+
+# {.sidebar .no-mobile}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+
+<p align="center">**KAPITOLA 4**</p align="center">
+<p align="center">**PODMÍNKY A CYKLY**</p align="center">
+
+Podmínky a cykly jsou nedostižným evergreenem všech programovacích jazyků. R v tomto ohledu není žádnou výjimkou, i když je nutné podotknout, že na rozdíl od ostatních jazyků zde nejsou tak často využívány.
+
+Mnoho funkcí (viz rodina funkcí apply z minulé kapitoly či příkazy z balíčku dplyr probírané v šesté kapitole) v sobě totiž již cyklus obsahují, a proto jej není nutné samostatně vytvářet. Přesto se nám ale některé cykly a podmínky budou v naší práci velice hodit, jelikož dokážou zautomatizovat naše výpočty a postupy.
+
+<br>
+
+<div id="footer">© 2020 **RLANDIO**.CZ</div>
+
+
+# Úvod
+
+### {.mobile .pozadi3}
+
+<p align="center">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\1.kapitola\rlogo4.png)]()</p align="center">
+<br>
+<font size="5" color="#ffffff"><p align="center">**KAPITOLA 4**</p align="center"></font>
+<font size="5" color="#ffffff"><p align="center">**PODMÍNKY A CYKLY**</p align="center"></font>
+
+<font color="white">
+Podmínky a cykly jsou nedostižným evergreenem všech programovacích jazyků. R v tomto ohledu není žádnou výjimkou, i když je nutné podotknout, že na rozdíl od ostatních jazyků zde nejsou tak často využívány.
+
+Mnoho funkcí (viz rodina funkcí apply z minulé kapitoly či příkazy z balíčku dplyr probírané v šesté kapitole) v sobě totiž již cyklus obsahují, a proto jej není nutné samostatně vytvářet. Přesto se nám ale některé cykly a podmínky budou v naší práci velice hodit, jelikož dokážou zautomatizovat naše výpočty a postupy.
+</font>
+
+### {.mapa}
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/4.kapitola/4.0.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -23.51254, lat = 14.93152, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -23.51254, lat = 14.93152, 
+            '<h6><a href="https://www.rlandio.cz/cesta/4.kapitola.html#funkce-if" target="_blank" style="color:#014B7C">Praia</a></h6>',
+            options = popupOptions(closeOnClick = FALSE)) %>%
+  addPopups(lng = 45.318161, lat = 2.046934, 
+            '<h6><a href="https://www.rlandio.cz/cesta/4.kapitola.html#cyklus-while" target="_blank" style="color:#014B7C">Mogadišo</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Funkce IF
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Praia: Funkce IF {.pozadi}
+Začátek našeho afrického tažení začínáme v Praie, což je hlavní město Kapverdských ostrovů, bývalé kolonie Portugalska (až do roku 1975). Navzdory tomu, že tato velice chudá země (na bídné poměry Afriky však relativně bohatá) toho jistě skrývá spoustu k vidění, nic z toho se ani kapkou nevyrovná kráse příkazu IF. 
+
+Čas od času nám může být užitečné spustit některé příkazy pouze tehdy, je-li splněna určitá podmínka. K tomu slouží podmínka IF, kterou nejčastěji použijeme při tvorbě vlastních funkcí (viz předchozí lekce). Začněme nicméně od začátku a přesuňme se opět o několik let zpět do školních lavic, během kterých nás učitelé mučili takovými předměty, jako byla chemie či fyzika.
+
+```{r, eval=F, echo=T}
+chemie <- 4 # moje známka na vysvědčení v nejmenovaném roce
+fyzika <- 2	# moje známka na vysvědčení v témž roce
+
+# 1. podmínka IF
+if (chemie <= 4) {	# podmínka
+  print("jupííí, nepropadáš")} 
+# v závorce nalezneme příkaz, který se zpracuje pouze při splnění podmínky
+
+# 2. podmínka IF
+if (fyzika == 5) {
+  print("fyzik z tebe asi taky nebude")}
+```
+```{r echo=FALSE}
+chemie <- 4 	
+fyzika <- 2	
+
+if (chemie <= 4) {	
+  print("jupííí, nepropadáš")} 
+
+if (fyzika == 5)
+  {print("fyzik z tebe asi taky nebude")}
+```
+
+Ve výše uvedeném skriptu se nachází dvě podmínky IF. První z nich byla vyhodnocena jako pravdivá, a proto R vypsalo do konzole výsledek `"jupííí, nepropadáš"`. Druhá z nich byla vyhodnocena jako nepravdivá, tudíž RStudio příkaz `print("fyzik z tebe asi taky nebude")` neprovedlo. Na příkladu si prosím ještě všimněte složených závorek `{}`, které následují po zadání podmínky IF. 
+
+Součástí IF většinou bývá i ELSE, jehož příkaz se provede tehdy, není-li splněna podmínka IF. Opět bude nejlepší si vše představit na příkladu ze školního prostředí.
+
+```{r, eval=F, echo=T}
+chemie <- 4.35 # průměr známek ve čtvrtletí
+               # pozor na desetinnou tečku
+
+if (chemie <= 4) {
+  print("jupííí, nepropadáš")
+} else { 
+# else musí být na stejném řádku, jako končící složená závorka
+print("je to špatný")
+}
+```
+```{r echo=FALSE}
+chemie <- 4.35 
+
+if (chemie <= 4) {
+  print("jupííí, nepropadáš")
+} else { 
+print("je to špatný")
+}
+```
+
+Chceme-li vytvořit skript s více než dvěma variantami výsledku, využijeme funkci ELSE IF. A aby to nebylo tak jednoduché, podmínky si nyní trochu vyšperkujeme, jelikož ty nemusejí pracovat pouze s jednou proměnnou.
+
+```{r, eval=F, echo=T}
+fyzika <- 3
+chemie <- 3
+
+if (chemie == 1 & fyzika == 1) { 
+  print("nechápu, jak to děláš")
+# použili jsme zde výraz & pro podmínky, které mají platit zároveň
+
+} else if (chemie <= 4 & fyzika <= 4) { 
+  print("drž se")
+} else { 
+  print("to je fakt bída")}
+```
+```{r echo=FALSE}
+fyzika <- 3
+chemie <- 3
+
+if (chemie == 1 & fyzika == 1) { 
+  print("nechápu, jak to děláš")
+} else if (chemie <= 4 & fyzika <= 4) { 
+  print("drž se")
+} else { 
+  print("to je fakt bída")}
+```
+
+Rozumíte výše uvedenému skriptu a jeho výsledku? Doopravdy? A co když budou vstupní data následující.
+
+```{r, eval=F, echo=T}
+fyzika <- 1
+chemie <- 1
+```
+
+Jaký výsledek se zobrazí nyní? Pokud se totiž podíváme na podmínku IF a ELSE IF, uvidíme, že v tomto konkrétním příkladě se překrývají a obě mohou být vyhodnoceny jako pravdivé. To však vůbec nevadí. Přednost v tomto případě dostane podmínka IF. Ta je totiž ve skriptu uvedena jako první a pokud je vyhodnocena i jako pravdivá, R ostatní příkazy (ELSE IF a ELSE) jednoduše přeskočí. Podívejme se však raději na následující dva příklady, které nám tento výrok potvrdí.
+
+```{r, eval=F, echo=T}
+# Příklad č. 1
+# Příklad č. 1 se oproti Příkladu č. 2 bude lišit pouze v pořadí
+# příkazu print() za podmínkami IF a ELSE IF.
+
+fyzika <- 1
+chemie <- 1
+
+if (chemie == 1 & fyzika == 1) {
+  print("nechápu, jak to děláš")
+} else if (chemie == 1 & fyzika == 1) { 
+  print("neuvěřitelné")
+} else { 
+  print("moc ti to teda nejde")
+}
+```
+```{r echo=FALSE}
+fyzika <- 1
+chemie <- 1
+
+if (chemie == 1 & fyzika == 1) {
+  print("nechápu, jak to děláš")
+} else if (chemie == 1 & fyzika == 1) { 
+  print("neuvěřitelné")
+} else { 
+  print("moc ti to teda nejde")
+}
+```
+
+```{r, eval=F, echo=T}
+# Příklad č. 2
+fyzika <- 1
+chemie <- 1
+
+if (chemie == 1 & fyzika == 1) {
+  print("neuvěřitelné")
+} else if (chemie == 1 & fyzika == 1) { 
+  print("nechápu, jak to děláš")
+} else { 
+  print("moc ti to teda nejde")
+}
+```
+```{r echo=FALSE}
+fyzika <- 1
+chemie <- 1
+
+if (chemie == 1 & fyzika == 1) {
+  print("neuvěřitelné")
+} else if (chemie == 1 & fyzika == 1) { 
+  print("nechápu, jak to děláš")
+} else { 
+  print("moc ti to teda nejde")
+}
+```
+
+Ačkoliv příkazy IF a ELSE IF vypadají téměř totožně, v případě jejich pravdivého vyhodnocení se vždy zobrazí jiný text. V našich skriptech měla pokaždé přednost prvně uvedená podmínka IF. 
+
+Navzdory tomu, že se nám podmínka IF jistě může někdy hodit, rozhodně ji nebudeme používat ani zdaleka tak často jako následující podmínku IFELSE. Pojďme se s ní proto společně v Lagosu seznámit. Přesto si však nezapomeňte nejdříve projít příklad na procvičení, který prověří vaše dosavadní programátorské schopnosti na úplné maximum. Kromě toho vás v této lekci čeká ještě následující box.
+
+<div id="demobox">
+
+<h2>Box: Mzdová kalkulačka s dětmi</h2>
+
+Pamatujete si na příklad z předchozí lekce, ve kterém jsme vytvářeli funkci mzdové kalkulačky? V něm jsme řešili problém s daňovou slevou na dítě, která se liší podle počtu dětí v rodině. Dokázali byste tento problém s pomocí IF vyřešit? Vyzkoušejte si mzdovou kalkulačku znovu a tentokrát již plnohodnotně.
+
+Vaším úkolem bude opětovně vytvořit funkci s názvem mzdová_kalkulačka. Ta po udání hrubé mzdy vypočítá náklady zaměstnance na sociální pojištění, zdravotní pojištění a daň z příjmů fyzických osob. 
+
+Následně vytvořte tři náhodné vektory o deseti položkách hodnot, které budou obsahovat údaje o hrubé mzdě, počtu dětí a manželce (nebo manželovi), jejíž (jehož) příjem je nižší než 68 000 Kč za rok (1: ano, 0: ne). Poté pomocí funkce mzdová_kalkulačka vypočítejte výše uvedená pojištění a daň z příjmů. Závěrem vytvořte data frame, který bude obsahovat sedm sloupců: hrubá mzda, čistá mzda, počet dětí, manžel(ka), sociální pojištění, zdravotní pojištění a daň z příjmů.
+
+Pozn. sociální pojištění: 6,5 % z hrubé mzdy; zdravotní pojištění: 4,5 % z hrubé mzdy; daň z příjmů: 15 % ze **superhrubé mzdy zaokrouhlené na 100 nahoru!**; superhrubá mzda: hrubá mzda * 1,34; daňová sleva na poplatníka: 2 070 Kč; daňová sleva na manžela(ku): 2 070 Kč; daňová sleva na dítě: 1. dítě = 1 267 Kč měsíčně, 2. dítě = 1 617 Kč, 3. a každé další dítě = 2 017 Kč. 
+
+V příkladu se nezapomeňte vypořádat s tím, že sleva na poplatníka a manželku může snížit daň maximálně na nulu, zatímco slevy na dítě se mohou přetvořit v tzv. daňový bonus, tj. daň může být záporná. Uveďme si příklad. Daň z příjmů byla u jedince, jenž má nárok na slevu na manželku, vypočítána na hodnotu 3 000 Kč. Sleva na poplatníka a manželku činí dohromady 4 140 Kč. Daň však nemůže jít do záporných hodnot, proto bude činit nula. V případě, že ale takový člověk měl například dvě děti, bude mu vypočítán daňový bonus ve výši 2 884 Kč.
+
+```{r, eval=F, echo=T}
+mzdová_kalkulačka <- function(Hrubá_mzda, Manželka = 0, Děti = 0) {
+  sociální <- 0.065 * Hrubá_mzda
+  zdravotní <- 0.045 * Hrubá_mzda
+  daň <- 0.15 * (100*(floor((Hrubá_mzda * 1.34)/100))) - 2070 - (Manželka * 2070)
+# danový základ (100*floor((Hrubá_mzda * 1.34)/100)))
+
+# Tento lehce komplikovaný zápis volíme proto, abychom
+# částku zaokrouhlili na 100 nahoru, nelze použít příkaz
+# floor(proměnná, -2).
+
+  daň[daň < 0] <- 0
+  
+  if(Děti == 0) {
+    daň <- daň
+  } else if(Děti == 1) {
+    daň <- daň - 1267
+  } else if (Děti == 2) {
+    daň <- daň - (1267 + 1617)
+  } else if (Děti >= 3) {
+    daň <- daň - (1267 + 1617 + (Děti-2)*2017)
+  }
+  
+  cmzda <- Hrubá_mzda - sociální - zdravotní - daň
+  
+  return(data.frame(Hrubá_mzda,
+                    "Čistá_mzda" = cmzda,
+                    Manželka,
+                    Děti,
+                    "Sociální_pojištění" = sociální, 
+                    "Zdravotní_pojištění" = zdravotní, 
+                    "Daň_z_příjmu" = daň))
+}
+
+Hrubá_mzda <- sample(18000:50000, size = 10, replace = TRUE)
+Manželka <- sample(c(0,1), size = 10, replace = TRUE)
+Děti <- sample(0:4, size = 10, replace = TRUE)
+mzdy <- data.frame(Hrubá_mzda,Manželka,Děti)
+
+Data <- mzdová_kalkulačka(mzdy$Hrubá_mzda, mzdy$Manželka, mzdy$Děti)
+```
+```{r}
+mzdová_kalkulačka <- function(Hrubá_mzda, Manželka = 0, Děti = 0) {
+  sociální <- 0.065 * Hrubá_mzda
+  zdravotní <- 0.045 * Hrubá_mzda
+  daň <- 0.15 * (100*(floor((Hrubá_mzda * 1.34)/100))) - 2070 - (Manželka * 2070)
+  
+  if (Děti == 0) {
+    daň <- daň
+  } else if(Děti == 1) {
+    daň <- daň - 1267
+  } else if (Děti == 2) {
+    daň <- daň - (1267 + 1617)
+  } else if (Děti >= 3) {
+    daň <- daň - (1267 + 1617 + (Děti-2)*2017)
+  }
+
+  cmzda <- Hrubá_mzda - sociální - zdravotní - daň
+  
+  return(data.frame(Hrubá_mzda,
+                    "Čistá_mzda" = cmzda,
+                    Manželka,
+                    Děti,
+                    "Sociální_pojištění" = sociální, 
+                    "Zdravotní_pojištění" = zdravotní, 
+                    "Daň_z_příjmu" = daň))
+}
+
+Hrubá_mzda <- sample(18000:50000, size = 10, replace = TRUE)
+Manželka <- sample(c(0,1), size = 10, replace = TRUE)
+Děti <- sample(0:4, size = 10, replace = TRUE)
+mzdy <- data.frame(Hrubá_mzda,Manželka,Děti)
+
+Data <- mzdová_kalkulačka(mzdy$Hrubá_mzda, mzdy$Manželka, mzdy$Děti)
+Data
+```
+
+</div>
+
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+
+> Příklad 1
+
+Očekáváte v tuto chvíli jednoduchý příklad na IF? Tak to jste na omylu. Je tu totiž připravena jedna opravdová chuťovka. Před tím si však stáhněte soubor s názvem <a href="https://d396qusza40orc.cloudfront.net/rprog%2Fdata%2Fspecdata.zip" target="_blank">specdata</a>, který obsahuje 332 csv dokumentů. Vaším úkolem bude vytvořit funkci s názvem **getmonitor**, jenž nám po zadání čísla (respektive názvu) souboru spustí příkaz `summarize()` dané datové tabulky csv. Uveďme si konkrétní příklad. Pokud do konzole zapíšeme příkaz `getmonitor(1)`, chtěli bychom získat následující výstup.
+
+<p align="left">[![](C:\Users\jsoln\OneDrive\Desktop\RLANDIO\4.kapitola\Obrázek1.png)](#table-a-summary)</p align="left">
+
+Tímto však nekončí. V případě, že zapíšeme příkaz `getmonitor(1, summarize = FALSE)`, chtěli bychom jako výstup získat celou tabulku 001.csv ze souboru specdata.
+
+```{r echo=FALSE}
+setwd("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/specdata/specdata")
+getmonitor <- function(id, summarize = TRUE) {
+  
+  pocet <- nchar(id)
+  if(pocet==1)
+  {
+    cesta <- paste(getwd(),"/","00",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if (pocet==2)
+  {
+    cesta <- paste(getwd(),"/","0",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if(pocet==3)
+  {
+    cesta <- paste(getwd(),"/",id,".csv",sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+}
+Data1 <- getmonitor(1, summarize = FALSE)
+head(Data1)
+```
+
+V tuto chvíli je mi zřejmý váš vystrašený výraz ve tváři. „Jak toto mohu zvládnout?“ Zkuste googlit a uvidíte, že brzy něco objevíte. Jako malou nápovědu vám poskytnu dvě klíčová slova „specdata“ a „getmonitor“. To ostatní je už na vás. Jelikož vás mám ale rád, poskytnu vám ještě jednu nápovědu. Ve skriptu, který se budete nyní snažit vytvořit, budete nuceni pracovat s adresářem. Cože to je?
+
+Pokud v R, ale vlastně v jakémkoli například kancelářském programu chcete něco uložit, automaticky se vám objeví určitá složka, většinou to bývají Dokumenty. V R je tomu taktéž. Vy však budete potřebovat pro tento příklad nastavit adresář (working directory) na složku specdata. K tomu využijete příkazů `getwd()` a `setwd()` První z nich po zapsání do konzole (zapište příkaz `getwd()` včetně prázdných závorek) zobrazí popis cesty do vašeho aktuálního adresáře. Druhý z nich vám umožní tuto cestu změnit jako např. takto: `setwd("C:/Users/.../specdata")`. Dávejte si při tom pozor na směr lomítek, jelikož při kopírování adresy složky z Windows budete vidět adresu s obrácenými lomítky: `C:\Users\...\specdata`. 
+
+Jistě, málokomu by se v tuto chvíli povedlo správný skript vytvořit pouze z hlavy bez jakékoli předlohy. V reálném světě ale nikdy nebudete pracovat s žádnou předlohou a řešením na konci lekce. Vaším věrným společníkem při psaní skriptů bude vždy Google a Stack Overflow. Proto se ničeho nebojte a vrhněte se do řešení zadaného problému. Vaším skutečným úkolem totiž nikdy nebude psaní skriptů, jelikož ty nikoho nezajímají. Vaším úkolem je řešit problémy a jeden z nich máte právě před sebou. Kromě toho na této cestě poznáte, že i když byste výsledný skript v tuto chvíli nejspíš sami nevymysleli, dokážete mu porozumět, modifikovat ho a dále si s ním hrát. Přeji hodně štěstí.
+
+### {.mapa}
+```{r echo=FALSE, fig.height=5.3, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/4.kapitola/4.1.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = -23.51254, lat = 14.93152, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = -23.51254, lat = 14.93152, 
+            '<h6><a href="https://en.wikipedia.org/wiki/Praia" target="_blank" style="color:#014B7C">Praia</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+
+# Funkce IFELSE
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Lagos: Funkce IFELSE {.pozadi}
+V předchozí kapitole jsme se seznámili s funkcí `cut()`, která dokáže rozdělit numerické proměnné do přehlednějších intervalů. Jak už to ale v R bývá, stejného výsledku lze dosáhnout mnoha různými způsoby. Pokud jste si tedy již dostatečně zamilovali podmínku IF, podívejme se na využití příkazu IFELSE, který dokáže vykouzlit mocnější zázraky nežli pouhý `cut()`. Před tím je však nutné upozornit, že skladba následujícího příkazu je v některých ohledech dosti odlišná od té, se kterou jsme se seznámili u prostého IF. Dávejme si pozor především na závorky a na rozdíl mezi příkazy IFELSE a ELSE IF.
+
+První příklad na zahřátí si klade za cíl vytvořit faktorovou proměnnou s názvem Věková_Skupina, která bude obsahovat hodnoty `"dospělý"` a `"dítě"` podle proměnné Věk z databáze Katan.
+
+```{r, eval=F, echo=T}
+Věková_Skupina <- ifelse(
+  Katan$Věk >= 18, 
+  "dospělý","dítě")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Věková_Skupina <- ifelse(
+  Katan$Věk >= 18, "dospělý","dítě")
+```
+
+V případě, že je podmínka splněna (`Katan$Věk >= 18`), vypíše se první hodnota uvedená za čárkou, tj. v našem případě `"dospělý"`. Není-li podmínka splněna, a to i v případě chybějících hodnot, vypíše se druhá hodnota `"dítě"`.  Dávejme si prosím pozor na to, že nyní používáme místo složených závorek závorky kulaté. 
+
+Příkaz IFELSE může obsahovat neomezený počet podmínek. My si však v následujícím příkladu vystačíme pouze se dvěma, které rozdělí náš datový soubor podle počtu sehraných partií na muže gamblery (muži s více jak šesti sehranými partiemi Osadníků z Katanu za měsíc) a ty ostatní.
+
+```{r, eval=F, echo=T}
+Gambler <- ifelse(
+  Katan$Partie > 6 & 
+  Katan$Pohlaví == "muž",
+  "muž gambler deskových her", "ostatní")
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Gambler <- ifelse(
+  Katan$Partie > 6 & 
+  Katan$Pohlaví == "muž",
+  "muž gambler deskových her", "ostatní")
+```
+
+Předchozí příkazy byly poněkud nudné, jelikož vždy obsahovaly pouze dvě možné varianty výsledku. Ukažme si proto, jak lze získat neomezený počet výsledných hodnot. K tomu nám poslouží následující příklad, ve kterém budeme opět pracovat s proměnnou Věk. Naším cílem je rozdělit jednotlivá pozorování v databázi na dospělé a nezletilé dle pohlaví. 
+
+```{r, eval=F, echo=T}
+Věková_Skupina <- 
+  ifelse(
+    Katan$Věk >= 18 & 
+    Katan$Pohlaví == "žena",
+    "dospělá žena",
+  ifelse( 
+    Katan$Věk >= 18 & 
+    Katan$Pohlaví == "muž",
+    "dospělý muž",
+  ifelse(
+    Katan$Věk <18 & 
+    Katan$Pohlaví == "žena",
+    "nezletilá slečna",
+  ifelse( 
+    Katan$Věk < 18 & 
+    Katan$Pohlaví == "muž",
+    "nezletilý kluk", "NA"))))
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Věková_Skupina <- 
+  ifelse(
+    Katan$Věk >= 18 & 
+    Katan$Pohlaví == "žena",
+    "dospělá žena",
+  ifelse( 
+    Katan$Věk >= 18 & 
+    Katan$Pohlaví == "muž",
+    "dospělý muž",
+  ifelse(
+    Katan$Věk <18 & 
+    Katan$Pohlaví == "žena",
+    "nezletilá slečna",
+  ifelse( 
+    Katan$Věk < 18 & 
+    Katan$Pohlaví == "muž",
+    "nezletilý kluk", "NA"))))
+```
+
+V případě několikanásobného použití funkce IFELSE nezapomeňte u posledního IFELSE na výraz NA (lze nazvat dle libosti, ale obvyklé je použít NA - Not Available), bez kterého by skript nahlásil error. Tento popisek se vypíše do řádku nově vytvořené proměnné (v našem případě Věková_Skupina) tehdy, pokud by nebyla ani jedna z podmínek splněna. Taková situace může nastat v našem skriptu pouze v situaci, bude-li v databázi Katan nalezena chybějící hodnota. Odtud pramení důvod vepsat do příkazu IFELSE na jeho konec právě NA, a nikoliv něco jiného.
+
+Na závěr bude dobré si ještě zopakovat jeden příkaz. Pamatujete si, jak jednoduše přidat proměnnou jako třeba Věková_Skupina do samotné databáze Katan?
+
+```{r, eval=F, echo=T}
+Katan$Věková_Skupina <- Věková_Skupina
+```
+
+To nebylo příliš složité, co říkáte? Podívejme se proto na cyklus FOR, který je na rozdíl od IFELSE poněkud komplikovanější.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+> Příklad 2
+
+Vytvořte vektor s názvem Pracanti, který rozdělí jedince z Katanu na muže a ženy podle proměnné Práce. Výsledkem budou čtyři úrovně faktoru: "pracující žena", "pracující muž", "nepracující žena" a  "nepracující muž". Výsledný vektor připojte k databázi Katan.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/4.kapitola/4.2.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 3.379206, lat = 6.524379, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 3.379206, lat = 6.524379,
+            '<h6><a href="https://cs.wikipedia.org/wiki/Lagos" target="_blank" style="color:#014B7C">Lagos</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Cyklus FOR
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### N'Djamena: Cyklus For {.pozadi}
+Představte si, že se sejde v jedné z čadských kaváren v Ndžameně matematik, statistik a ekonom, kteří kromě jedné hrací kostky mají též hlavu plnou následující sázky. Podstatou sázky je naházet v průměru co největší číslo. Pokud tak například házíte desetkrát, sečtete výsledky hodů a vydělíte je jejich počtem, nic složitého. Aby to ale nebylo zas tak jednoduché (jedná se přeci jenom o vysokoškoláky), každý hráč bude házet v jiném počtu. Ekonom, jelikož šetří čas, si hodí pouze 3krát. Statistik chce házet 9krát a matematik, jelikož je kostka jeho, si chce hodit dokonce 27krát. Kdo dopadne v této sázce nejlépe? 
+
+Tento příklad lze řešit dvěma způsoby. Buďto můžeme házet kostkou, nebo použít cyklus FOR. Pro úsporu času vybereme raději druhou variantu. Seznamme se nejdříve se skriptem pro ekonoma.
+
+```{r, eval=F, echo=T}
+# skript pro ekonoma
+N <- 4
+kostka <- numeric(N)
+kostka[1] <- 0  
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6, size = 1)
+} 
+vysledek_ekonom <- kostka[N]/(N-1)
+```
+```{r echo=FALSE}
+N <- 4
+kostka <- numeric(N)
+kostka[1] <- 0  
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6, size = 1)
+} 
+vysledek_ekonom <- kostka[N]/(N-1)
+vysledek_ekonom
+```
+
+Vyznáte se v cyklu? Projděme si ho hezky od začátku. 
+
+```{r, eval=F, echo=T}
+N <- 4
+```
+
+Nejdříve je nutné zvolit proměnnou N, která nám říká, kolikrát se daný příkaz má v cyklu zopakovat. My jsme však chtěli cyklus zopakovat u ekonoma třikrát a nikoliv čtyřikrát, kde se tedy stala chyba? Nikde. Tento zádrhel si osvětlíme za chviličku. Pokračujme dál.
+
+```{r, eval=F, echo=T}
+kostka <- numeric(N)
+```
+
+Další proměnnou, kterou si musíme před započetím cyklu vytvořit, je proměnná kostka, která nám bude sčítat jednotlivé hody. Tu doplníme příkazem `numeric(N)`, díky čemuž vytvoříme prázdný vektor o N prvcích. Proč však jednoduše nezadáme, že `kostka <- 0`, když chceme před prvním hodem začínat od nuly? Protože pro R by bylo postupné rozšiřování datové struktury vždy o několik málo prvků výpočetně velmi náročné, a to kvůli neustálé potřebě alokovat nové místo v paměti počítače. Mnohem efektivnější je tedy naráz vyhradit velký blok paměti a do něj postupně hodnoty ukládat. Zvlášť pokud chceme provádět velké množství opakování (což se ale v této chvíli prozatím dít nebude).
+
+```{r, eval=F, echo=T}
+kostka[1] <- 0  
+```
+
+Třetí řádek je zde pouze pro lepší přehlednost (tudíž ho lze postrádat). Říká nám, že hodnota prvního článku vektoru kostka je nula, protože před prvním hodem je součet všech hodů též nula. 
+
+```{r, eval=F, echo=T}
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6, size = 1)
+} 
+```
+
+A nyní konečně cyklus samotný, který začíná počítadlem t. Počítadlo t `(t in 2:N)` značí, kolikrát se má daný příkaz postupně vykonat. Zvídavého studentka v této chvíli napadne, proč na místo N nenapíšeme třeba rovnou číslo čtyři? Jistě, šlo by to, ale jednoduší bude použít proměnnou N, a to pro případ, že bychom chtěli v budoucnu počet opakování změnit a nijak při tom nepřepisovat cyklus.
+
+Cyklus samotný funguje následovně. Proměnná kostka je vektor, který má počet členů daný počítadlem t (v našem případě je to od 2 do 4, tj. vektor obsahuje 3 členy). Vzhledem k tomu, že chceme k předchozímu hodu kostkou vždy přičíst výsledek nového hodu kostkou, musíme použít formulaci `kostka[t] <- kostka[t-1] + sample(6, size = 1)`.
+
+Z jakého důvodu? Proměnná `kostka[t]` se dá zapsat jako `kostka[2]`, protože t začíná dvojkou `(t in 2:N)`. Za rovnítkem (chcete-li zobáčkem s pomlčkou) následuje `kostka[t-1]` nebo-li `kostka[2-1]` a to je v našem případě nula (viz třetí řádek cyklu `kostka[1] <- 0`) plus výsledek prvního hodu kostkou `sample(6, size = 1)`. `Kostka[2]` tudíž obsahuje první hod kostkou, proto N musí být 4, chceme-li cyklus zopakovat třikrát. Druhý hod kostkou `(kostka[3])` proběhne obdobně.
+
+```{r, eval=F, echo=T}
+vysledek_ekonom <-  kostka[N]/(N-1)
+```
+
+Poslední řádek našeho cyklu již není součástí cyklu samotného. Pouze nám sděluje průměrnou hodnotu hodu, kterou získáme po sečtení všech hodů kostkou (`kostka[4]`, resp. `kostka[N]`) a vydělení počtem hodů `(N-1)`.
+Teorii máme za sebou, podívejme se proto na skripty pro statistika a matematika, které jsou již obdobné.
+
+```{r, eval=F, echo=T}
+# skript pro statistika
+N <- 10
+kostka <- numeric(N)
+kostka[1] <- 0
+
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6, size = 1) # lze i zkráceně sample(6, 1)
+}
+
+vysledek_statistik <- kostka[N]/(N-1)
+```
+```{r echo=FALSE}
+# skript pro statistika
+N <- 10
+kostka <- numeric(N)
+kostka[1] <- 0
+
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6, size = 1)
+}
+
+vysledek_statistik <- kostka[N]/(N-1)
+vysledek_statistik
+```
+
+```{r, eval=F, echo=T}
+# skript pro matematika
+N <- 28
+kostka <- numeric(N)
+kostka[1] <- 0
+
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6,size = 1)
+} 
+
+vysledek_matematik <-  kostka[N]/(N-1)
+```
+```{r echo=FALSE}
+# skript pro matematika
+N <- 28
+kostka <- numeric(N)
+kostka[1] <- 0 
+
+for (t in 2:N) { 
+  kostka[t] <- kostka[t-1] + sample(6,size = 1)
+} 
+
+vysledek_matematik <-  kostka[N]/(N-1)
+vysledek_matematik
+```
+
+Nyní se možná ptáte, zdali zkopírováním všech tří předchozích skriptů do jednoho nevytvoříme chybovou hlášku. V takovémto sloučeném skriptu totiž bude několikrát uvedena proměnná kostka a N, nicméně pokaždé pro jiný cyklus. Takový postup však ničemo nevadí, jelikož R zpracovává příkazy po řádcích. Nejdříve se proto zpracuje první cyklus pro ekonoma, poté druhý pro statistika a nakonec třetí pro matematika. Ve všech třech případech tak vždy na začátku daného cyklu dojde k přepsání hodnot proměnných `kostka` a `N` na nové počáteční hodnoty. Výsledky však zůstanou uchovány, jelikož každý z nich se jmenuje jinak (`vysledek_ekonom, vysledek_statistik a vysledek_matematik`).
+
+Pokaždé, když tento příklad v R zopakujeme, získáme odlišný výsledek. Jednou vyhraje matematik, podruhé ekonom, jindy zase statistik. Co když ale tento experiment zopakujeme 1000krát? Kdo z nich vyhraje nejčastěji? Odpověď nalezneme pomocí následujícího již poněkud delšího skriptu.
+
+```{r, eval=F, echo=T}
+N <- 1000 # cyklus pro ekonoma
+vysledek_ekonom <- numeric(N)
+
+# Výsledkem tohoto cyklu má být vektor s názvem vysledek_ekonom, který  
+# bude obsahovat 1 000 řádků, kde každý řádek bude obsahovat průměr ze 
+# tří hodů kostkou. 
+
+for (x in 1:N) {
+  N2 <- 4 
+# Místo obligátního t můžeme zvolit i jiné písmeno, kupříkladu x.
+  
+# V těle cyklu se může nacházet i další cyklus, jako třeba nyní. K tomu  
+# abychom totiž zjistili součet tří po sobě jdoucích hodů, je nutné  
+# vytvořit vložený cyklus, který však už důvěrně známe.
+  
+# Proměnná N2 se takto nejmenuje kvůli tomu, že už s jedním N pracujeme, 
+# a že bychom tímto N = 4 přepsali N = 1000, jelikož proměnné uvnitř  
+# cyklu jsou oddělené od těch mimo něj. Důvodem je skutečnost, že s  
+# proměnnou N2 pracujeme i mimo cyklus v příkazu  
+# vysledek_ekonom[x] <- (kostka[N2])/(N2-1), ve kterém chceme použít 
+# hodnotu N2 <- 4, a nikoliv N <- 1000.
+  
+  kostka <- numeric(N)
+  kostka[1] <- 0  
+  for (t in 2:N2) { 
+    kostka[t] <- kostka[t-1] + sample(6,1)
+  } 
+  vysledek_ekonom[x] <- kostka[N2]/(N2-1) 
+}
+
+# Tato část se týká cyklu, ve kterém naplňujeme proměnnou  
+# vysledek_ekonom průměrnými velikostmi hodů kostkou v jednotlivých  
+# kolech hry. A jaká je vůbec logika fungování těchto dvou cyklů   
+# dohromady? R postupuje hezky řádek po řádku až do první pravé   
+# složené závorky }, kterou vidíte nad tímto popiskem. V této     
+# chvíli se totiž začne opakovat vložený cyklus, se kterým sčítáme   
+# jednotlivé hody kostkou. Po tom, co tento cyklus třikrát proběhne,    
+# dojde k jeho ukončení a přejdeme zpět k prvnímu cyklu, ve kterém  
+# je proveden příkaz vysledek_ekonom[x] <- (kostka[N2])/(N2-1).  
+# Po jeho prvním proběhnutí máme za sebou první kolo hodů ekonoma a  
+# vracíme se zpět do vloženého cyklu, kde opět třikrát házíme kostkou, 
+# a tak dále ještě 999krát.
+
+N <- 1000 # obdobně proběhne cyklus pro statistika
+vysledek_statistik <- numeric(N)
+for (x in 1:N) {
+  N2 <- 10 # zde budeme házet 9 krát
+  kostka <- numeric(N)
+  kostka[1] <- 0  
+  for (t in 2:N2) { 
+    kostka[t] <- kostka[t-1] + sample(6,1)
+  } 
+  vysledek_statistik[x] <- kostka[N2]/(N2-1)
+}
+
+N <- 1000 # a ještě cyklus pro matematika
+vysledek_matematik <- numeric(N)
+for (x in 1:N) {
+  N2 <- 28 # zde budeme házet 27 krát
+  kostka <- numeric(N)
+  kostka[1] <- 0  
+  for (t in 2:N2) { 
+    kostka[t] <- kostka[t-1] + sample(6,1)
+  } 
+  vysledek_matematik[x] <- kostka[N2]/(N2-1)
+}
+Soutez <- cbind(vysledek_ekonom, vysledek_matematik, vysledek_statistik) 
+
+# Jednotlivé vektory s průměrnou velikostí hodů pro ekonoma, matematika  
+# a statistika v tisíci kolech máme vytvořeny, proto je nyní můžeme
+# jednoduše spojit dohromady a vytvořit data frame Soutez.
+
+Soutez <- as.data.frame(Soutez) 
+
+# Nyní použijeme funkci ifelse a zjistíme, kdo byl v jakém kole nejlepší,  
+# tj. kdo naházel v průměru nejvyšší hodnotu.
+
+# Příkaz ifelse je nutné zapsat třikrát: pro ekonoma, pro statistika  
+# a též matematika.
+
+Vitez <-
+  ifelse( 
+    Soutez$vysledek_ekonom <= Soutez$vysledek_statistik & 
+    Soutez$vysledek_ekonom <= Soutez$vysledek_matematik, "ekonom",
+  ifelse( 
+    Soutez$vysledek_statistik <= Soutez$vysledek_ekonom & 
+    Soutez$vysledek_statistik <= Soutez$vysledek_matematik, "statistik", 
+      
+  ifelse(
+    Soutez$vysledek_matematik <= Soutez$vysledek_ekonom & 
+    Soutez$vysledek_matematik <= Soutez$vysledek_statistik, 
+                                       "matematik", "NA"))) 
+
+# Na závěr nesmíme zapomenout na NA, a to pro případ, že by ani jedna z   
+# podmínek ifelse nebyla splněna. To by se ale nemělo stát.
+
+Soutez <- cbind(Soutez, Vitez) 
+
+# Tento příkaz není nutný, ale proměnnou Vitez můžeme spojit s proměnnou 
+# Soutez, abychom měli vše hezky pohromadě.
+
+# Pro lepší přehlednost hodnoty ještě zaokrouhlíme.
+
+Soutez$vysledek_ekonom <- round(Soutez$vysledek_ekonom, 2)
+Soutez$vysledek_matematik <- round(Soutez$vysledek_matematik, 2)
+Soutez$vysledek_statistik <- round(Soutez$vysledek_statistik, 2)
+
+table(Vitez) # konečný výsledek
+```
+
+Konečným vítězem našeho klání se stává ekonom. Gratulujeme.
+
+```{r echo=FALSE}
+N <- 1000 # cyklus pro ekonoma
+vysledek_ekonom <- numeric(N)
+
+for (x in 1:N) { 
+  N2 <- 4 
+  
+  kostka <- numeric(N)
+  kostka[1] <- 0  
+  for (t in 2:N2) { 
+    kostka[t] <- kostka[t-1] + sample(6,1)
+  } 
+  vysledek_ekonom[x] <- kostka[N2]/(N2-1) 
+  }
+
+N <- 1000 # obdobně proběhne cyklus pro statistika
+vysledek_statistik <- numeric(N)
+for (x in 1:N) {
+  N2 <- 10 
+  kostka <- numeric(N)
+  kostka[1] <- 0  
+  for (t in 2:N2) { 
+    kostka[t] <- kostka[t-1] + sample(6,1)
+  } 
+  vysledek_statistik[x] <- kostka[N2]/(N2-1)
+}
+
+N <- 1000 # a ještě cyklus pro matematika
+vysledek_matematik <- numeric(N)
+for (x in 1:N) {
+  N2 <- 28 
+  kostka <- numeric(N)
+  kostka[1] <- 0  
+  for (t in 2:N2) { 
+    kostka[t] <- kostka[t-1] + sample(6,1)
+  } 
+  vysledek_matematik[x] <- kostka[N2]/(N2-1)
+}
+Soutez <- cbind(vysledek_ekonom, vysledek_matematik, vysledek_statistik) 
+
+Soutez <- as.data.frame(Soutez) 
+Vitez <-
+  ifelse( 
+    Soutez$vysledek_ekonom <= Soutez$vysledek_statistik & 
+    Soutez$vysledek_ekonom <= Soutez$vysledek_matematik, "ekonom",
+  
+  ifelse( 
+    Soutez$vysledek_statistik <= Soutez$vysledek_ekonom & 
+    Soutez$vysledek_statistik <= Soutez$vysledek_matematik, "statistik", 
+      
+  ifelse(
+    Soutez$vysledek_matematik <= Soutez$vysledek_ekonom & 
+    Soutez$vysledek_matematik <= Soutez$vysledek_statistik, "matematik","NA"))) 
+
+
+Soutez$vysledek_ekonom <- round(Soutez$vysledek_ekonom, 2)
+Soutez$vysledek_matematik <- round(Soutez$vysledek_matematik, 2)
+Soutez$vysledek_statistik <- round(Soutez$vysledek_statistik, 2)
+
+table(Vitez) 
+```
+
+A proč vlastně vyhrál ekonom? Myslíte si, že je to náhoda? Není. Zkuste sami přijít na to, jak se to mohlo stát.
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady{.pozadi}
+
+> Příklad 3
+
+Ve třetím příkladu této lekce se vrátíme zpět k databázi specdata. Vaším úkolem bude vytvořit funkci s názvem korelace, která zjistí korelaci mezi proměnnými sulfate a nitrate po zadání čísla daného souboru csv. Napíšeme-li například příkaz `korelace(1)`, měli bychom získat výsledek -0.2225526. Na rozdíl od příkladu č. 1 byste však tento měli být schopni vyřešit bez vyhledávání správného řešení na internetu. Pouze vás upozorním na to, že jednotlivé csv soubory obsahují velké množství chybějících údajů.
+
+> Příklad 4
+
+Vaším dalším navazujícím úkolem bude vytvořit data frame, který bude obsahovat dva sloupce. V prvním z nich bude uvedeno číslo (název) csv souboru a ve druhém bude vypočítána hodnota korelace mezi proměnnými sulfate a nitrate. Výpočty proveďte pouze pro prvních 50 csv souborů. U tohoto příkladu bude opět nezbytné využít služeb diskusních fór na internetu.
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/4.kapitola/4.3.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 15.055741, lat = 12.134846, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 15.055741, lat = 12.134846,
+            '<h6><a href="https://en.wikipedia.org/wiki/N%27Djamena" target="_blank" style="color:#014B7C">N´Djamena</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Cyklus While
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Mogadišo: Cyklus While {.pozadi}
+Cyklus WHILE funguje tak, že pracuje pouze do doby, dokud je splněna určitá podmínka. Pojďme se společně podívat na další příklad, který nám předešlou větu osvětlí. A abychom nevyšli ze cviku, opět si zaházíme imaginární počítačovou kostkou v jedné z mnoha internetových kaváren v Mogadišu, které navzdory tomu, že je z velké části díky válkám poničené, nabízí vysoce rychlé internetové připojení za velice nízké ceny (což je dáno zejména tím, že vláda nefunguje a nevybírá téměř žádné daně). Dejme tomu, že chceme třeba vědět, kolikrát je nutné hodit kostkou, než nám padne oblíbená šestka. 
+
+```{r, eval=F, echo=T}
+pocet_hodu <- 0
+kostka <- 0
+while (kostka != 6) {
+  pocet_hodu <- pocet_hodu + 1
+  kostka <- sample(6, size = 1)}
+print(pocet_hodu)
+```
+```{r echo=FALSE}
+pocet_hodu <- 0
+kostka <- 0
+while (kostka != 6) {
+  pocet_hodu <- pocet_hodu + 1
+  kostka <- sample(6, size = 1)}
+print(pocet_hodu)
+```
+
+V první řadě je nutné vytvořit dvě proměnné. Tou první bude počítadlo hodů kostkou a tou druhou se stane samotná hodnota hodu kostkou. V dalším kroku přistoupíme k zápisu cyklu WHILE, u kterého v kulaté závorce definujeme podmínku. Následně přijde složená závorka, do které zapíšeme veškeré příkazy, které se mají zpracovat v případě, že podmínka byla splněna. 
+
+Vzhledem k tomu, že počáteční hodnota proměnné kostka je nula (`kostka <- 0`), máme jistotu, že cyklus proběhne alespoň jednou (podmínkou cyklu je `kostka != 6`). Poté se nám počítadlo hodů zvýší o jednotku (`pocet_hodu <- pocet_hodu + 1`) a provedeme samotný hod kostkou (`kostka <- sample(6, size = 1)`). V případě, že nepadla hned napoprvé šestka, cyklus proběhne znovu. V opačném případě nám náš skript vypíše výsledek, čímž by byla jednička. 
+
+Některým z vás se může jako drobný zádrhel jevit příkaz `pocet_hodu <- pocet_hodu + 1`, který z matematického hlediska nedává smysl. Máte naprostou pravdu, ale toto není matematika, ale programování. Příkaz obecně funguje tak, že nejdříve se vyhodnotí pravá strana kódu a teprve poté až ta levá. Jakou to má logiku? Podívejme se na následující příklad.
+
+```{r, eval=F, echo=T}
+pocet_hodu <- 0
+pocet_hodu <- pocet_hodu + 1
+print(pocet_hodu) 
+```
+```{r echo=FALSE}
+pocet_hodu <- 0
+pocet_hodu <- pocet_hodu + 1
+print(pocet_hodu) 
+```
+
+V jakémkoli příkazu se nejdříve vyhodnotí pravá část funkce za symbolem `<-` či rovnítka, která následně přiřadí hodnotu proměnné vlevo. Je to pochopitelné, pokud by byl totiž postup obrácený, nikdy bychom žádnou proměnnou vytvořit nemohli. Musíme si totiž uvědomit, že symbol `<-` zde nezastupuje rovnítko jako z matematické rovnice, jelikož tu žádné rovnice nemáme.
+
+```{r, eval=F, echo=T}
+pocet_hodu <- 0
+pocet_hodu <- pocet_hodu + 1 # tj. 0 = 0 + 1? asi ne :-)
+print(pocet_hodu) 
+
+# nemohli bychom ani přepsat současnou hodnotu v proměnné
+pocet_hodu <- 0
+pocet_hodu <- 3 # tj. 0 = 3? asi též ne :-)
+```
+
+Nemáte-li připomínek, vrhněte se na další příklad, který opět bohatě procvičí vaše nově získané znalosti o cyklech FOR a WHILE. Před tím se však ještě podívejte na modrý box, který ve zkratce shrne základní principy fungování podmínek a cyklů.
+
+<div id="demobox">
+
+
+<h2>BOX: Rozdíl mezi podmínkami a cykly</h2>
+
+**Podmínka IF: **
+Podmínka IF se vyhodnotí vždy pouze jednou. Buď jako pravdivá (a skript provede nějaký příkaz), nebo jako nepravdivá (a skript provede jiný příkaz).
+
+**Podmínka IFELSE: **
+S pomocí této podmínky můžeme vytvořit novou faktorovou proměnnou, která bude vycházet z hodnot jiné proměnné, podobně jako funkce `cut()` (příkladem může být rozdělení proměnné věk na děti a dospělé).  
+
+**Cyklus FOR: **
+Pokud chceme, aby se určitý příkaz zopakoval vícekrát v předem stanoveném množství, použijeme cyklus FOR.
+
+**Cyklus WHILE: **
+Cyklus WHILE opakuje kód, dokud je splněná předem stanovená podmínka. Poté se ukončí a vypíše výsledek.
+
+</div>
+
+Column {data-width=350 .tabletmod}
+-----------------------------------------------------------------------
+
+### Příklady {.pozadi}
+
+> Příklad 5
+
+Franta a Lojza se rádi sází. Lojza ale není příliš velký chytrák, a tak toho Franta občas využívá, jako třeba nyní při hře v kostky. V každém kole každý z hráčů hází dvěma kostkami tak dlouho, dokud mu nepadne jeho oblíbené číslo. V případě Franty se jedná o osmičku a v případě Lojzy o dvanáctku. Kolo vyhraje ten, komu jeho oblíbené číslo padne za nejméně hodů (je to hra pro doopravdy dlouhé zimní večery). V případě shody vyhrává Lojza, který si tak myslí, jak na Frantu nevyzrál. Simulujte 50 kol této hry a určete v kolika procentech kol vyhraje Lojza?
+
+
+### {.mapa}
+```{r echo=FALSE, fig.height=7.5, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(readxl)
+
+
+df <- read.csv2("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/4.kapitola/4.4.mapa.csv")
+
+
+myMap <-  leaflet(data = df) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addProviderTiles("Stamen.TonerHybrid") %>% 
+  setView(lng = 45.318161, lat = 2.046934, zoom = 2.5)  %>%
+  addMiniMap(tiles = providers$Esri.WorldImagery,
+             toggleDisplay = TRUE, minimized = FALSE) %>%
+  addSearchOSM()
+
+for(group in levels(df$group)){
+  myMap <-  addPolylines(myMap,
+                         lng= ~ long,
+                         lat= ~ lat,
+                         data = df[df$group == group,],
+                         color= ~ color,
+                         weight = 8)
+}
+
+myMap %>%
+  addFullscreenControl(myMap, position = "topleft") %>%
+  addCircleMarkers(~long, ~lat, 
+                   radius=15,
+                   color=~ifelse(val>=59,"#38CE23",ifelse(val>=51.1 & val<59,"#FFD900",ifelse(val<51.1,"#FF0000","#FF0000"))),
+                   stroke = FALSE, 
+                   fillOpacity = 0.9,
+                   popup = ~as.character(name)) %>% 
+  addPopups(lng = 45.318161, lat = 2.046934, 
+            '<h6><a href="https://cs.wikipedia.org/wiki/Mogadi%C5%A1o" target="_blank" style="color:#014B7C">Mogadišo</a></h6>',
+            options = popupOptions(closeOnClick = FALSE))
+```
+
+# Příklady
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+### Příklady: řešení {.pozadi}
+
+> Příklad 1
+
+Očekáváte v tuto chvíli jednoduchý příklad na IF? Tak to jste na omylu. Je tu totiž připravena jedna opravdová chuťovka. Před tím si však stáhněte soubor s názvem <a href="https://d396qusza40orc.cloudfront.net/rprog%2Fdata%2Fspecdata.zip" target="_blank">specdata</a>, který obsahuje 332 csv dokumentů. Vaším úkolem bude vytvořit funkci s názvem **getmonitor**, jenž nám po zadání čísla (respektive názvu) souboru spustí příkaz `summarize()` dané datové tabulky csv. Uveďme si konkrétní příklad. Pokud do konzole zapíšeme příkaz `getmonitor(1)`, chtěli bychom získat následující výstup.
+
+```{r echo=FALSE}
+setwd("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/specdata/specdata")
+getmonitor <- function(id, summarize = TRUE) {
+  
+  pocet <- nchar(id)
+  if(pocet==1)
+  {
+    cesta <- paste(getwd(),"/","00",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if (pocet==2)
+  {
+    cesta <- paste(getwd(),"/","0",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if(pocet==3)
+  {
+    cesta <- paste(getwd(),"/",id,".csv",sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+}
+getmonitor(1)
+```
+
+Tímto však nekončí. V případě, že zapíšeme příkaz `getmonitor(1, summarize = FALSE)`, chtěli bychom jako výstup získat celou tabulku 001.csv ze souboru specdata.
+
+```{r echo=FALSE}
+setwd("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/specdata/specdata")
+getmonitor <- function(id, summarize = TRUE) {
+  
+  pocet <- nchar(id)
+  if(pocet==1)
+  {
+    cesta <- paste(getwd(),"/","00",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if (pocet==2)
+  {
+    cesta <- paste(getwd(),"/","0",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if(pocet==3)
+  {
+    cesta <- paste(getwd(),"/",id,".csv",sep="")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+}
+Data1 <- getmonitor(1, summarize = FALSE)
+head(Data1)
+```
+
+V tuto chvíli je mi zřejmý váš vystrašený výraz ve tváři. „Jak toto mohu zvládnout?“ Zkuste googlit a uvidíte, že brzy něco objevíte. Jako malou nápovědu vám poskytnu dvě klíčová slova „specdata“ a „getmonitor“. To ostatní je už na vás. Jelikož vás mám ale rád, poskytnu vám ještě jednu nápovědu. Ve skriptu, který se budete nyní snažit vytvořit, budete nuceni pracovat s adresářem. Cože to je?
+
+Pokud v R, ale vlastně v jakémkoli například kancelářském programu chcete něco uložit, automaticky se vám objeví určitá složka, většinou to bývají Dokumenty. V R je tomu taktéž. Vy však budete potřebovat pro tento příklad nastavit adresář (working directory) na složku specdata. K tomu využijete příkazů `getwd()` a `setwd()` První z nich po zapsání do konzole (zapište příkaz `getwd()` včetně prázdných závorek) zobrazí popis cesty do vašeho aktuálního adresáře. Druhý z nich vám umožní tuto cestu změnit jako např. takto: `setwd("C:/Users/.../specdata")`. Dávejte si při tom pozor na směr lomítek, jelikož při kopírování adresy složky z Windows budete vidět adresu s obrácenými lomítky: `C:\Users\...\specdata`. 
+
+Jistě, málokomu by se v tuto chvíli povedlo správný skript vytvořit pouze z hlavy bez jakékoli předlohy. V reálném světě ale nikdy nebudete pracovat s žádnou předlohou a řešením na konci lekce. Vaším věrným společníkem při psaní skriptů bude vždy Google a Stack Overflow. Proto se ničeho nebojte a vrhněte se do řešení zadaného problému. Vaším skutečným úkolem totiž nikdy nebude psaní skriptů, jelikož ty nikoho nezajímají. Vaším úkolem je řešit problémy a jeden z nich máte právě před sebou. Kromě toho na této cestě poznáte, že i když byste výsledný skript v tuto chvíli nejspíš sami nevymysleli, dokážete mu porozumět, modifikovat ho a dále si s ním hrát. Přeji hodně štěstí.
+
+Řešení je následující.
+
+```{r, eval=F, echo=T}
+# Nejdříve si musíme nastavit working directory do složky specdata.
+
+setwd("C:/Users/.../specdata")
+
+# Ve druhém kroku začneme vytvářet funkci getmonitor, 
+# která bude obsahovat parametry id (název souboru) 
+# a summarize. Pokud chceme provést příkaz summarize,
+# volíme TRUE. V případě FALSE chceme, aby příkaz 
+# getmonitor do konzole vypsal celou tabulku se zadaným 
+# názvem dle id.
+
+getmonitor <- function(id, summarize = TRUE) {
+
+# Ve skriptu je nutné se vypořádat s tím, že názvy souborů obsahují nuly 
+# na začátku, pokud není číslo trojciferné (např. 001.csv či 022.csv).
+  
+  pocet <- nchar(id) # nchar spočítá počet znaků (bez ohledu na čísla a písmena)
+  if(pocet == 1)
+  {
+    cesta <- paste(getwd(), "/", "00", paste(id, ".csv", sep = ""), sep = "")
+    data <- read.csv(cesta)
+    
+    # Proměnná cesta vytvoří cestu k souboru, která bude použita na následujícím 
+    # řádku, který načte daný soubor a pojmenuje ho jako data.
+    
+    # V případě načítání souborů xlsx bychom použili následující formu příkazů.
+    # library(readxl) # Nejdříve musíme načíst balíček pro načítání 
+                      # excelových souborů do konzole.
+    # cesta <- paste(getwd(), "/", "00", paste(id, ".xlsx", sep = ""), sep = "")
+    # data <- read_excel(cesta) # nezapomeňte na podtržítko místo tečky.
+    
+    # Nyní máme data připravena a můžeme znovu použít podmínku IF. 
+    
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  
+  # Výše uvedený skript musíme zopakovat ještě dvakrát, a to pro případ,
+  # kdy budeme chtít funkci využít nejen pro jednociferný, ale i dvojciferný a
+  # trojciferný název souboru csv.
+  
+  if (pocet == 2)
+  {
+    cesta <- paste(getwd(), "/", "0", paste(id, ".csv", sep = ""), sep = "")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  
+  # a ještě jednou
+  
+  if(pocet == 3)
+  {
+    cesta <- paste(getwd(), "/", id, ".csv", sep = "")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+}
+
+# Nakonec tu máme sladkou odměnu ve formě fungující funkce.
+getmonitor(1)
+
+# Vyzkoušejte i příkaz getmonitor(1, summarize = FALSE).
+
+# OPAKOVÁNÍ: Co se stane, pokud použijeme zápis: 
+#     1) getmonitor(1, summarize = FALSE);
+#     2) getmonitor(id = 1, FALSE);
+#     3) getmonitor(1, FALSE)?
+# Nalezneme v těchto příkazech skutečný rozdíl? Vyzkoušejte.
+```
+```{r echo=FALSE}
+setwd("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/specdata/specdata")
+getmonitor <- function(id, summarize = TRUE) {
+  
+  pocet <- nchar(id)
+  if(pocet==1)
+  {
+    cesta <- paste(getwd(),"/","00",paste(id,".csv", sep = ""),sep = "")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if (pocet==2)
+  {
+    cesta <- paste(getwd(),"/","0",paste(id,".csv", sep = ""), sep = "")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+  if(pocet==3)
+  {
+    cesta <- paste(getwd(),"/",id,".csv", sep = "")
+    data <- read.csv(cesta)
+    if(summarize == TRUE)
+    {
+      print(summary(data))
+    }
+    else 
+      return(data)
+  }
+}
+getmonitor(1)
+```
+
+> Příklad 2
+
+Vytvořte vektor s názvem Pracanti, který rozdělí jedince z Katanu na muže a ženy podle proměnné Práce. Výsledkem budou čtyři úrovně faktoru: "pracující žena", "pracující muž", "nepracující žena" a  "nepracující muž". Výsledný vektor připojte k databázi Katan.
+
+```{r, eval=F, echo=T}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Pracanti <- 
+  ifelse(
+    Katan$Práce == "ano" & 
+      Katan$Pohlaví == "žena",
+      "pracující žena",
+  ifelse( 
+    Katan$Práce == "ano" & 
+      Katan$Pohlaví == "muž",
+      "pracující muž",
+  ifelse(
+    Katan$Práce == "ne" & 
+      Katan$Pohlaví == "žena",
+      "nepracující žena",
+  ifelse( 
+    Katan$Práce == "ne" & 
+      Katan$Pohlaví == "muž",
+      "nepracující muž", "NA"))))
+
+Katan$Pracanti <- Pracanti
+Katan
+```
+```{r echo=FALSE}
+library(readxl)
+Katan <- read_excel("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/Katan.xlsx")
+
+Pracanti <- 
+  ifelse(
+    Katan$Práce == "pracuje" & 
+      Katan$Pohlaví == "žena",
+      "pracující žena",
+  ifelse( 
+    Katan$Práce == "pracuje" & 
+      Katan$Pohlaví == "muž",
+      "pracující muž",
+  ifelse(
+    Katan$Práce == "nepracuje" & 
+      Katan$Pohlaví == "žena",
+      "nepracující žena",
+  ifelse( 
+    Katan$Práce == "nepracuje" & 
+      Katan$Pohlaví == "muž",
+      "nepracující muž", "NA"))))
+
+Katan$Pracanti <- Pracanti
+Katan[,c(1:7, 10)]
+```
+
+> Příklad 3
+
+Ve třetím příkladu této lekce se vrátíme zpět k databázi specdata. Vaším úkolem bude vytvořit funkci s názvem korelace, která zjistí korelaci mezi proměnnými sulfate a nitrate po zadání čísla daného souboru csv. Napíšeme-li například příkaz `korelace(1)`, měli bychom získat výsledek -0.2225526. Na rozdíl od příkladu č. 1 byste však tento měli být schopni vyřešit bez vyhledávání správného řešení na internetu.
+
+```{r, eval=F, echo=T}
+korelace <- function(id) {
+  
+  pocet <- nchar(id)
+  if(pocet == 1)
+  {
+    cesta <- paste(getwd(), "/", "00", paste(id, ".csv", sep = ""), sep = "")
+    data <- read.csv(cesta)
+    print(cor(
+      data$sulfate, 
+      data$nitrate, 
+      use = "complete.obs")) 
+  }
+  if (pocet == 2)
+  {
+    cesta <- paste(getwd(), "/", "0", paste(id, ".csv", sep = ""), sep = "")
+    data <- read.csv(cesta)
+    print(cor(
+      data$sulfate, 
+      data$nitrate, 
+      use = "complete.obs")) 
+  }
+  if(pocet == 3)
+  {
+    cesta <- paste(getwd(), "/", id, ".csv", sep = "")
+    data <- read.csv(cesta)
+    print(cor(
+      data$sulfate, 
+      data$nitrate, 
+      use = "complete.obs")) 
+}
+}
+korelace(1)
+```
+```{r echo=FALSE}
+setwd("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/specdata/specdata")
+korelace <- function(id) {
+  
+  pocet <- nchar(id)
+  if(pocet==1)
+  {
+    cesta <- paste(getwd(),"/","00",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    print(cor(
+      data$sulfate, 
+      data$nitrate, 
+      use = "complete.obs")) 
+  }
+  if (pocet==2)
+  {
+    cesta <- paste(getwd(),"/","0",paste(id,".csv",sep=""),sep="")
+    data <- read.csv(cesta)
+    print(cor(
+      data$sulfate, 
+      data$nitrate, 
+      use = "complete.obs")) 
+  }
+  if(pocet==3)
+  {
+    cesta <- paste(getwd(),"/",id,".csv",sep="")
+    data <- read.csv(cesta)
+    print(cor(
+      data$sulfate, 
+      data$nitrate, 
+      use = "complete.obs")) 
+}
+}
+korelace(1)
+```
+
+> Příklad 4
+
+Vaším dalším navazujícím úkolem bude vytvořit data frame, který bude obsahovat dva sloupce. V prvním z nich bude uvedeno číslo (název) csv souboru a ve druhém bude vypočítána hodnota korelace mezi proměnnými sulfate a nitrate. Výpočty proveďte pouze pro prvních 50 csv souborů. U tohoto příkladu bude opět nezbytné využít služeb Googlu.
+
+```{r, eval=F, echo=T}
+# Na úvod začneme cyklem FOR.
+
+N <- 50
+Korelace <- numeric(N)
+Korelace[1] <- 1 
+for (t in 1:N) {
+  # Pamatujete si na první příklad, ve kterém jsme řešili problém 
+  # nul u subourů s jednocifernými a dvojcifernými názvy? Naše řešení
+  # spočívalo ve využití podmínky IF a příkazu nchar(). Zde ale vidíte, 
+  # že se řešení může vejít i na jeden krátký řádek. Následující příkaz
+  # navíc data rovnou i načte.
+  
+  cesta <- read.csv(
+    paste(getwd(), "/", formatC(t, width = 3, flag = "0"), ".csv", sep = ""))
+  
+  Korelace[t] <- cor(
+    cesta$sulfate, 
+    cesta$nitrate, 
+    use = "complete.obs")
+}
+
+# Na závěr vytvoříme samotný data frame.
+ID <- 1:50
+Data_korelace <- data.frame(ID, Korelace)
+Data_korelace
+```
+```{r echo=FALSE}
+setwd("C:/Users/jsoln/OneDrive/Desktop/RLANDIO/specdata/specdata")
+
+N <- 50
+Korelace <- numeric(N)
+Korelace[1] <- 1 
+for (t in 1:N) {
+  cesta <- read.csv(paste(getwd(), "/", formatC(t, width = 3, flag = "0"), ".csv", sep = ""))
+  Korelace[t] <- cor(
+    cesta$sulfate, 
+    cesta$nitrate, 
+    use = "complete.obs")
+}
+
+ID <- 1:50
+Data_korelace <- data.frame(ID, Korelace)
+Data_korelace
+```
+
+> Příklad 5
+
+Franta a Lojza se rádi sází. Lojza ale není příliš velký chytrák, a tak toho Franta občas využívá, jako třeba nyní při hře v kostky. V každém kole každý z hráčů hází dvěma kostkami tak dlouho, dokud mu nepadne jeho oblíbené číslo. V případě Franty se jedná o osmičku a v případě Lojzy o dvanáctku. Kolo vyhraje ten, komu jeho oblíbené číslo padne za nejméně hodů (je to hra pro doopravdy dlouhé zimní večery). V případě shody vyhrává Lojza, který si tak myslí, jak na Frantu nevyzrál. Simulujte 50 kol této hry a určete v kolika procentech kol vyhraje Lojza?
+
+```{r, eval=F, echo=T}
+N <- 50
+Franta <- numeric(N)
+Franta[1] <- 1
+for (t in 1:N) {
+  pocet_hodu <- 0
+  kostka <- 0
+  while (kostka != 8) {
+    pocet_hodu <- pocet_hodu + 1
+    kostka <- sample(6, size = 1) + sample(6, size = 1)}
+  Franta[t] <- pocet_hodu
+}
+      
+N <- 50
+Lojza <- numeric(N)
+Lojza[1] <- 1
+for (t in 1:N) {
+  pocet_hodu <- 0
+  kostka <- 0
+  while (kostka != 12) {
+    pocet_hodu <- pocet_hodu + 1
+    kostka <- sample(6, size = 1) + sample(6, size = 1)}
+  Lojza[t] <- pocet_hodu
+}
+
+Rozdíl <- Lojza - Franta
+Výsledek <- sum(Rozdíl <= 0)/50*100
+
+# Příkaz cat() není příliš známý, ale pomůže nám tehdy, chceme-li
+# vytisknout větu, která by měla obsahovat hodnotu z proměnné.
+
+cat("Lojza vyhraje v", Výsledek, "% kol.")
+```
+```{r echo=FALSE}
+N <- 50
+Franta <- numeric(N)
+Franta[1] <- 1
+for (t in 1:N) {
+  pocet_hodu <- 0
+  kostka <- 0
+  while (kostka != 8) {
+    pocet_hodu <- pocet_hodu + 1
+    kostka <- sample(6, size = 1) + sample(6, size = 1)}
+  Franta[t] <- pocet_hodu
+}
+      
+N <- 50
+Lojza <- numeric(N)
+Lojza[1] <- 1
+for (t in 1:N) {
+  pocet_hodu <- 0
+  kostka <- 0
+  while (kostka != 12) {
+    pocet_hodu <- pocet_hodu + 1
+    kostka <- sample(6, size = 1) + sample(6, size = 1)}
+  Lojza[t] <- pocet_hodu
+}
+
+Rozdíl <- Lojza - Franta
+Výsledek <- sum(Rozdíl <= 0)/50*100
+cat("Lojza vyhraje v", Výsledek, "% kol.")
+```
+
+Column {data-width=150 .tabletmod}
+-----------------------------------------------------------------------
+
